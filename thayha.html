@@ -16,7 +16,7 @@
     <div id="main-container" class="w-full max-w-4xl bg-white rounded-xl shadow-lg p-6">
         <h1 class="text-2xl font-bold text-center mb-6">Lớp Toán 10 Thầy Hà </h1>
 
-        <!-- Form nhập thông tin OK -->
+        <!-- Form nhập thông tin -->
         <div id="userInfoSection" class="max-w-md mx-auto">
             <h2 class="text-xl font-semibold text-center mb-4">Thông tin thí sinh</h2>
             <div class="mb-3">
@@ -73,12 +73,11 @@
             </p>
             <p class="mt-4 text-gray-600">Kết quả đã được lưu vào hệ thống.</p>
             
-            <!-- Phần thông báo thêm ở cuối -->
             <div class="mt-8 p-4 border-t bg-gray-50 rounded-lg">
-                <img src="https://placehold.co/100x100/E2E8F0/4A5568?text=LOGO" alt="Logo Lớp Toán Thầy Hà" class="mx-auto mb-3 rounded-full">
+                <img src="https://placehold.co/100x100/E2E8F0/4A5568?text=LOGO" alt="Logo Lớp Toán Thầy Hà" id="logo-result" class="mx-auto mb-3 rounded-full">
                 <h3 class="text-lg font-bold mb-2">Lớp toán 10 thầy Hà tiếp tục tuyển sinh</h3>
                 <p class="text-gray-600">
-                    Nhóm dạy ít học sinh(10-15), đảm bảo sát sao và chất lượng, sẽ đánh giá sự tiến bộ theo định kỳ!
+                    Nhóm dạy ít học sinh(10-15) đảm bảo sát sao và chất lượng, sẽ đánh giá định kỳ.
                     <br>
                     Liên hệ qua Zalo: <strong>0988.948.882</strong>
                 </p>
@@ -89,16 +88,17 @@
     <!-- Màn hình thông báo (Modal) -->
     <div id="announcementModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-xl shadow-lg p-8 max-w-lg w-full text-center">
-            <img src="https://placehold.co/150x150/E2E8F0/4A5568?text=LOGO" alt="Logo Lớp Toán Thầy Hà" class="mx-auto mb-4 rounded-full">
+            <img src="https://placehold.co/150x150/E2E8F0/4A5568?text=LOGO" alt="Logo Lớp Toán Thầy Hà" id="logo-modal" class="mx-auto mb-4 rounded-full">
             <h2 class="text-xl font-bold mb-2">Lớp toán 10 thầy Hà tiếp tục tuyển sinh</h2>
             <p class="text-gray-600 mb-6">
-Nhóm dạy ít học sinh(10-15), đảm bảo sát sao và chất lượng, sẽ đánh giá sự tiến bộ theo định kỳ!
+                Nhóm dạy ít học sinh(10-15) đảm bảo sát sao và chất lượng, sẽ đánh giá định kỳ.
                 <br>
                 Liên hệ qua Zalo: <strong>0988.948.882</strong>
             </p>
             <div class="flex justify-center gap-4">
                 <button id="enterQuizBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-2 rounded">Vào thi</button>
-                <button id="exitBtn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-8 py-2 rounded">Thoát</button>
+                <!-- === NÚT THOÁT ĐÃ ĐƯỢC CẬP NHẬT === -->
+                <button id="exitBtn" class="bg-red-500 hover:bg-red-600 text-white px-8 py-2 rounded">Thoát</button>
             </div>
         </div>
     </div>
@@ -119,9 +119,9 @@ Nhóm dạy ít học sinh(10-15), đảm bảo sát sao và chất lượng, s�
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        const QUIZ_ID = "TOAN10_MENHDETAPHOP_CUOIKY1_V3";
+        const QUIZ_ID = "TOAN10_MENHDETAPHOP_Thay_Ha";
         const TIME_LIMIT_SECONDS = 60 * 60; 
-        const ATTEMPT_LIMIT = 39;
+        const ATTEMPT_LIMIT = 33;
 
         const originalQuizData = [
             { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Trong các câu sau, câu nào là mệnh đề?', o: ["Số 3 là số chẵn.", "Bạn tên gì?", "Hôm nay trời đẹp quá!", "Hãy học bài đi!"], a: "Số 3 là số chẵn." },
@@ -222,7 +222,6 @@ Nhóm dạy ít học sinh(10-15), đảm bảo sát sao và chất lượng, s�
                 return;
             }
             
-            // Ẩn form thông tin và hiện modal thông báo
             mainContainer.classList.add('hidden');
             announcementModal.classList.remove('hidden');
         });
