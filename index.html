@@ -485,9 +485,9 @@ const originalQuizData = [
         function renderShortAnswer(question) {
             const savedAnswer = userAnswers[currentQuestionIndex] || '';
             answerContainer.innerHTML = `
-                <input type="number" name="q${currentQuestionIndex}" class="w-full border rounded px-3 py-2 mt-2" 
-                placeholder="Nhập đáp án là một con số" value="${savedAnswer}">`;
+             <input type="text" name="q${currentQuestionIndex}" class="w-full border rounded px-3 py-2 mt-2" 
+                placeholder="Nhập đáp án (VD: 45 hoặc 55.4 hoặc 55,4)" value="${savedAnswer}">`;
         }
-    </script>
+        </script>
 </body>
 </html>
