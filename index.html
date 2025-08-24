@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài kiểm tra Toán 09 Thay Ha</title>
+    <title>Bài kiểm tra Test</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .nav-btn { transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
@@ -388,23 +388,7 @@ Cam kết tiến bộ và cam kết đầu ra.
                         const pointsMap = [0, 0.1, 0.25, 0.5, 1];
                         totalScore += pointsMap[correctCount];
                         break;
-                    case 'short-answer': {
-    // Chuẩn hóa input của học sinh
-    let normalizedUser = userAnswer.replace(',', '.');
-    let userValue = parseFloat(normalizedUser);
-
-    // Đáp án có thể là chuỗi hoặc mảng
-    let correctAnswers = Array.isArray(q.a) ? q.a : [q.a];
-    let isCorrect = correctAnswers.some(ans => {
-        let normalizedAns = ans.toString().replace(',', '.');
-        return parseFloat(normalizedAns) === userValue;
-    });
-
-    if (isCorrect) totalScore += 1;
-    break;
-}
-
-                }
+                    }
             });
 
             quizSection.classList.add("hidden");
