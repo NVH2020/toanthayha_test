@@ -488,6 +488,17 @@ const originalQuizData = [
              <input type="text" name="q${currentQuestionIndex}" class="w-full border rounded px-3 py-2 mt-2" 
                 placeholder="Nhập đáp án (VD: 45 hoặc 55.4 hoặc 55,4)" value="${savedAnswer}">`;
         }
+        function checkAnswer(userInput, correctAnswer) {
+  // thay , thành . rồi ép về số
+  let userValue = parseFloat(userInput.replace(',', '.'));
+  let correctValue = parseFloat(correctAnswer.replace(',', '.'));
+
+  return userValue === correctValue;
+}
+
+// Ví dụ:
+checkAnswer("55.4", "55,4"); // true
+checkAnswer("55,40", "55,4"); // true
         </script>
 </body>
 </html>
