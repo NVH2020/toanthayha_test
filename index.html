@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài demo TT TN THPT 12 BG</title>
+    <title>Bài kiểm tra Toán 09 Thay Ha</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .nav-btn { transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
@@ -14,7 +14,7 @@
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
     <div id="main-container" class="w-full max-w-4xl bg-white rounded-xl shadow-lg p-6">
-        <h1 class="text-2xl font-bold text-center mb-6">Lớp Toán 10 Thầy Hà </h1>
+        <h1 class="text-2xl font-bold text-center mb-6">Lớp Toán 09 Thầy Hà </h1>
 
         <!-- Form nhập thông tin -->
         <div id="userInfoSection" class="max-w-md mx-auto">
@@ -63,7 +63,6 @@
                 </div>
             </form>
         </div>
-
         <!-- Màn hình kết quả -->
         <div id="resultSection" class="hidden text-center">
             <h2 id="studentNameResult" class="text-2xl font-bold mb-2"></h2>
@@ -74,11 +73,11 @@
             <p class="mt-4 text-gray-600">Kết quả đã được lưu vào hệ thống.</p>
             
             <div class="mt-8 p-4 border-t bg-gray-50 rounded-lg">
-                <img src="https://placehold.co/200x200/3B82F6/FBBF24?text=TOÁN%0ATHẦY+HÀ&font=times-new-roman&css=%7B%22font-weight%22%3A%22bold%22%2C%22font-size%22%3A%2290px%22%7D" 
+<img src="https://placehold.co/200x200/3B82F6/FBBF24?text=TOÁN%0ATHẦY+HÀ&font=times-new-roman&css=%7B%22font-weight%22%3A%22bold%22%2C%22font-size%22%3A%2290px%22%7D" 
      alt="Logo Toán Thầy Hà" 
      id="logo-modal" 
      class="mx-auto mb-4 rounded-full shadow-lg border-4 border-yellow-400">
- <h3 class="text-lg font-bold mb-2">Lớp toán các khối thầy Hà tiếp tục tuyển sinh</h3>
+                       <h3 class="text-lg font-bold mb-2">Lớp toán 9, 10, 11 thầy Hà tiếp tục tuyển sinh</h3>
                 <p class="text-gray-600">
                     Nhóm dạy ít học sinh(10-15) đảm bảo sát sao và chất lượng.
                     <br>
@@ -93,18 +92,18 @@ Cam kết tiến bộ và cam kết đầu ra.
     <!-- Màn hình thông báo (Modal) -->
     <div id="announcementModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-xl shadow-lg p-8 max-w-lg w-full text-center">
-          <img src="https://placehold.co/200x200/3B82F6/FBBF24?text=TOÁN%0ATHẦY+HÀ&font=times-new-roman&css=%7B%22font-weight%22%3A%22bold%22%2C%22font-size%22%3A%2290px%22%7D" 
+            <img src="https://placehold.co/200x200/3B82F6/FBBF24?text=TOÁN%0ATHẦY+HÀ&font=times-new-roman&css=%7B%22font-weight%22%3A%22bold%22%2C%22font-size%22%3A%2290px%22%7D" 
      alt="Logo Toán Thầy Hà" 
      id="logo-modal" 
      class="mx-auto mb-4 rounded-full shadow-lg border-4 border-yellow-400">
-            <h2 class="text-xl font-bold mb-2">Lớp toán các khối thầy Hà tiếp tục tuyển sinh</h2>
+ <h2 class="text-xl font-bold mb-2">Lớp toán 9, 10, 11 thầy Hà tiếp tục tuyển sinh</h2>
             <p class="text-gray-600 mb-6">
                 Nhóm dạy ít học sinh(10-15) đảm bảo sát sao và chất lượng.
                     <br>
 Cam kết tiến bộ và cam kết đầu ra.
                     <br>
                     Liên hệ qua Zalo: <strong>0988.948.882</strong>
-                 </p>
+            </p>
             <div class="flex justify-center gap-4">
                 <button id="enterQuizBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-2 rounded">Vào thi</button>
                 <!-- === NÚT THOÁT ĐÃ ĐƯỢC CẬP NHẬT === -->
@@ -117,94 +116,58 @@ Cam kết tiến bộ và cam kết đầu ra.
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDlMWsv2HFXtkCMyfOp6Qiu34dq14DEPI8",
-            authDomain: "toan10-thay-ha.firebaseapp.com",
-            projectId: "toan10-thay-ha",
-            storageBucket: "toan10-thay-ha.appspot.com",
-            messagingSenderId: "490951383067",
-            appId: "1:490951383067:web:ac9a0dc073e5e6ce9a00be",
-            measurementId: "G-H4N876JFY6"
-        };
+  const firebaseConfig = {
+
+  apiKey: "AIzaSyDT-S4PyHCqs218PAhZykrmN9V-9y3fYbg",
+
+  authDomain: "toan09-thay-ha.firebaseapp.com",
+
+  projectId: "toan09-thay-ha",
+
+  storageBucket: "toan09-thay-ha.firebasestorage.app",
+
+  messagingSenderId: "207230852901",
+
+  appId: "1:207230852901:web:69b316ed8d5d755be104cc",
+
+  measurementId: "G-1MC3T3XWQD"
+
+};
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        const QUIZ_ID = "BandemoThayHa0988948882";
+        const QUIZ_ID = "TOAN09_Thay_Ha_0988948882";
         const TIME_LIMIT_SECONDS = 60 * 60; 
         const ATTEMPT_LIMIT = 33;
-const originalQuizData = [
-  { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img006_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    o: ["A","B","C","D"], a: "D" },
-  { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img006_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    o: ["A","B","C","D"], a: "D" },
-  { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img007_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    o: ["A","B","C","D"], a: "B" },
-  { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img008_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    o: ["A","B","C","D"], a: "B" },
-  { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img009_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    o: ["A","B","C","D"], a: "C" },
-  { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img010_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    o: ["A","B","C","D"], a: "C" },
-  { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img011_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    o: ["A","B","C","D"], a: "A" },
-  { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img012_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    o: ["A","B","C","D"], a: "B" },
-  { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img013_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    o: ["A","B","C","D"], a: "C" },
-  { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img014_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    o: ["A","B","C","D"], a: "C" },
-  { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img015_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    o: ["A","B","C","D"], a: "B" },
-  { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img016_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    o: ["A","B","C","D"], a: "B" },
-  { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img017_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    o: ["A","B","C","D"], a: "D" },
 
-  { part: "Phần II: Trắc nghiệm Đúng/Sai", type: 'true-false',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img018_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    s: [ { text: "Ý a)", a: true }, { text: "Ý b)", a: true }, { text: "Ý c)", a: true }, { text: "Ý d)", a: false } ] },
-  { part: "Phần II: Trắc nghiệm Đúng/Sai", type: 'true-false',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img019_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    s: [ { text: "Ý a)", a: true }, { text: "Ý b)", a: false }, { text: "Ý c)", a: false }, { text: "Ý d)", a: true } ] },
-  { part: "Phần II: Trắc nghiệm Đúng/Sai", type: 'true-false',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img020_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    s: [ { text: "Ý a)", a: true }, { text: "Ý b)", a: false }, { text: "Ý c)", a: false }, { text: "Ý d)", a: true } ] },
-  { part: "Phần II: Trắc nghiệm Đúng/Sai", type: 'true-false',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img021_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    s: [ { text: "Ý a)", a: true }, { text: "Ý b)", a: true }, { text: "Ý c)", a: false }, { text: "Ý d)", a: true } ] },
+        const originalQuizData = [
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Trong các câu sau, câu nào là mệnh đề?', o: ["Số 3 là số chẵn.", "Bạn tên gì?", "Hôm nay trời đẹp quá!", "Hãy học bài đi!"], a: "Số 3 là số chẵn." },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Phủ định của mệnh đề P: “∀x ∈ ℝ, x² ≥ 0” là:', o: ["∃x ∈ ℝ, x² < 0", "∃x ∈ ℝ, x² ≤ 0", "∀x ∈ ℝ, x² < 0", "∀x ∈ ℝ, x² ≤ 0"], a: "∃x ∈ ℝ, x² < 0" },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho tập hợp A = {1, 2, {3, 4}}. Khẳng định nào sau đây sai?', o: ["1 ∈ A", "2 ∈ A", "{3, 4} ∈ A", "3 ∈ A"], a: "3 ∈ A" },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Ký hiệu nào biểu diễn khoảng từ a đến b, không bao gồm a và b?', o: ["[a; b]", "(a; b)", "[a; b)", "(a; b]"], a: "(a; b)" },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho A = {1, 3, 5} và B = {1, 2, 3}. Tập hợp A ∪ B là:', o: ["{1, 3}", "{1, 2, 3, 5}", "{1, 2, 5}", "{2, 5}"], a: "{1, 2, 3, 5}" },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho A = {x ∈ ℕ | x ≤ 4}. Liệt kê các phần tử của A.', o: ["{1, 2, 3, 4}", "{0, 1, 2, 3}", "{0, 1, 2, 3, 4}", "{1, 2, 3}"], a: "{0, 1, 2, 3, 4}" },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Mệnh đề P ⇒ Q chỉ sai khi nào?', o: ["P đúng, Q sai", "P sai, Q đúng", "P, Q cùng đúng", "P, Q cùng sai"], a: "P đúng, Q sai" },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho A = (–∞; 2] và B = (–1; +∞). Tập hợp A ∩ B là:', o: ["(–1; 2]", "[–1; 2]", "(–∞; +∞)", "(–1; 2)"], a: "(–1; 2]" },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Số tập hợp con có 2 phần tử của tập hợp A = {a, b, c, d} là:', o: ["4", "6", "8", "10"], a: "6" },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho mệnh đề P(x): “x là số nguyên tố”. Mệnh đề nào sau đây đúng?', o: ["P(4)", "P(6)", "P(8)", "P(7)"], a: "P(7)" },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Tập hợp A = {x ∈ ℝ | x² - 4 = 0} có bao nhiêu phần tử?', o: ["0", "1", "2", "4"], a: "2" },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho A là tập con của B. Khẳng định nào sau đây đúng?', o: ["A ∩ B = B", "A ∪ B = A", "B \\ A = ∅", "A ∩ B = A"], a: "A ∩ B = A" },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Mệnh đề “Nếu tam giác ABC đều thì nó có ba góc bằng 60°” có mệnh đề đảo là:', o: ["Nếu tam giác ABC có ba góc bằng 60° thì nó đều.", "Nếu tam giác ABC không đều thì nó không có ba góc bằng 60°.", "Tam giác ABC đều khi và chỉ khi nó có ba góc bằng 60°.", "Tam giác ABC đều và có ba góc bằng 60°."], a: "Nếu tam giác ABC có ba góc bằng 60° thì nó đều." },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Sử dụng ký hiệu ∀, ∃ để viết mệnh đề: “Mọi số thực cộng với 0 đều bằng chính nó”', o: ["∀x ∈ ℝ, x + 0 = x", "∃x ∈ ℝ, x + 0 = x", "∀x ∈ ℝ, x + 0 = 0", "∃x ∈ ℝ, x + 0 = 0"], a: "∀x ∈ ℝ, x + 0 = x" },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Tập hợp rỗng được ký hiệu là:', o: ["{0}", "0", "∅", "{∅}"], a: "∅" },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho A = [–3; 5) và B = (2; 7]. Tập hợp A \\ B là:', o: ["[–3; 2]", "[–3; 2)", "(–3; 2]", "(5; 7]"], a: "[–3; 2]" },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Câu nào sau đây không phải là mệnh đề chứa biến?', o: ["x + 2 > 5", "n là số chẵn", "Hà Nội là thủ đô của Việt Nam", "2k + 1 là số lẻ"], a: "Hà Nội là thủ đô của Việt Nam" },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho A = {x ∈ ℤ | |x| < 3}. Số phần tử của A là:', o: ["2", "3", "4", "5"], a: "5" },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Phần bù của tập A = [2; +∞) trong ℝ là:', o: ["(–∞; 2]", "(–∞; 2)", "[2; +∞)", "(2; +∞)"], a: "(–∞; 2)" },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Mệnh đề nào sau đây là mệnh đề tương đương?', o: ["P ⇒ Q", "P ⇔ Q", "P ∧ Q", "P ∨ Q"], a: "P ⇔ Q" },
+            { part: "Phần II: Trắc nghiệm Đúng/Sai", type: 'true-false', question: 'Cho tập hợp A = {1, 2} và B = {1, 2, 3}. Xét tính đúng sai của các mệnh đề sau:', s: [ { text: "A là tập con của B.", a: true }, { text: "B là tập con của A.", a: false }, { text: "A ∩ B = {1, 2, 3}.", a: false }, { text: "A ∪ B = B.", a: true } ] },
+            { part: "Phần II: Trắc nghiệm Đúng/Sai", type: 'true-false', question: 'Cho mệnh đề P: “x > 5” và Q: “x > 3”. Xét tính đúng sai của các mệnh đề sau:', s: [ { text: "Với x = 6, mệnh đề P đúng.", a: true }, { text: "Mệnh đề P ⇒ Q là mệnh đề đúng.", a: true }, { text: "Mệnh đề Q ⇒ P là mệnh đề đúng.", a: false }, { text: "Mệnh đề P ⇔ Q là mệnh đề đúng.", a: false } ] },
+            { part: "Phần III: Trả lời ngắn", type: 'short-answer', question: 'Cho hai tập hợp A = {1, 2, 3, 4, 5} và B = {2, 4, 6, 8}. Tập hợp A ∩ B có bao nhiêu phần tử?', a: "2" },
+            { part: "Phần III: Trả lời ngắn", type: 'short-answer', question: 'Lớp 10A có 30 học sinh giỏi Toán, 25 học sinh giỏi Lý, và 15 học sinh giỏi cả Toán và Lý. Hỏi lớp 10A có bao nhiêu học sinh giỏi ít nhất một trong hai môn Toán hoặc Lý?', a: "40" },
+            { part: "Phần III: Trả lời ngắn", type: 'short-answer', question: 'Cho tập hợp M = {x ∈ ℤ | (x² - 9)(x - 1) = 0}. Tính tổng các phần tử của M.', a: "1" }
+        ];
 
-  { part: "Phần III: Trả lời ngắn", type: 'short-answer',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img022_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    a: "0,79" },
-  { part: "Phần III: Trả lời ngắn", type: 'short-answer',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img023_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    a: "633" },
-  { part: "Phần III: Trả lời ngắn", type: 'short-answer',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img024_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    a: "45" },
-  { part: "Phần III: Trả lời ngắn", type: 'short-answer',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img025_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    a: "55,4" },
-  { part: "Phần III: Trả lời ngắn", type: 'short-answer',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img026_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    a: "0,46" },
-  { part: "Phần III: Trả lời ngắn", type: 'short-answer',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img027_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    a: "112" },
-];
         let quizData = [];
         const totalQuestions = originalQuizData.length;
 
@@ -257,7 +220,6 @@ const originalQuizData = [
             }
             return shuffledQuiz;
         }
-
         startBtn.addEventListener("click", async () => {
             const studentId = document.getElementById("studentId").value.trim();
             const fullname = document.getElementById("fullname").value.trim();
@@ -426,9 +388,22 @@ const originalQuizData = [
                         const pointsMap = [0, 0.1, 0.25, 0.5, 1];
                         totalScore += pointsMap[correctCount];
                         break;
-                    case 'short-answer':
-                        if (userAnswer.toLowerCase() === q.a.toLowerCase()) totalScore += 1;
-                        break;
+                    case 'short-answer': {
+    // Chuẩn hóa input của học sinh
+    let normalizedUser = userAnswer.replace(',', '.');
+    let userValue = parseFloat(normalizedUser);
+
+    // Đáp án có thể là chuỗi hoặc mảng
+    let correctAnswers = Array.isArray(q.a) ? q.a : [q.a];
+    let isCorrect = correctAnswers.some(ans => {
+        let normalizedAns = ans.toString().replace(',', '.');
+        return parseFloat(normalizedAns) === userValue;
+    });
+
+    if (isCorrect) totalScore += 1;
+    break;
+}
+
                 }
             });
 
@@ -485,20 +460,9 @@ const originalQuizData = [
         function renderShortAnswer(question) {
             const savedAnswer = userAnswers[currentQuestionIndex] || '';
             answerContainer.innerHTML = `
-             <input type="text" name="q${currentQuestionIndex}" class="w-full border rounded px-3 py-2 mt-2" 
-                placeholder="Nhập đáp án (VD: 45 hoặc 55.4 hoặc 55,4)" value="${savedAnswer}">`;
+                <input type="text" name="q${currentQuestionIndex}" class="w-full border rounded px-3 py-2 mt-2" 
+                placeholder="Nhập đáp án là một con số" value="${savedAnswer}">`;
         }
-        function checkAnswer(userInput, correctAnswer) {
-  // thay , thành . rồi ép về số
-  let userValue = parseFloat(userInput.replace(',', '.'));
-  let correctValue = parseFloat(correctAnswer.replace(',', '.'));
-
-  return userValue === correctValue;
-}
-
-// Ví dụ:
-checkAnswer("55.4", "55,4"); // true
-checkAnswer("55,40", "55,4"); // true
-        </script>
+    </script>
 </body>
 </html>
