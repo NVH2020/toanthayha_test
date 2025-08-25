@@ -161,6 +161,300 @@
         let quizData = [];
         const totalQuestions = originalQuizData.length;
         document.getElementById('total-questions').textContent = totalQuestions;
+        const startBtn = document.getElementById("startBtn");
+        const userInfoSection = document.getElementById("userInfoSection");
+        const quizSection = document.getElementById("quizSection");
+        const resultSection = document.getElementById("resultSection");
+        const announcementModal = document.getElementById('announcementModal');
+        const enterQuizBtn = document.getElementById('enterQuizBtn');
+        const exitBtn = document.getElementById('exitBtn');
+        const mainContainer = document.getElementById('main-container');
+        const quizForm = document.getElementById("quizForm");
+        const studentNameResult = document.getElementById("studentNameResult");
+        const finalScore = document.getElementById("finalScore");
+        const timerElement = document.getElementById("timer");
+        const quizPartTitle = document.getElementById('quiz-part-title');
+        const questionCounter = document.getElementById('question-counter');
+        const questionNavPanel = document.getElementById('questionNavPanel');
+        const questionText = document.getElementById('question-text');
+        const answerContainer = document.getElementById('answer-container');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+
+        let currentUser = null;
+        let timerInterval = null;
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let quizStartTime = null;
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function prepareShuffledQuiz() {
+            const groupedByPart = originalQuizData.reduce((acc, question) => {
+                acc[question.part] = acc[question.part] || [];
+                acc[question.part].push(question);
+                return acc;
+            }, {});
+            let shuffledQuiz = [];
+            for (const part in groupedByPart) {
+                const questionsInPart = groupedByPart[part];
+                shuffleArray(questionsInPart);
+                shuffledQuiz = shuffledQuiz.concat(questionsInPart);
+            }
+            return shuffledQuiz;
+        }
+
+        startBtn.addEventListener("click", async () => {
+            const studentId = document.getElementById("studentId").value.trim();
+            const fullname = document.getElementById("fullname").value.trim();
+            const className = document.getElementById("className").value.trim();
+            const school = document.getElementById("school").value.trim();
+
+            if (!studentId || !fullname || !className || !school) {
+                alert("Vui lòng nhập đầy đủ thông tin!"); return;
+            }
+            currentUser = { studentId, fullname, className, school };
+            const resultsRef = collection(db, "quizResults");
+            const q = query(resultsRef, where("studentId", "==", studentId), where("quizId", "==", QUIZ_ID));
+            const snapshot = await getDocs(q);
+            if (snapshot.size >= ATTEMPT_LIMIT) {
+                alert(`Bạn đã làm bài kiểm tra này ${snapshot.size} lần. Số lần làm bài tối đa là ${ATTEMPT_LIMIT}.`);
+                return;
+            }
+            
+            mainContainer.classList.add('hidden');
+            announcementModal.classList.remove('hidden');
+        });
+
+        enterQuizBtn.addEventListener('click', () => {
+            announcementModal.classList.add('hidden');
+            mainContainer.classList.remove('hidden');
+            userInfoSection.classList.add("hidden");
+            quizSection.classList.remove("hidden");
+            startQuiz();
+        });
+
+        exitBtn.addEventListener('click', () => {
+            location.reload();
+        });
+
+        function startQuiz() {
+            quizData = prepareShuffledQuiz();
+            userAnswers = new Array(totalQuestions).fill(null);
+            currentQuestionIndex = 0;
+            quizStartTime = Date.now();
+            renderNavPanel();
+            jumpToQuestion(0);
+            startTimer();
+        }
+        
+        function startTimer() {
+            let timeLeft = TIME_LIMIT_SECONDS;
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitBtn.click();
+                } else {
+                    timeLeft--;
+                    const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+                    const seconds = (timeLeft % 60).toString().padStart(2, '0');
+                    timerElement.textContent = `${minutes}:${seconds}`;
+                }
+            }, 1000);
+        }
+
+        function renderNavPanel() {
+            questionNavPanel.innerHTML = '';
+            for (let i = 0; i < totalQuestions; i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i + 1;
+                btn.className = 'nav-btn w-10 h-10 border rounded font-medium';
+                btn.type = 'button';
+                btn.onclick = () => {
+                    saveCurrentAnswer();
+                    jumpToQuestion(i);
+                };
+                questionNavPanel.appendChild(btn);
+            }
+        }
+
+        function jumpToQuestion(index) {
+            currentQuestionIndex = index;
+            showQuestion();
+            updateNavPanel();
+        }
+
+        function showQuestion() {
+            const question = quizData[currentQuestionIndex];
+            quizPartTitle.textContent = question.part;
+            questionCounter.textContent = currentQuestionIndex + 1;
+            questionText.innerHTML = question.question;
+            answerContainer.innerHTML = '';
+
+            switch (question.type) {
+                case 'mcq': renderMCQ(question); break;
+                case 'true-false': renderTrueFalse(question); break;
+                case 'short-answer': renderShortAnswer(question); break;
+            }
+            
+            prevBtn.classList.toggle('hidden', currentQuestionIndex === 0);
+            nextBtn.classList.toggle('hidden', currentQuestionIndex === totalQuestions - 1);
+        }
+        
+        function updateNavPanel() {
+            const navButtons = questionNavPanel.children;
+            for (let i = 0; i < navButtons.length; i++) {
+                navButtons[i].classList.remove('nav-btn-current', 'nav-btn-answered');
+                if (userAnswers[i] !== null) {
+                    navButtons[i].classList.add('nav-btn-answered');
+                }
+                if (i === currentQuestionIndex) {
+                    navButtons[i].classList.add('nav-btn-current');
+                }
+            }
+        }
+
+        function saveCurrentAnswer() {
+            const question = quizData[currentQuestionIndex];
+            let answerData = null;
+            switch (question.type) {
+                case 'mcq':
+                    const selectedRadio = quizForm.querySelector(`input[name="q${currentQuestionIndex}"]:checked`);
+                    if (selectedRadio) answerData = selectedRadio.value;
+                    break;
+                case 'true-false':
+                    answerData = [];
+                    for (let i = 0; i < question.s.length; i++) {
+                        const selectedTF = quizForm.querySelector(`input[name="q${currentQuestionIndex}s${i}"]:checked`);
+                        answerData.push(selectedTF ? selectedTF.value === 'true' : null);
+                    }
+                    if (answerData.every(a => a === null)) answerData = null;
+                    break;
+                case 'short-answer':
+                    const input = quizForm.querySelector(`input[name="q${currentQuestionIndex}"]`);
+                    if (input && input.value.trim() !== '') answerData = input.value.trim();
+                    break;
+            }
+            userAnswers[currentQuestionIndex] = answerData;
+            updateNavPanel();
+        }
+
+        prevBtn.addEventListener('click', () => {
+            saveCurrentAnswer();
+            if (currentQuestionIndex > 0) jumpToQuestion(currentQuestionIndex - 1);
+        });
+        nextBtn.addEventListener('click', () => {
+            saveCurrentAnswer();
+            if (currentQuestionIndex < totalQuestions - 1) jumpToQuestion(currentQuestionIndex + 1);
+        });
+        
+        quizForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            saveCurrentAnswer(); 
+            clearInterval(timerInterval);
+            
+            const timeTakenInSeconds = Math.round((Date.now() - quizStartTime) / 1000);
+            let totalScore = 0;
+            const answersToSave = {};
+
+            quizData.forEach((q, index) => {
+                const userAnswer = userAnswers[index];
+                answersToSave[`q${index + 1}`] = userAnswer;
+                if (userAnswer === null) return;
+
+                switch (q.type) {
+                    case 'mcq':
+                        if (userAnswer === q.a) totalScore += 0.25;
+                        break;
+                    case 'true-false':
+                        let correctCount = 0;
+                        q.s.forEach((st, sIndex) => { if (userAnswer[sIndex] === st.a) correctCount++; });
+                        const pointsMap = [0, 0.1, 0.25, 0.5, 1];
+                        totalScore += pointsMap[correctCount];
+                        break;
+                    case 'short-answer':
+                        const cleanedUserAnswer = userAnswer.trim().replace(',', '.');
+                        if (cleanedUserAnswer === q.a) {
+                            totalScore += 1;
+                        }
+                        break;
+                }
+            });
+
+            quizSection.classList.add("hidden");
+            resultSection.classList.remove("hidden");
+            studentNameResult.textContent = currentUser.fullname;
+            finalScore.textContent = totalScore.toFixed(2);
+
+            try {
+                await addDoc(collection(db, "quizResults"), {
+                    ...currentUser,
+                    quizId: QUIZ_ID,
+                    score: parseFloat(totalScore.toFixed(2)),
+                    totalPossibleScore: 10,
+                    timeTaken: timeTakenInSeconds,
+                    answers: answersToSave,
+                    submittedAt: serverTimestamp()
+                });
+            } catch (error) {
+                console.error("Lỗi khi lưu kết quả: ", error);
+            }
+        });
+
+        function renderMCQ(question) {
+            const savedAnswer = userAnswers[currentQuestionIndex];
+            let optionsHTML = '<div class="grid grid-cols-2 md:grid-cols-4 gap-3">';
+            question.o.forEach(option => {
+                const isChecked = savedAnswer === option;
+                optionsHTML += `
+                    <label class="flex items-center justify-center p-3 rounded-lg border-2 cursor-pointer hover:bg-gray-100 ${isChecked ? 'mcq-label-selected' : ''}">
+                        <input type="radio" name="q${currentQuestionIndex}" value="${option}" class="hidden"> 
+                        <span class="font-bold text-lg">${option}</span>
+                    </label>`;
+            });
+            optionsHTML += '</div>';
+            answerContainer.innerHTML = optionsHTML;
+
+            // Thêm sự kiện click cho các label mới tạo
+            answerContainer.querySelectorAll('label').forEach(label => {
+                label.addEventListener('click', () => {
+                    answerContainer.querySelectorAll('label').forEach(l => l.classList.remove('mcq-label-selected'));
+                    label.classList.add('mcq-label-selected');
+                });
+            });
+        }
+        function renderTrueFalse(question) {
+            const savedAnswer = userAnswers[currentQuestionIndex] || [];
+            question.s.forEach((statement, sIndex) => {
+                const isTrueChecked = savedAnswer[sIndex] === true;
+                const isFalseChecked = savedAnswer[sIndex] === false;
+                answerContainer.innerHTML += `
+                    <div class="flex items-center justify-between p-3 border rounded-lg">
+                        <span>${statement.text}</span>
+                        <div class="flex gap-4">
+                            <label class="cursor-pointer flex items-center">
+                                <input type="radio" name="q${currentQuestionIndex}s${sIndex}" value="true" class="mr-2" ${isTrueChecked ? 'checked' : ''}> Đúng
+                            </label>
+                            <label class="cursor-pointer flex items-center">
+                                <input type="radio" name="q${currentQuestionIndex}s${sIndex}" value="false" class="mr-2" ${isFalseChecked ? 'checked' : ''}> Sai
+                            </label>
+                        </div>
+                    </div>`;
+            });
+        }
+        function renderShortAnswer(question) {
+            const savedAnswer = userAnswers[currentQuestionIndex] || '';
+            answerContainer.innerHTML = `
+                <input type="text" name="q${currentQuestionIndex}" class="w-full border rounded px-3 py-2 mt-2" 
+                placeholder="Nhập đáp án (VD: 45 hoặc 55.4 hoặc 55,4)" value="${savedAnswer}">`;
+        }
+
         
         // ... (toàn bộ phần script của bạn giữ nguyên, không đổi, chỉ thêm dòng trên)
     </script>
