@@ -44,7 +44,7 @@
                 <div>
                     <h2 id="quiz-part-title" class="text-xl md:text-2xl font-bold text-gray-800"></h2>
                     <p class="text-lg font-semibold text-blue-600">
-                        Câu <span id="question-counter">1</span> / 25
+                        Câu <span id="question-counter">1</span> /
                     </p>
                 </div>
                 <div id="timer" class="text-2xl font-bold text-red-500">60:00</div>
@@ -79,9 +79,9 @@
      class="mx-auto mb-4 rounded-full shadow-lg border-4 border-yellow-400">
                        <h3 class="text-lg font-bold mb-2">Lớp toán 9, 10, 11 thầy Hà tiếp tục tuyển sinh</h3>
                 <p class="text-gray-600">
-                                        Nhóm dạy ít học sinh(10-15) đảm bảo sát sao và chất lượng.
+                                        Nhóm dạy ít học sinh(10-15) đảm bảo sát sao và chất lượng!
                     <br>
-Cam kết tiến bộ và cam kết đầu ra.
+Cam kết tiến bộ và cam kết đầu ra!
                     <br>
                     Liên hệ qua Zalo: <strong>0988.948.882</strong>
                 </p>
@@ -98,9 +98,9 @@ Cam kết tiến bộ và cam kết đầu ra.
      class="mx-auto mb-4 rounded-full shadow-lg border-4 border-yellow-400">
  <h2 class="text-xl font-bold mb-2">Lớp toán 9, 10, 11 thầy Hà tiếp tục tuyển sinh</h2>
             <p class="text-gray-600 mb-6">
-                    Nhóm dạy ít học sinh(10-15) đảm bảo sát sao và chất lượng.
+                    Nhóm dạy ít học sinh(10-15) đảm bảo sát sao và chất lượng!
                     <br>
-Cam kết tiến bộ và cam kết đầu ra.
+Cam kết tiến bộ và cam kết đầu ra!
                     <br>
                     Liên hệ qua Zalo: <strong>0988.948.882</strong>
             </p>
@@ -118,23 +118,20 @@ Cam kết tiến bộ và cam kết đầu ra.
 
         const firebaseConfig = {
             apiKey: "AIzaSyD2MOM2OkAarm6uzJx9JrE7tNSpKQ0QgXU",
-  authDomain: "bandemo-test.firebaseapp.com",
-  projectId: "bandemo-test",
-  storageBucket: "bandemo-test.firebasestorage.app",
-  messagingSenderId: "958116171978",
-  appId: "1:958116171978:web:472ed7157508be22626433",
-  measurementId: "G-2RJETX8TW6"
+          authDomain: "bandemo-test.firebaseapp.com",
+          projectId: "bandemo-test",
+          storageBucket: "bandemo-test.firebasestorage.app",
+          messagingSenderId: "958116171978",
+          appId: "1:958116171978:web:472ed7157508be22626433",
+          measurementId: "G-2RJETX8TW6"
         };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
         const QUIZ_ID = "BandemoThayHa0988948882";
         const TIME_LIMIT_SECONDS = 60 * 60; 
-        const ATTEMPT_LIMIT = 33;
+        const ATTEMPT_LIMIT = 333;
 const originalQuizData = [
-  { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq',
-    question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img006_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
-    o: ["A","B","C","D"], a: "D" },
   { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq',
     question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img006_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">',
     o: ["A","B","C","D"], a: "D" },
