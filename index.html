@@ -10,6 +10,7 @@
         .nav-btn-answered { background-color: #16a34a; color: white; border-color: #15803d; }
         .nav-btn-current { background-color: #4f46e5; color: white; border-color: #4338ca; transform: scale(1.1); }
         input[type="radio"]:checked + span { font-weight: 600; color: #4f46e5; }
+        /* Thêm style cho label được chọn */
         .mcq-label-selected {
             background-color: #e0e7ff; /* indigo-100 */
             border-color: #6366f1; /* indigo-500 */
@@ -75,7 +76,7 @@
             <p class="text-xl">Tổng điểm của bạn là: 
                 <span id="finalScore" class="font-bold text-blue-600 text-3xl"></span>
             </p>
-            <p id="submissionStatus" class="mt-4 text-gray-600">Kết quả đang được gửi đi...</p>
+            <p class="mt-4 text-gray-600">Kết quả đã được lưu vào hệ thống.</p>
             
             <div class="mt-8 p-4 border-t bg-gray-50 rounded-lg">
                 <img src="https://placehold.co/100x100/3B82F6/FBBF24?text=TH%E1%BA%A6Y+H%C3%80&font=times-new-roman&css=%7B%22font-weight%22%3A%22bold%22%2C%22font-size%22%3A%2234px%22%7D" alt="Logo Lớp Toán Thầy Hà" class="mx-auto mb-3 rounded-full">
@@ -111,14 +112,34 @@
     </div>
 
     <script type="module">
-        // --- BƯỚC QUAN TRỌNG: DÁN LINK WEB APP CỦA BẠN VÀO ĐÂY ---
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxTBKsAgFzoVGcj2vjvs72CqPMAMmt4Ypm5-Y27w21fQeMt0VkrnzFqxbk1PdkAbCca/exec";
-        
-        const QUIZ_ID = "BandemoThayHa0988948882";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+
+  apiKey: "AIzaSyA2XIE0E9AH74v-bnq5sls8VZbwY4DXFlY",
+
+  authDomain: "toan12-thay-ha.firebaseapp.com",
+
+  projectId: "toan12-thay-ha",
+
+  storageBucket: "toan12-thay-ha.firebasestorage.app",
+
+  messagingSenderId: "853781864920",
+
+  appId: "1:853781864920:web:294472ebc048c1b0f092ad",
+
+  measurementId: "G-X8FEY90BFS"
+
+};
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const QUIZ_ID = "TOAN12_Thay_Ha_BN_0988948882";
         const TIME_LIMIT_SECONDS = 60 * 60;
+        const ATTEMPT_LIMIT = 333;
 
         const originalQuizData = [
- { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img006_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', o: ["A", "B", "C", "D"], a: "D" },
+            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img006_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', o: ["A", "B", "C", "D"], a: "D" },
             { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img007_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', o: ["A", "B", "C", "D"], a: "B" },
             { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img008_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', o: ["A", "B", "C", "D"], a: "B" },
             { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img009_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', o: ["A", "B", "C", "D"], a: "C" },
@@ -141,6 +162,7 @@
             { part: "Phần III: Trả lời ngắn", type: 'short-answer', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img026_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', a: "0,46" },
             { part: "Phần III: Trả lời ngắn", type: 'short-answer', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img027_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', a: "112" },
         ];
+
         let quizData = [];
         const totalQuestions = originalQuizData.length;
         
@@ -165,7 +187,6 @@
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const submitBtn = document.getElementById('submitBtn');
-        const submissionStatus = document.getElementById('submissionStatus');
 
         let currentUser = null;
         let timerInterval = null;
@@ -195,15 +216,24 @@
             return shuffledQuiz;
         }
 
-        startBtn.addEventListener("click", () => {
-             const studentId = document.getElementById("studentId").value.trim();
+        startBtn.addEventListener("click", async () => {
+            const studentId = document.getElementById("studentId").value.trim();
             const fullname = document.getElementById("fullname").value.trim();
             const className = document.getElementById("className").value.trim();
             const school = document.getElementById("school").value.trim();
+
             if (!studentId || !fullname || !className || !school) {
                 alert("Vui lòng nhập đầy đủ thông tin!"); return;
             }
-            currentUser = { studentId, fullname, class: className, school };
+            currentUser = { studentId, fullname, className, school };
+            const resultsRef = collection(db, "quizResults");
+            const q = query(resultsRef, where("studentId", "==", studentId), where("quizId", "==", QUIZ_ID));
+            const snapshot = await getDocs(q);
+            if (snapshot.size >= ATTEMPT_LIMIT) {
+                alert(`Bạn đã làm bài kiểm tra này ${snapshot.size} lần. Số lần làm bài tối đa là ${ATTEMPT_LIMIT}.`);
+                return;
+            }
+            
             mainContainer.classList.add('hidden');
             announcementModal.classList.remove('hidden');
         });
@@ -273,11 +303,13 @@
             questionCounter.textContent = currentQuestionIndex + 1;
             questionText.innerHTML = question.question;
             answerContainer.innerHTML = '';
+
             switch (question.type) {
                 case 'mcq': renderMCQ(question); break;
                 case 'true-false': renderTrueFalse(question); break;
                 case 'short-answer': renderShortAnswer(question); break;
             }
+            
             prevBtn.classList.toggle('hidden', currentQuestionIndex === 0);
             nextBtn.classList.toggle('hidden', currentQuestionIndex === totalQuestions - 1);
         }
@@ -307,10 +339,9 @@
                     answerData = [];
                     for (let i = 0; i < question.s.length; i++) {
                         const selectedTF = quizForm.querySelector(`input[name="q${currentQuestionIndex}s${i}"]:checked`);
-                        answerData.push(selectedTF ? (selectedTF.value === 'true' ? 'Đ' : 'S') : null);
+                        answerData.push(selectedTF ? selectedTF.value === 'true' : null);
                     }
                     if (answerData.every(a => a === null)) answerData = null;
-                    else answerData = answerData.map(a => a || '').join(',');
                     break;
                 case 'short-answer':
                     const input = quizForm.querySelector(`input[name="q${currentQuestionIndex}"]`);
@@ -325,36 +356,32 @@
             saveCurrentAnswer();
             if (currentQuestionIndex > 0) jumpToQuestion(currentQuestionIndex - 1);
         });
-
         nextBtn.addEventListener('click', () => {
             saveCurrentAnswer();
             if (currentQuestionIndex < totalQuestions - 1) jumpToQuestion(currentQuestionIndex + 1);
         });
         
-        quizForm.addEventListener("submit", (e) => {
+        quizForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             saveCurrentAnswer(); 
             clearInterval(timerInterval);
             
-            submitBtn.disabled = true;
-            submitBtn.textContent = "Đang nộp bài...";
-            
+            const timeTakenInSeconds = Math.round((Date.now() - quizStartTime) / 1000);
             let totalScore = 0;
+            const answersToSave = {};
+
             quizData.forEach((q, index) => {
                 const userAnswer = userAnswers[index];
+                answersToSave[`q${index + 1}`] = userAnswer;
                 if (userAnswer === null) return;
+
                 switch (q.type) {
                     case 'mcq':
                         if (userAnswer === q.a) totalScore += 0.25;
                         break;
                     case 'true-false':
                         let correctCount = 0;
-                        const userTFAnswers = userAnswer.split(',');
-                        q.s.forEach((st, sIndex) => { 
-                            if ((userTFAnswers[sIndex] === 'Đ' && st.a === true) || (userTFAnswers[sIndex] === 'S' && st.a === false)) {
-                                correctCount++;
-                            }
-                        });
+                        q.s.forEach((st, sIndex) => { if (userAnswer[sIndex] === st.a) correctCount++; });
                         const pointsMap = [0, 0.1, 0.25, 0.5, 1];
                         totalScore += pointsMap[correctCount];
                         break;
@@ -371,37 +398,20 @@
             resultSection.classList.remove("hidden");
             studentNameResult.textContent = currentUser.fullname;
             finalScore.textContent = totalScore.toFixed(2);
-            
-            // Chuyển đổi mảng answers thành đối tượng
-            const answersToSave = {};
-            userAnswers.forEach((ans, index) => {
-                answersToSave[`q${index + 1}`] = ans === null ? "" : ans;
-            });
 
-            const payload = {
-                ...currentUser,
-                quizId: QUIZ_ID,
-                score: parseFloat(totalScore.toFixed(2)),
-                answers: answersToSave
-            };
-
-            fetch(WEB_APP_URL, {
-                method: 'POST',
-                 // Xóa mode: 'no-cors' để nhận phản hồi
-                cache: 'no-cache',
-                headers: { 'Content-Type': 'application/json' },
-                redirect: 'follow', // Thêm redirect
-                body: JSON.stringify(payload)
-            }).then(res => res.json()) // Chuyển phản hồi thành JSON
-            .then(data => {
-                console.log('Success:', data);
-                submissionStatus.textContent = "Kết quả đã được ghi lại thành công.";
-            }).catch(err => {
-                console.error("Lỗi khi nộp bài: ", err);
-                submissionStatus.textContent = "Lỗi! Không thể lưu kết quả. Vui lòng liên hệ giáo viên.";
-                 submitBtn.disabled = false;
-                submitBtn.textContent = "Nộp bài";
-            });
+            try {
+                await addDoc(collection(db, "quizResults"), {
+                    ...currentUser,
+                    quizId: QUIZ_ID,
+                    score: parseFloat(totalScore.toFixed(2)),
+                    totalPossibleScore: 10,
+                    timeTaken: timeTakenInSeconds,
+                    answers: answersToSave,
+                    submittedAt: serverTimestamp()
+                });
+            } catch (error) {
+                console.error("Lỗi khi lưu kết quả: ", error);
+            }
         });
 
         function renderMCQ(question) {
@@ -411,7 +421,7 @@
                 const isChecked = savedAnswer === option;
                 optionsHTML += `
                     <label class="flex items-center justify-center p-3 rounded-lg border-2 cursor-pointer hover:bg-gray-100 ${isChecked ? 'mcq-label-selected' : ''}">
-                        <input type="radio" name="q${currentQuestionIndex}" value="${option}" class="hidden" ${isChecked ? 'checked' : ''}> 
+                        <input type="radio" name="q${currentQuestionIndex}" value="${option}" class="hidden"> 
                         <span class="font-bold text-lg">${option}</span>
                     </label>`;
             });
@@ -419,21 +429,17 @@
             answerContainer.innerHTML = optionsHTML;
 
             answerContainer.querySelectorAll('label').forEach(label => {
-                label.addEventListener('click', (e) => {
-                    const radio = e.currentTarget.querySelector('input');
-                    radio.checked = true;
+                label.addEventListener('click', () => {
                     answerContainer.querySelectorAll('label').forEach(l => l.classList.remove('mcq-label-selected'));
                     label.classList.add('mcq-label-selected');
                 });
             });
         }
         function renderTrueFalse(question) {
-            const savedAnswersStr = userAnswers[currentQuestionIndex] || '';
-            const savedAnswer = savedAnswersStr.split(',');
-
+            const savedAnswer = userAnswers[currentQuestionIndex] || [];
             question.s.forEach((statement, sIndex) => {
-                const isTrueChecked = savedAnswer[sIndex] === 'Đ';
-                const isFalseChecked = savedAnswer[sIndex] === 'S';
+                const isTrueChecked = savedAnswer[sIndex] === true;
+                const isFalseChecked = savedAnswer[sIndex] === false;
                 answerContainer.innerHTML += `
                     <div class="flex items-center justify-between p-3 border rounded-lg">
                         <span>${statement.text}</span>
@@ -457,4 +463,3 @@
     </script>
 </body>
 </html>
-
