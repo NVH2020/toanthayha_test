@@ -116,18 +116,25 @@
         import { getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyD2MOM2OkAarm6uzJx9JrE7tNSpKQ0QgXU",
-            authDomain: "bandemo-test.firebaseapp.com",
-            projectId: "bandemo-test",
-            storageBucket: "bandemo-test.firebasestorage.app",
-            messagingSenderId: "958116171978",
-            appId: "1:958116171978:web:472ed7157508be22626433",
-            measurementId: "G-2RJETX8TW6"
-        };
+
+  apiKey: "AIzaSyA2XIE0E9AH74v-bnq5sls8VZbwY4DXFlY",
+
+  authDomain: "toan12-thay-ha.firebaseapp.com",
+
+  projectId: "toan12-thay-ha",
+
+  storageBucket: "toan12-thay-ha.firebasestorage.app",
+
+  messagingSenderId: "853781864920",
+
+  appId: "1:853781864920:web:294472ebc048c1b0f092ad",
+
+  measurementId: "G-X8FEY90BFS"
+
+};
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-
-        const QUIZ_ID = "BandemoThayHa0988948882";
+        const QUIZ_ID = "TOAN12_Thay_Ha_BN_0988948882";
         const TIME_LIMIT_SECONDS = 60 * 60;
         const ATTEMPT_LIMIT = 333;
 
@@ -451,7 +458,7 @@
             const savedAnswer = userAnswers[currentQuestionIndex] || '';
             answerContainer.innerHTML = `
                 <input type="text" name="q${currentQuestionIndex}" class="w-full border rounded px-3 py-2 mt-2" 
-                placeholder="Nhập đáp án (VD: 45 hoặc 25,4)" value="${savedAnswer}">`;
+                placeholder="Nhập đáp án (VD: 45 hoặc 55,4)" value="${savedAnswer}">`;
         }
     </script>
 </body>
