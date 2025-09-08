@@ -222,7 +222,39 @@
         });
 
         startBtn.addEventListener("click", async () => {
-            // ... (Logic đã đúng, giữ nguyên)
+           const studentId = studentIdInput.value.trim();
+            const fullname = fullnameInput.value.trim();
+            const password = passwordInput.value.trim();
+            errorMessage.textContent = '';
+
+            if (!studentId || !fullname) {
+                errorMessage.textContent = "Số báo danh không hợp lệ!";
+                return;
+            }
+            if (password !== QUIZ_PASSWORD) {
+                errorMessage.textContent = "Mật khẩu không chính xác!";
+                return;
+            }
+
+            currentUser = { 
+                examCode: EXAM_CODE, 
+                studentId: studentId, 
+                fullname: fullname, 
+                className: classNameInput.value, 
+                school: schoolInput.value 
+            };
+            
+            const resultsRef = collection(db, "quizResults");
+            const q = query(resultsRef, where("studentId", "==", currentUser.studentId), where("quizId", "==", QUIZ_ID), where("examCode", "==", EXAM_CODE));
+            const snapshot = await getDocs(q);
+            if (snapshot.size >= ATTEMPT_LIMIT) {
+                errorMessage.textContent = `Bạn đã làm bài này ${snapshot.size} lần.`;
+                return;
+            }
+            
+            mainContainer.classList.add('hidden');
+            announcementModal.classList.remove('hidden');
+
         });
 
         enterQuizBtn.addEventListener('click', () => {
@@ -296,7 +328,6 @@
             showQuestion();
             updateNavPanel();
         }
-
         function showQuestion() {
             const question = quizData[currentQuestionIndex];
             quizPartTitle.textContent = question.part;
@@ -322,7 +353,6 @@
                 if (i === currentQuestionIndex) navButtons[i].classList.add('nav-btn-current');
             }
         }
-
         function saveCurrentAnswer() {
             const question = quizData[currentQuestionIndex];
             let answerData = null;
@@ -364,7 +394,23 @@
                 const userAnswer = userAnswers[index];
                 answersToSave[`q${index + 1}`] = userAnswer;
                 if (userAnswer === null) return;
-                // ... (phần tính điểm giữ nguyên)
+              switch (q.type) {
+                    case 'mcq':
+                        if (userAnswer === q.a) totalScore += 0.25;
+                        break;
+                    case 'true-false':
+                        let correctCount = 0;
+                        q.s.forEach((st, sIndex) => { if (userAnswer[sIndex] === st.a) correctCount++; });
+                        const pointsMap = [0, 0.1, 0.25, 0.5, 1];
+                        totalScore += pointsMap[correctCount];
+                        break;
+                    case 'short-answer':
+                        const cleanedUserAnswer = userAnswer.trim().replace(',', '.');
+                        if (cleanedUserAnswer === q.a) {
+                            totalScore += 1;
+                        }
+                        break;
+                }
             });
 
             quizSection.classList.add("hidden");
@@ -379,15 +425,52 @@
 
         // --- Các hàm render đáp án ---
         function renderMCQ(question) {
-            // ... (code render MCQ giữ nguyên)
+            const savedAnswer = userAnswers[currentQuestionIndex];
+            let optionsHTML = '<div class="grid grid-cols-2 md:grid-cols-4 gap-3">';
+            question.o.forEach(option => {
+                const isChecked = savedAnswer === option;
+                optionsHTML += `
+                    <label class="flex items-center justify-center p-3 rounded-lg border-2 cursor-pointer hover:bg-gray-100 ${isChecked ? 'mcq-label-selected' : ''}">
+                        <input type="radio" name="q${currentQuestionIndex}" value="${option}" class="hidden"> 
+                        <span class="font-bold text-lg">${option}</span>
+                    </label>`;
+            });
+            optionsHTML += '</div>';
+            answerContainer.innerHTML = optionsHTML;
+
+            answerContainer.querySelectorAll('label').forEach(label => {
+                label.addEventListener('click', () => {
+                    answerContainer.querySelectorAll('label').forEach(l => l.classList.remove('mcq-label-selected'));
+                    label.classList.add('mcq-label-selected');
+                });
+            });
         }
         function renderTrueFalse(question) {
-            // ... (code render True/False giữ nguyên)
+           const savedAnswer = userAnswers[currentQuestionIndex] || [];
+            question.s.forEach((statement, sIndex) => {
+                const isTrueChecked = savedAnswer[sIndex] === true;
+                const isFalseChecked = savedAnswer[sIndex] === false;
+                answerContainer.innerHTML += `
+                    <div class="flex items-center justify-between p-3 border rounded-lg">
+                        <span>${statement.text}</span>
+                        <div class="flex gap-4">
+                            <label class="cursor-pointer flex items-center">
+                                <input type="radio" name="q${currentQuestionIndex}s${sIndex}" value="true" class="mr-2" ${isTrueChecked ? 'checked' : ''}> Đúng
+                            </label>
+                            <label class="cursor-pointer flex items-center">
+                                <input type="radio" name="q${currentQuestionIndex}s${sIndex}" value="false" class="mr-2" ${isFalseChecked ? 'checked' : ''}> Sai
+                            </label>
+                        </div>
+                    </div>`;
+            });
         }
         function renderShortAnswer(question) {
-            // ... (code render Short Answer giữ nguyên)
+                       const savedAnswer = userAnswers[currentQuestionIndex] || '';
+            answerContainer.innerHTML = `
+                <input type="text" name="q${currentQuestionIndex}" class="w-full border rounded px-3 py-2 mt-2" 
+                placeholder="Nhập đáp án (VD: 45 hoặc 55,4)" value="${savedAnswer}">`;
         }
-                
+               
     </script>
 </body>
 </html>
