@@ -158,31 +158,7 @@
         document.getElementById("examCodeDisplay").textContent = EXAM_CODE;
         
         const originalQuizData = [
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Trong các câu sau, câu nào là mệnh đề?', o: ["Số 3 là số chẵn.", "Bạn tên gì?", "Hôm nay trời đẹp quá!", "Hãy học bài đi!"], a: "Số 3 là số chẵn." },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Phủ định của mệnh đề P: “∀x ∈ ℝ, x² ≥ 0” là:', o: ["∃x ∈ ℝ, x² < 0", "∃x ∈ ℝ, x² ≤ 0", "∀x ∈ ℝ, x² < 0", "∀x ∈ ℝ, x² ≤ 0"], a: "∃x ∈ ℝ, x² < 0" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho tập hợp A = {1, 2, {3, 4}}. Khẳng định nào sau đây sai?', o: ["1 ∈ A", "2 ∈ A", "{3, 4} ∈ A", "3 ∈ A"], a: "3 ∈ A" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Ký hiệu nào biểu diễn khoảng từ a đến b, không bao gồm a và b?', o: ["[a; b]", "(a; b)", "[a; b)", "(a; b]"], a: "(a; b)" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho A = {1, 3, 5} và B = {1, 2, 3}. Tập hợp A ∪ B là:', o: ["{1, 3}", "{1, 2, 3, 5}", "{1, 2, 5}", "{2, 5}"], a: "{1, 2, 3, 5}" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho A = {x ∈ ℕ | x ≤ 4}. Liệt kê các phần tử của A.', o: ["{1, 2, 3, 4}", "{0, 1, 2, 3}", "{0, 1, 2, 3, 4}", "{1, 2, 3}"], a: "{0, 1, 2, 3, 4}" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Mệnh đề P ⇒ Q chỉ sai khi nào?', o: ["P đúng, Q sai", "P sai, Q đúng", "P, Q cùng đúng", "P, Q cùng sai"], a: "P đúng, Q sai" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho A = (–∞; 2] và B = (–1; +∞). Tập hợp A ∩ B là:', o: ["(–1; 2]", "[–1; 2]", "(–∞; +∞)", "(–1; 2)"], a: "(–1; 2]" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Số tập hợp con có 2 phần tử của tập hợp A = {a, b, c, d} là:', o: ["4", "6", "8", "10"], a: "6" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho mệnh đề P(x): “x là số nguyên tố”. Mệnh đề nào sau đây đúng?', o: ["P(4)", "P(6)", "P(8)", "P(7)"], a: "P(7)" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Tập hợp A = {x ∈ ℝ | x² - 4 = 0} có bao nhiêu phần tử?', o: ["0", "1", "2", "4"], a: "2" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho A là tập con của B. Khẳng định nào sau đây đúng?', o: ["A ∩ B = B", "A ∪ B = A", "B \\ A = ∅", "A ∩ B = A"], a: "A ∩ B = A" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Mệnh đề “Nếu tam giác ABC đều thì nó có ba góc bằng 60°” có mệnh đề đảo là:', o: ["Nếu tam giác ABC có ba góc bằng 60° thì nó đều.", "Nếu tam giác ABC không đều thì nó không có ba góc bằng 60°.", "Tam giác ABC đều khi và chỉ khi nó có ba góc bằng 60°.", "Tam giác ABC đều và có ba góc bằng 60°."], a: "Nếu tam giác ABC có ba góc bằng 60° thì nó đều." },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Sử dụng ký hiệu ∀, ∃ để viết mệnh đề: “Mọi số thực cộng với 0 đều bằng chính nó”', o: ["∀x ∈ ℝ, x + 0 = x", "∃x ∈ ℝ, x + 0 = x", "∀x ∈ ℝ, x + 0 = 0", "∃x ∈ ℝ, x + 0 = 0"], a: "∀x ∈ ℝ, x + 0 = x" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Tập hợp rỗng được ký hiệu là:', o: ["{0}", "0", "∅", "{∅}"], a: "∅" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho A = [–3; 5) và B = (2; 7]. Tập hợp A \\ B là:', o: ["[–3; 2]", "[–3; 2)", "(–3; 2]", "(5; 7]"], a: "[–3; 2]" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Câu nào sau đây không phải là mệnh đề chứa biến?', o: ["x + 2 > 5", "n là số chẵn", "Hà Nội là thủ đô của Việt Nam", "2k + 1 là số lẻ"], a: "Hà Nội là thủ đô của Việt Nam" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho A = {x ∈ ℤ | |x| < 3}. Số phần tử của A là:', o: ["2", "3", "4", "5"], a: "5" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Phần bù của tập A = [2; +∞) trong ℝ là:', o: ["(–∞; 2]", "(–∞; 2)", "[2; +∞)", "(2; +∞)"], a: "(–∞; 2)" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Mệnh đề nào sau đây là mệnh đề tương đương?', o: ["P ⇒ Q", "P ⇔ Q", "P ∧ Q", "P ∨ Q"], a: "P ⇔ Q" },
-            { part: "Phần II: Trắc nghiệm Đúng/Sai", type: 'true-false', question: 'Cho tập hợp A = {1, 2} và B = {1, 2, 3}. Xét tính đúng sai của các mệnh đề sau:', s: [ { text: "A là tập con của B.", a: true }, { text: "B là tập con của A.", a: false }, { text: "A ∩ B = {1, 2, 3}.", a: false }, { text: "A ∪ B = B.", a: true } ] },
-            { part: "Phần II: Trắc nghiệm Đúng/Sai", type: 'true-false', question: 'Cho mệnh đề P: “x > 5” và Q: “x > 3”. Xét tính đúng sai của các mệnh đề sau:', s: [ { text: "Với x = 6, mệnh đề P đúng.", a: true }, { text: "Mệnh đề P ⇒ Q là mệnh đề đúng.", a: true }, { text: "Mệnh đề Q ⇒ P là mệnh đề đúng.", a: false }, { text: "Mệnh đề P ⇔ Q là mệnh đề đúng.", a: false } ] },
-            { part: "Phần III: Trả lời ngắn", type: 'short-answer', question: 'Cho hai tập hợp A = {1, 2, 3, 4, 5} và B = {2, 4, 6, 8}. Tập hợp A ∩ B có bao nhiêu phần tử?', a: "2" },
-            { part: "Phần III: Trả lời ngắn", type: 'short-answer', question: 'Lớp 10A có 30 học sinh giỏi Toán, 25 học sinh giỏi Lý, và 15 học sinh giỏi cả Toán và Lý. Hỏi lớp 10A có bao nhiêu học sinh giỏi ít nhất một trong hai môn Toán hoặc Lý?', a: "40" },
-            { part: "Phần III: Trả lời ngắn", type: 'short-answer', question: 'Cho tập hợp M = {x ∈ ℤ | (x² - 9)(x - 1) = 0}. Tính tổng các phần tử của M.', a: "1" }
+            // DÁN TOÀN BỘ NGÂN HÀNG CÂU HỎI CỦA BẠN VÀO ĐÂY
         ];
         const totalQuestions = originalQuizData.length;
 
@@ -194,7 +170,11 @@
                 if (!response.ok) throw new Error('Lỗi mạng khi tải file');
                 const csvText = await response.text();
                 const lines = csvText.trim().split(/\r?\n/);
-                const headers = lines[0].split(',').map(h => h.trim());
+                let headers = lines[0].split(',').map(h => h.trim());
+                
+                // === FIX LỖI KÝ TỰ ẨN TRONG FILE CSV ===
+                headers[0] = headers[0].replace(/^\uFEFF/, ''); 
+
                 studentList = lines.slice(1).map(line => {
                     const values = line.split(',');
                     const studentObject = {};
@@ -222,7 +202,7 @@
         });
 
         startBtn.addEventListener("click", async () => {
-           const studentId = studentIdInput.value.trim();
+            const studentId = studentIdInput.value.trim();
             const fullname = fullnameInput.value.trim();
             const password = passwordInput.value.trim();
             errorMessage.textContent = '';
@@ -254,7 +234,6 @@
             
             mainContainer.classList.add('hidden');
             announcementModal.classList.remove('hidden');
-
         });
 
         enterQuizBtn.addEventListener('click', () => {
@@ -276,8 +255,7 @@
             let shuffledQuiz = [];
             for (const part in groupedByPart) {
                 const questionsInPart = [...groupedByPart[part]];
-                // === LỖI SAI NẰM Ở ĐÂY (questionsInP**A**rt) - ĐÃ SỬA ===
-                for (let i = questionsInPart.length - 1; i > 0; i--) { 
+                for (let i = questionsInPart.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [questionsInPart[i], questionsInPart[j]] = [questionsInPart[j], questionsInPart[i]];
                 }
@@ -296,12 +274,13 @@
             jumpToQuestion(0);
             startTimer();
         }
+        
         function startTimer() {
             let timeLeft = TIME_LIMIT_SECONDS;
             timerInterval = setInterval(() => {
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
-                    submitBtn.click();
+                    if(submitBtn) submitBtn.click();
                 } else {
                     timeLeft--;
                     const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
@@ -328,19 +307,18 @@
             showQuestion();
             updateNavPanel();
         }
+
         function showQuestion() {
             const question = quizData[currentQuestionIndex];
             quizPartTitle.textContent = question.part;
             questionCounter.textContent = currentQuestionIndex + 1;
             questionText.innerHTML = question.question;
             answerContainer.innerHTML = '';
-
             switch (question.type) {
                 case 'mcq': renderMCQ(question); break;
                 case 'true-false': renderTrueFalse(question); break;
                 case 'short-answer': renderShortAnswer(question); break;
             }
-            
             prevBtn.classList.toggle('hidden', currentQuestionIndex === 0);
             nextBtn.classList.toggle('hidden', currentQuestionIndex === totalQuestions - 1);
         }
@@ -353,6 +331,7 @@
                 if (i === currentQuestionIndex) navButtons[i].classList.add('nav-btn-current');
             }
         }
+
         function saveCurrentAnswer() {
             const question = quizData[currentQuestionIndex];
             let answerData = null;
@@ -394,7 +373,8 @@
                 const userAnswer = userAnswers[index];
                 answersToSave[`q${index + 1}`] = userAnswer;
                 if (userAnswer === null) return;
-              switch (q.type) {
+
+                switch (q.type) {
                     case 'mcq':
                         if (userAnswer === q.a) totalScore += 0.25;
                         break;
@@ -402,13 +382,11 @@
                         let correctCount = 0;
                         q.s.forEach((st, sIndex) => { if (userAnswer[sIndex] === st.a) correctCount++; });
                         const pointsMap = [0, 0.1, 0.25, 0.5, 1];
-                        totalScore += pointsMap[correctCount];
+                        totalScore += pointsMap[correctCount] || 0;
                         break;
                     case 'short-answer':
                         const cleanedUserAnswer = userAnswer.trim().replace(',', '.');
-                        if (cleanedUserAnswer === q.a) {
-                            totalScore += 1;
-                        }
+                        if (cleanedUserAnswer === q.a) totalScore += 1;
                         break;
                 }
             });
@@ -423,54 +401,41 @@
             } catch (error) { console.error("Lỗi khi lưu kết quả: ", error); }
         });
 
-        // --- Các hàm render đáp án ---
         function renderMCQ(question) {
             const savedAnswer = userAnswers[currentQuestionIndex];
             let optionsHTML = '<div class="grid grid-cols-2 md:grid-cols-4 gap-3">';
             question.o.forEach(option => {
                 const isChecked = savedAnswer === option;
-                optionsHTML += `
-                    <label class="flex items-center justify-center p-3 rounded-lg border-2 cursor-pointer hover:bg-gray-100 ${isChecked ? 'mcq-label-selected' : ''}">
-                        <input type="radio" name="q${currentQuestionIndex}" value="${option}" class="hidden"> 
-                        <span class="font-bold text-lg">${option}</span>
-                    </label>`;
+                optionsHTML += `<label class="flex items-center justify-center p-3 rounded-lg border-2 cursor-pointer hover:bg-gray-100 ${isChecked ? 'mcq-label-selected' : ''}"><input type="radio" name="q${currentQuestionIndex}" value="${option}" class="hidden"> <span class="font-bold text-lg">${option}</span></label>`;
             });
             optionsHTML += '</div>';
             answerContainer.innerHTML = optionsHTML;
-
             answerContainer.querySelectorAll('label').forEach(label => {
                 label.addEventListener('click', () => {
                     answerContainer.querySelectorAll('label').forEach(l => l.classList.remove('mcq-label-selected'));
                     label.classList.add('mcq-label-selected');
+                    label.querySelector('input').checked = true;
                 });
             });
         }
+
         function renderTrueFalse(question) {
-           const savedAnswer = userAnswers[currentQuestionIndex] || [];
+            const savedAnswer = userAnswers[currentQuestionIndex] || [];
             question.s.forEach((statement, sIndex) => {
                 const isTrueChecked = savedAnswer[sIndex] === true;
                 const isFalseChecked = savedAnswer[sIndex] === false;
-                answerContainer.innerHTML += `
-                    <div class="flex items-center justify-between p-3 border rounded-lg">
-                        <span>${statement.text}</span>
-                        <div class="flex gap-4">
-                            <label class="cursor-pointer flex items-center">
-                                <input type="radio" name="q${currentQuestionIndex}s${sIndex}" value="true" class="mr-2" ${isTrueChecked ? 'checked' : ''}> Đúng
-                            </label>
-                            <label class="cursor-pointer flex items-center">
-                                <input type="radio" name="q${currentQuestionIndex}s${sIndex}" value="false" class="mr-2" ${isFalseChecked ? 'checked' : ''}> Sai
-                            </label>
-                        </div>
-                    </div>`;
+                answerContainer.innerHTML += `<div class="flex items-center justify-between p-3 border rounded-lg"><span>${statement.text}</span><div class="flex gap-4"><label class="cursor-pointer flex items-center"><input type="radio" name="q${currentQuestionIndex}s${sIndex}" value="true" class="mr-2" ${isTrueChecked ? 'checked' : ''}> Đúng</label><label class="cursor-pointer flex items-center"><input type="radio" name="q${currentQuestionIndex}s${sIndex}" value="false" class="mr-2" ${isFalseChecked ? 'checked' : ''}> Sai</label></div></div>`;
             });
         }
+
         function renderShortAnswer(question) {
-                       const savedAnswer = userAnswers[currentQuestionIndex] || '';
-            answerContainer.innerHTML = `
-                <input type="text" name="q${currentQuestionIndex}" class="w-full border rounded px-3 py-2 mt-2" 
-                placeholder="Nhập đáp án (VD: 45 hoặc 55,4)" value="${savedAnswer}">`;
+            const savedAnswer = userAnswers[currentQuestionIndex] || '';
+            answerContainer.innerHTML = `<input type="text" name="q${currentQuestionIndex}" class="w-full border rounded px-3 py-2 mt-2" placeholder="Nhập đáp án (VD: 45 hoặc 55.4)" value="${savedAnswer}">`;
         }
-               
+        
+        // --- CHẠY HÀM TẢI DANH SÁCH LỚP ---
+        loadStudentList();
+
     </script>
 </body>
 </html>
