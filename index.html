@@ -1,13 +1,13 @@
-/* Mã lớp 09 hiện tại:    */
-/* Mã lớp 10 hiện tại:    */
-/* Mã lớp 11 hiện tại:    */
-/* Mã lớp 12 hiện tại:    */
+/== Mã lớp 09 hiện tại:    ==
+/== Mã lớp 10 hiện tại:    */==
+/==Mã lớp 11 hiện tại:    */==
+/== Mã lớp 12 hiện tại:    */==
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOÁN THẦY HÀ</title>
+    <title>Ban demo full anh</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .nav-btn { transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
@@ -31,7 +31,7 @@
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
     <div id="main-container" class="w-full max-w-4xl bg-white rounded-xl shadow-lg p-6">
-               <h1 class="text-2xl font-bold text-center mb-6 blinking-text">Lớp Toán Thầy Hà</h1>
+                <h1 class="text-2xl font-bold text-center mb-6 blinking-text">Lớp Toán Thầy Hà</h1>
         <div id="userInfoSection" class="max-w-md mx-auto">
             <h2 class="text-xl font-semibold text-center mb-4">Thông tin thí sinh</h2>
 	    <div class="mb-4">
@@ -160,12 +160,42 @@
         const QUIZ_PASSWORD = "hoclagioi"; // <-- MẬT KHẨU VÀO THI
 
         // --- DANH SÁCH HỌC SINH ---
-        const studentList = [
-            { "id": "540112", "name": "Nguyễn Văn An", "className": "12A1", "school": "THPT Chuyên KHTN" },
-            { "id": "540113", "name": "Trần Thị Bình", "className": "12A2", "school": "THPT Amsterdam" },
-            { "id": "540114", "name": "Lê Văn Cường", "className": "12D1", "school": "THPT Chu Văn An" },
-        ];
+        // ==========================================================
+// == BƯỚC 1: DÁN LINK GOOGLE SHEET CỦA BẠN VÀO ĐÂY       ==
+// ==========================================================
+const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1dumgn-sBfaw-8Q5bxB9toZvz74uI8_11fV-H9357cR8/edit?usp=sharing';
 
+let studentList = []; // Khai báo một danh sách rỗng
+
+// --- HÀM TẢI VÀ XỬ LÝ DANH SÁCH HỌC SINH TỪ GOOGLE SHEET ---
+async function loadStudentList() {
+    try {
+        const response = await fetch(GOOGLE_SHEET_URL);
+        const csvText = await response.text();
+        
+        // Chuyển đổi CSV thành mảng JSON
+        const lines = csvText.trim().split('\n');
+        const headers = lines[0].split(',');
+        
+        studentList = lines.slice(1).map(line => {
+            const values = line.split(',');
+            const studentObject = {};
+            headers.forEach((header, index) => {
+                studentObject[header.trim()] = values[index].trim();
+            });
+            return studentObject;
+        });
+        
+        console.log("Tải danh sách học sinh thành công!", studentList);
+
+    } catch (error) {
+        console.error("Lỗi khi tải danh sách học sinh:", error);
+        errorMessage.textContent = "Không thể tải danh sách lớp. Vui lòng thử lại.";
+    }
+}
+
+// Gọi hàm để tải danh sách ngay khi trang được mở
+loadStudentList();
         const originalQuizData = [
             // ... (Ngân hàng câu hỏi của bạn giữ nguyên ở đây)
  { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img006_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', o: ["A", "B", "C", "D"], a: "D" },
