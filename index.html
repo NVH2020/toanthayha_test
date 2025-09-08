@@ -20,11 +20,6 @@
             <h2 class="text-xl font-semibold text-center mb-4">Thông tin thí sinh</h2>
             
             <div class="mb-3">
-                <label class="block font-medium">Mã kỳ thi (VD: KTGK1)</label>
-                <input type="text" id="examCode" class="w-full border rounded px-3 py-2 mt-1" required>
-            </div>
-            
-            <div class="mb-3">
                 <label class="block font-medium">Số báo danh (VD: 540112)</label>
                 <input type="text" id="studentId" class="w-full border rounded px-3 py-2 mt-1" required>
             </div>
@@ -130,12 +125,16 @@
         };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        
+        // === BƯỚC 1: ĐỊNH NGHĨA SẴN MÃ KỲ THI TẠI ĐÂY ===
+        const EXAM_CODE = "Toan09001"; // <-- Bạn có thể thay đổi mã này cho mỗi kỳ thi
 
         const QUIZ_ID = "toanthayha_09";
         const TIME_LIMIT_SECONDS = 60 * 60; 
         const ATTEMPT_LIMIT = 500;
 
         const originalQuizData = [
+            // ... (Phần dữ liệu câu hỏi giữ nguyên, không cần dán lại) ...
             { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Trong các câu sau, câu nào là mệnh đề?', o: ["Số 3 là số chẵn.", "Bạn tên gì?", "Hôm nay trời đẹp quá!", "Hãy học bài đi!"], a: "Số 3 là số chẵn." },
             { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Phủ định của mệnh đề P: “∀x ∈ ℝ, x² ≥ 0” là:', o: ["∃x ∈ ℝ, x² < 0", "∃x ∈ ℝ, x² ≤ 0", "∀x ∈ ℝ, x² < 0", "∀x ∈ ℝ, x² ≤ 0"], a: "∃x ∈ ℝ, x² < 0" },
             { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: 'Cho tập hợp A = {1, 2, {3, 4}}. Khẳng định nào sau đây sai?', o: ["1 ∈ A", "2 ∈ A", "{3, 4} ∈ A", "3 ∈ A"], a: "3 ∈ A" },
@@ -168,83 +167,41 @@
 
         const startBtn = document.getElementById("startBtn");
         const userInfoSection = document.getElementById("userInfoSection");
-        const quizSection = document.getElementById("quizSection");
-        const resultSection = document.getElementById("resultSection");
-        const announcementModal = document.getElementById('announcementModal');
-        const enterQuizBtn = document.getElementById('enterQuizBtn');
-        const exitBtn = document.getElementById('exitBtn');
-        const mainContainer = document.getElementById('main-container');
-
-        const quizForm = document.getElementById("quizForm");
-        const studentNameResult = document.getElementById("studentNameResult");
-        const finalScore = document.getElementById("finalScore");
-        const timerElement = document.getElementById("timer");
-        const quizPartTitle = document.getElementById('quiz-part-title');
-        const questionCounter = document.getElementById('question-counter');
-        const totalQuestionsDisplay = document.getElementById('total-questions-display');
-        const questionNavPanel = document.getElementById('questionNavPanel');
-        const questionText = document.getElementById('question-text');
-        const answerContainer = document.getElementById('answer-container');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const submitBtn = document.getElementById('submitBtn');
+        //... (các biến khác giữ nguyên)
 
         let currentUser = null;
-        let timerInterval = null;
-        let currentQuestionIndex = 0;
-        let userAnswers = [];
-        let quizStartTime = null;
-
-        totalQuestionsDisplay.textContent = totalQuestions; // Hiển thị tổng số câu hỏi
-
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
-
-        function prepareShuffledQuiz() {
-            const groupedByPart = originalQuizData.reduce((acc, question) => {
-                acc[question.part] = acc[question.part] || [];
-                acc[question.part].push(question);
-                return acc;
-            }, {});
-            let shuffledQuiz = [];
-            for (const part in groupedByPart) {
-                const questionsInPart = groupedByPart[part];
-                shuffleArray(questionsInPart);
-                shuffledQuiz = shuffledQuiz.concat(questionsInPart);
-            }
-            return shuffledQuiz;
-        }
+        //... (các biến khác giữ nguyên)
 
         startBtn.addEventListener("click", async () => {
-            // === LẤY THÊM GIÁ TRỊ TỪ Ô MÃ KỲ THI ===
-            const examCode = document.getElementById("examCode").value.trim();
+            // === BƯỚC 2: KHÔNG LẤY GIÁ TRỊ TỪ Ô INPUT NỮA ===
             const studentId = document.getElementById("studentId").value.trim();
             const fullname = document.getElementById("fullname").value.trim();
             const className = document.getElementById("className").value.trim();
             const school = document.getElementById("school").value.trim();
 
-            if (!examCode || !studentId || !fullname || !className || !school) {
+            if (!studentId || !fullname || !className || !school) {
                 alert("Vui lòng nhập đầy đủ thông tin!"); return;
             }
             
-            // === LƯU THÊM examCode VÀO currentUser ===
-            currentUser = { examCode, studentId, fullname, className, school };
+            // === BƯỚC 3: SỬ DỤNG MÃ KỲ THI ĐÃ ĐỊNH NGHĨA SẴN ===
+            currentUser = { 
+                examCode: EXAM_CODE, // Sử dụng hằng số đã khai báo
+                studentId, 
+                fullname, 
+                className, 
+                school 
+            };
             
             const resultsRef = collection(db, "quizResults");
-            // Cập nhật câu truy vấn để kiểm tra cả mã kỳ thi
             const q = query(resultsRef, 
                 where("studentId", "==", studentId), 
                 where("quizId", "==", QUIZ_ID),
-                where("examCode", "==", examCode) 
+                where("examCode", "==", EXAM_CODE) // Kiểm tra bằng mã đã định nghĩa
             );
             
             const snapshot = await getDocs(q);
             if (snapshot.size >= ATTEMPT_LIMIT) {
-                alert(`Bạn đã làm bài kiểm tra này ${snapshot.size} lần cho kỳ thi ${examCode}. Số lần làm bài tối đa là ${ATTEMPT_LIMIT}.`);
+                alert(`Bạn đã làm bài kiểm tra này ${snapshot.size} lần cho kỳ thi ${EXAM_CODE}. Số lần làm bài tối đa là ${ATTEMPT_LIMIT}.`);
                 return;
             }
             
@@ -252,133 +209,14 @@
             announcementModal.classList.remove('hidden');
         });
 
-        enterQuizBtn.addEventListener('click', () => {
-            announcementModal.classList.add('hidden');
-            mainContainer.classList.remove('hidden');
-            userInfoSection.classList.add("hidden");
-            quizSection.classList.remove("hidden");
-            startQuiz();
-        });
+        // ... (Toàn bộ các hàm và sự kiện còn lại không thay đổi) ...
 
-        exitBtn.addEventListener('click', () => {
-            location.reload();
-        });
-
-        function startQuiz() {
-            quizData = prepareShuffledQuiz();
-            userAnswers = new Array(totalQuestions).fill(null);
-            currentQuestionIndex = 0;
-            quizStartTime = Date.now();
-            renderNavPanel();
-            jumpToQuestion(0);
-            startTimer();
-        }
-        
-        function startTimer() {
-            let timeLeft = TIME_LIMIT_SECONDS;
-            timerInterval = setInterval(() => {
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    submitBtn.click();
-                } else {
-                    timeLeft--;
-                    const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-                    const seconds = (timeLeft % 60).toString().padStart(2, '0');
-                    timerElement.textContent = `${minutes}:${seconds}`;
-                }
-            }, 1000);
-        }
-
-        function renderNavPanel() {
-            questionNavPanel.innerHTML = '';
-            for (let i = 0; i < totalQuestions; i++) {
-                const btn = document.createElement('button');
-                btn.textContent = i + 1;
-                btn.className = 'nav-btn w-10 h-10 border rounded font-medium';
-                btn.type = 'button';
-                btn.onclick = () => {
-                    saveCurrentAnswer();
-                    jumpToQuestion(i);
-                };
-                questionNavPanel.appendChild(btn);
-            }
-        }
-
-        function jumpToQuestion(index) {
-            currentQuestionIndex = index;
-            showQuestion();
-            updateNavPanel();
-        }
-
-        function showQuestion() {
-            const question = quizData[currentQuestionIndex];
-            quizPartTitle.textContent = question.part;
-            questionCounter.textContent = currentQuestionIndex + 1;
-            questionText.innerHTML = question.question;
-            answerContainer.innerHTML = '';
-
-            switch (question.type) {
-                case 'mcq': renderMCQ(question); break;
-                case 'true-false': renderTrueFalse(question); break;
-                case 'short-answer': renderShortAnswer(question); break;
-            }
-            
-            prevBtn.classList.toggle('hidden', currentQuestionIndex === 0);
-            nextBtn.classList.toggle('hidden', currentQuestionIndex === totalQuestions - 1);
-        }
-        
-        function updateNavPanel() {
-            const navButtons = questionNavPanel.children;
-            for (let i = 0; i < navButtons.length; i++) {
-                navButtons[i].classList.remove('nav-btn-current', 'nav-btn-answered');
-                if (userAnswers[i] !== null) {
-                    navButtons[i].classList.add('nav-btn-answered');
-                }
-                if (i === currentQuestionIndex) {
-                    navButtons[i].classList.add('nav-btn-current');
-                }
-            }
-        }
-
-        function saveCurrentAnswer() {
-            const question = quizData[currentQuestionIndex];
-            let answerData = null;
-            switch (question.type) {
-                case 'mcq':
-                    const selectedRadio = quizForm.querySelector(`input[name="q${currentQuestionIndex}"]:checked`);
-                    if (selectedRadio) answerData = selectedRadio.value;
-                    break;
-                case 'true-false':
-                    answerData = [];
-                    for (let i = 0; i < question.s.length; i++) {
-                        const selectedTF = quizForm.querySelector(`input[name="q${currentQuestionIndex}s${i}"]:checked`);
-                        answerData.push(selectedTF ? selectedTF.value === 'true' : null);
-                    }
-                    if (answerData.every(a => a === null)) answerData = null;
-                    break;
-                case 'short-answer':
-                    const input = quizForm.querySelector(`input[name="q${currentQuestionIndex}"]`);
-                    if (input && input.value.trim() !== '') answerData = input.value.trim();
-                    break;
-            }
-            userAnswers[currentQuestionIndex] = answerData;
-            updateNavPanel();
-        }
-
-        prevBtn.addEventListener('click', () => {
-            saveCurrentAnswer();
-            if (currentQuestionIndex > 0) jumpToQuestion(currentQuestionIndex - 1);
-        });
-        nextBtn.addEventListener('click', () => {
-            saveCurrentAnswer();
-            if (currentQuestionIndex < totalQuestions - 1) jumpToQuestion(currentQuestionIndex + 1);
-        });
-        
         quizForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             saveCurrentAnswer(); 
             clearInterval(timerInterval);
             
+            // ... (Phần tính điểm không thay đổi) ...
             const timeTakenInSeconds = Math.round((Date.now() - quizStartTime) / 1000);
             let totalScore = 0;
             const answersToSave = {};
@@ -408,11 +246,11 @@
             resultSection.classList.remove("hidden");
             studentNameResult.textContent = currentUser.fullname;
             finalScore.textContent = totalScore.toFixed(2);
-
+            
             try {
-                // === BỔ SUNG examCode VÀO DỮ LIỆU GỬI LÊN FIREBASE ===
+                // currentUser đã chứa examCode sẵn nên không cần thay đổi gì ở đây
                 await addDoc(collection(db, "quizResults"), {
-                    ...currentUser, // currentUser đã chứa examCode
+                    ...currentUser,
                     quizId: QUIZ_ID,
                     score: parseFloat(totalScore.toFixed(2)),
                     totalPossibleScore: 10,
@@ -425,43 +263,14 @@
                 alert("Đã có lỗi xảy ra khi lưu kết quả của bạn. Vui lòng thử lại.");
             }
         });
-
-        function renderMCQ(question) {
-            const savedAnswer = userAnswers[currentQuestionIndex];
-            question.o.forEach(option => {
-                const isChecked = savedAnswer === option;
-                answerContainer.innerHTML += `
-                    <div><label class="flex items-center p-3 rounded-lg border cursor-pointer hover:bg-gray-50">
-                        <input type="radio" name="q${currentQuestionIndex}" value="${option}" class="mr-3" ${isChecked ? 'checked' : ''}> 
-                        <span>${option}</span>
-                    </label></div>`;
-            });
-        }
-        function renderTrueFalse(question) {
-            const savedAnswer = userAnswers[currentQuestionIndex] || [];
-            question.s.forEach((statement, sIndex) => {
-                const isTrueChecked = savedAnswer[sIndex] === true;
-                const isFalseChecked = savedAnswer[sIndex] === false;
-                answerContainer.innerHTML += `
-                    <div class="flex items-center justify-between p-3 border rounded-lg">
-                        <span>${statement.text}</span>
-                        <div class="flex gap-4">
-                            <label class="cursor-pointer flex items-center">
-                                <input type="radio" name="q${currentQuestionIndex}s${sIndex}" value="true" class="mr-2" ${isTrueChecked ? 'checked' : ''}> Đúng
-                            </label>
-                            <label class="cursor-pointer flex items-center">
-                                <input type="radio" name="q${currentQuestionIndex}s${sIndex}" value="false" class="mr-2" ${isFalseChecked ? 'checked' : ''}> Sai
-                            </label>
-                        </div>
-                    </div>`;
-            });
-        }
-        function renderShortAnswer(question) {
-            const savedAnswer = userAnswers[currentQuestionIndex] || '';
-            answerContainer.innerHTML = `
-                <input type="text" name="q${currentQuestionIndex}" class="w-full border rounded px-3 py-2 mt-2" 
-                placeholder="Nhập số (ví dụ 15 hoặc 25,5)" value="${savedAnswer}">`;
-        }
+        
+        // ... (Toàn bộ các hàm render câu hỏi giữ nguyên) ...
+        
+    </script>
+    
+    <script type="module">
+        // (Copy lại toàn bộ phần script module từ code gốc, 
+        // chỉ thay đổi những phần đã được ghi chú ở trên)
     </script>
 </body>
 </html>
