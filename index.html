@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ban demo full anh</title>
+    <title>Toán Thầy Hà</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .nav-btn { transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
@@ -23,11 +25,13 @@
         .blinking-text {
             animation: blinkingColors 3s infinite;
         }
+
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
     <div id="main-container" class="w-full max-w-4xl bg-white rounded-xl shadow-lg p-6">
-                <h1 class="text-2xl font-bold text-center mb-6 blinking-text">Lớp Toán Thầy Hà</h1>
+          <h1 class="text-2xl font-bold text-center mb-6 blinking-text">Lớp Toán Thầy Hà</h1>
+
         <div id="userInfoSection" class="max-w-md mx-auto">
             <h2 class="text-xl font-semibold text-center mb-4">Thông tin thí sinh</h2>
 	    <div class="mb-4">
@@ -37,29 +41,23 @@
             
             <div class="mb-3">
                 <label class="block font-medium">Số báo danh (VD: 540112)</label>
-                <input type="text" id="studentId" class="w-full border rounded px-3 py-2 mt-1" placeholder="Nhập SBD để xác thực..." required>
+                <input type="text" id="studentId" class="w-full border rounded px-3 py-2 mt-1" required>
             </div>
             <div class="mb-3">
                 <label class="block font-medium">Họ và tên</label>
-                <input type="text" id="fullname" class="w-full border rounded px-3 py-2 mt-1" readonly>
+                <input type="text" id="fullname" class="w-full border rounded px-3 py-2 mt-1" required>
             </div>
             <div class="mb-3">
                 <label class="block font-medium">Lớp</label>
-                <input type="text" id="className" class="w-full border rounded px-3 py-2 mt-1" readonly>
+                <input type="text" id="className" class="w-full border rounded px-3 py-2 mt-1" required>
             </div>
             <div class="mb-3">
                 <label class="block font-medium">Trường</label>
-                <input type="text" id="school" class="w-full border rounded px-3 py-2 mt-1" readonly>
-            </div>
-            <div class="mb-4">
-                <label class="block font-medium">Mật khẩu</label>
-                <input type="password" id="password" class="w-full border rounded px-3 py-2 mt-1" required>
+                <input type="text" id="school" class="w-full border rounded px-3 py-2 mt-1" required>
             </div>
             <button id="startBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mt-2">Bắt đầu làm bài</button>
-            <p id="error-message" class="text-red-500 text-center mt-2 h-4"></p>
         </div>
 
-        <!-- Phần câu hỏi -->
         <div id="quizSection" class="hidden">
             <div id="quiz-header" class="flex justify-between items-start border-b pb-4 mb-4">
                 <div>
@@ -74,7 +72,7 @@
             <div id="questionNavPanel" class="flex flex-wrap gap-2 p-3 border-b mb-4 bg-gray-50 rounded-lg"></div>
 
             <form id="quizForm" class="space-y-6">
-                <div id="question-text" class="text-lg font-medium text-gray-800 min-h-[48px]"></div>
+                <p id="question-text" class="text-lg font-medium text-gray-800 min-h-[48px]"></p>
                 <div id="answer-container" class="space-y-3"></div>
                 
                 <div class="flex justify-between items-center pt-4 mt-4 border-t">
@@ -84,9 +82,8 @@
                 </div>
             </form>
         </div>
-
-        <!-- Màn hình kết quả -->
-                <div id="resultSection" class="hidden text-center">
+        
+        <div id="resultSection" class="hidden text-center">
             <h2 id="studentNameResult" class="text-2xl font-bold mb-2"></h2>
             <p class="text-lg mb-4">Đã hoàn thành bài kiểm tra!</p>
             <p class="text-xl">Tổng điểm của bạn là: 
@@ -97,12 +94,13 @@
             <div class="mt-8 p-4 border-t bg-gray-50 rounded-lg">
 <img src="https://placehold.co/300x300/3B82F6/FBBF24?text=TOÁN%0ATHẦY+HÀ&font=times-new-roman&css=%7B%22font-weight%22%3A%22bold%22%2C%22font-size%22%3A%2290px%22%7D"
      alt="Logo Toán Thầy Hà" 
-     class="mx-auto mb-4 rounded-full shadow-lg border-4 border-yellow-400 h-32 w-32 object-cover">                <h3 class="text-lg font-bold mb-2">Lớp toán thầy Hà tiếp tục tuyển sinh</h3>
+     class="mx-auto mb-4 rounded-full shadow-lg border-4 border-yellow-400 h-32 w-32 object-cover">                
+	<h3 class="text-lg font-bold mb-2">Lớp toán thầy Hà tiếp tục tuyển sinh</h3>
                 <p class="text-gray-600">
-                    Nhóm dạy ít học sinh(10-15) đảm bảo sát sao và chất lượng!<br>
-                    Cam kết tiến bộ và cam kết đầu ra!
+                    Nhóm nhỏ để đảm bảo sát sao và chất lượng!<br>
+                    Luyện thi cơ bản và luyện thi chất lượng cao theo yêu cầu!
 <br>
-                    Địa chỉ học: Xuân Phú – Tân Tiến – Bắc Ninh!
+                    Địa chỉ học: Đội 6 - Xuân Phú – Tân Tiến – Bắc Ninh!
 <br>
                     Liên hệ qua Zalo: <strong>0988.948.882</strong>
                 </p>
@@ -116,9 +114,9 @@
      alt="Logo Toán Thầy Hà" 
      class="mx-auto mb-4 rounded-full shadow-lg border-4 border-yellow-400 h-32 w-32 object-cover">            <h2 class="text-xl font-bold mb-2">Lớp toán thầy Hà tiếp tục tuyển sinh</h2>
             <p class="text-gray-600 mb-6">
-                Nhóm dạy ít học sinh(10-15) đảm bảo sát sao và chất lượng!<br>
-                Cam kết tiến bộ và cam kết đầu ra!<br>
-                Địa chỉ học: Xuân Phú – Tân Tiến – Bắc Ninh!<br>
+                Nhóm nhỏ để đảm bảo sát sao và chất lượng!<br>
+                Luyện thi cơ bản và luyện thi chất lượng cao theo yêu cầu!<br>
+                Địa chỉ học: Đội 6 - Xuân Phú – Tân Tiến – Bắc Ninh!<br>
                 Liên hệ qua Zalo: <strong>0988.948.882</strong>
             </p>
             <div class="flex justify-center gap-4">
@@ -147,51 +145,51 @@
         // ==========================================================
         // == CHỈ CẦN THAY ĐỔI MÃ KỲ THI Ở ĐÂY CHO CÁC LẦN SAU    ==
         // ==========================================================
-        const EXAM_CODE = "Toan09_001";  //Mã kỳ thi(kiểm tra)
+        const EXAM_CODE = "Toan12_001";  //Mã kỳ thi(kiểm tra)
 	// Gán mã kỳ thi vào phần hiển thị trong HTML
         document.getElementById("examCodeDisplay").textContent = EXAM_CODE;
-        const QUIZ_ID = "toanthayha_09";
+        const QUIZ_ID = "toanthayha_12";
         const TIME_LIMIT_SECONDS = 60 * 60; 
         const ATTEMPT_LIMIT = 500;
-        const QUIZ_PASSWORD = "hoclagioi"; // <-- MẬT KHẨU VÀO THI
-
-        // --- DANH SÁCH HỌC SINH ---
-        const studentList = [
-            { "id": "540112", "name": "Nguyễn Văn An", "className": "12A1", "school": "THPT Chuyên KHTN" },
-            { "id": "540113", "name": "Trần Thị Bình", "className": "12A2", "school": "THPT Amsterdam" },
-            { "id": "540114", "name": "Lê Văn Cường", "className": "12D1", "school": "THPT Chu Văn An" },
-        ];
 
         const originalQuizData = [
-            // ... (Ngân hàng câu hỏi của bạn giữ nguyên ở đây)
- { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img006_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', o: ["A", "B", "C", "D"], a: "D" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img007_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', o: ["A", "B", "C", "D"], a: "B" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img008_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', o: ["A", "B", "C", "D"], a: "B" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img009_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', o: ["A", "B", "C", "D"], a: "C" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img010_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', o: ["A", "B", "C", "D"], a: "C" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img011_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', o: ["A", "B", "C", "D"], a: "A" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img012_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', o: ["A", "B", "C", "D"], a: "B" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img013_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', o: ["A", "B", "C", "D"], a: "C" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img014_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', o: ["A", "B", "C", "D"], a: "C" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img015_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', o: ["A", "B", "C", "D"], a: "B" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img016_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', o: ["A", "B", "C", "D"], a: "B" },
-            { part: "Phần I: Trắc nghiệm nhiều lựa chọn", type: 'mcq', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img017_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', o: ["A", "B", "C", "D"], a: "D" },
-            { part: "Phần II: Trắc nghiệm Đúng/Sai", type: 'true-false', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img018_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', s: [ { text: "Ý a)", a: true }, { text: "Ý b)", a: true }, { text: "Ý c)", a: true }, { text: "Ý d)", a: false } ] },
-            { part: "Phần II: Trắc nghiệm Đúng/Sai", type: 'true-false', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img019_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', s: [ { text: "Ý a)", a: true }, { text: "Ý b)", a: false }, { text: "Ý c)", a: false }, { text: "Ý d)", a: true } ] },
-            { part: "Phần II: Trắc nghiệm Đúng/Sai", type: 'true-false', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img020_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', s: [ { text: "Ý a)", a: true }, { text: "Ý b)", a: false }, { text: "Ý c)", a: false }, { text: "Ý d)", a: true } ] },
-            { part: "Phần II: Trắc nghiệm Đúng/Sai", type: 'true-false', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img021_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', s: [ { text: "Ý a)", a: true }, { text: "Ý b)", a: true }, { text: "Ý c)", a: false }, { text: "Ý d)", a: true } ] },
-            { part: "Phần III: Trả lời ngắn", type: 'short-answer', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img022_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', a: "0.79" },
-            { part: "Phần III: Trả lời ngắn", type: 'short-answer', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img023_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', a: "633" },
-            { part: "Phần III: Trả lời ngắn", type: 'short-answer', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img024_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', a: "45" },
-            { part: "Phần III: Trả lời ngắn", type: 'short-answer', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img025_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', a: "55.4" },
-            { part: "Phần III: Trả lời ngắn", type: 'short-answer', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img026_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', a: "0.46" },
-            { part: "Phần III: Trả lời ngắn", type: 'short-answer', question: '<img src="https://raw.githubusercontent.com/NVH2020/toanthayha_test/main/Img027_.jpg" alt="Câu hỏi hình ảnh" class="mx-auto my-3 rounded-lg shadow-md max-w-full">', a: "112" },
-
-        ];
-
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Câu hỏi Lũy thừa: Tìm tập nghiệm của bất phương trình $2^{x^2 - x} \\le 4$.",
+        "o": [
+            "$S = (0, 1)$",
+            "$S = [-2, 1]$",
+            "$S = [-1, 2]$"
+        ],
+        "a": "$S = [-1, 2]$"
+    },
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Câu hỏi Phân số: Tìm tiệm cận đứng của đồ thị hàm số $y = \\frac{2x - 1}{x + 3}$.",
+        "o": [
+            "$y = 2$",
+            "$x = 3$",
+            "$x = -3$"
+        ],
+        "a": "$x = -3$"
+    },
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Câu hỏi Căn thức: Tính đạo hàm của hàm số $y = \\sqrt{x^2 + 1}$.",
+        "o": [
+            "$y' = \\frac{x}{\\sqrt{x^2 + 1}}$",
+            "$y' = \\frac{2x}{\\sqrt{x^2 + 1}}$",
+            "$y' = \\frac{1}{2\\sqrt{x^2 + 1}}$"
+        ],
+        "a": "$y' = \\frac{x}{\\sqrt{x^2 + 1}}$"
+    }
+];
         let quizData = [];
         const totalQuestions = originalQuizData.length;
-        
+
         const startBtn = document.getElementById("startBtn");
         const userInfoSection = document.getElementById("userInfoSection");
         const quizSection = document.getElementById("quizSection");
@@ -200,6 +198,7 @@
         const enterQuizBtn = document.getElementById('enterQuizBtn');
         const exitBtn = document.getElementById('exitBtn');
         const mainContainer = document.getElementById('main-container');
+
         const quizForm = document.getElementById("quizForm");
         const studentNameResult = document.getElementById("studentNameResult");
         const finalScore = document.getElementById("finalScore");
@@ -213,12 +212,6 @@
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const submitBtn = document.getElementById('submitBtn');
-        const studentIdInput = document.getElementById('studentId');
-        const fullnameInput = document.getElementById('fullname');
-        const classNameInput = document.getElementById('className');
-        const schoolInput = document.getElementById('school');
-        const passwordInput = document.getElementById('password');
-        const errorMessage = document.getElementById('error-message');
 
         let currentUser = null;
         let timerInterval = null;
@@ -226,22 +219,7 @@
         let userAnswers = [];
         let quizStartTime = null;
 
-        // --- XỬ LÝ TỰ ĐỘNG ĐIỀN THÔNG TIN ---
-        studentIdInput.addEventListener('input', () => {
-            const enteredId = studentIdInput.value.trim();
-            const foundStudent = studentList.find(s => s.id === enteredId);
-
-            if (foundStudent) {
-                fullnameInput.value = foundStudent.name;
-                classNameInput.value = foundStudent.className;
-                schoolInput.value = foundStudent.school;
-                errorMessage.textContent = '';
-            } else {
-                fullnameInput.value = '';
-                classNameInput.value = '';
-                schoolInput.value = '';
-            }
-        });
+        totalQuestionsDisplay.textContent = totalQuestions; 
 
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -266,33 +244,33 @@
         }
 
         startBtn.addEventListener("click", async () => {
-            const studentId = studentIdInput.value.trim();
-            const fullname = fullnameInput.value.trim();
-            const password = passwordInput.value.trim();
+            const studentId = document.getElementById("studentId").value.trim();
+            const fullname = document.getElementById("fullname").value.trim();
+            const className = document.getElementById("className").value.trim();
+            const school = document.getElementById("school").value.trim();
 
-            errorMessage.textContent = ''; // Xóa thông báo lỗi cũ
-
-            if (!studentId || !fullname) {
-                errorMessage.textContent = "Số báo danh không hợp lệ. Vui lòng kiểm tra lại!";
-                return;
+            if (!studentId || !fullname || !className || !school) {
+                alert("Vui lòng nhập đầy đủ thông tin!"); return;
             }
-             if (password !== QUIZ_PASSWORD) {
-                errorMessage.textContent = "Mật khẩu không chính xác!";
-                return;
-            }
-
+            
             currentUser = { 
-                studentId: studentId, 
-                fullname: fullname, 
-                className: classNameInput.value, 
-                school: schoolInput.value 
+                examCode: EXAM_CODE, 
+                studentId, 
+                fullname, 
+                className, 
+                school 
             };
             
             const resultsRef = collection(db, "quizResults");
-            const q = query(resultsRef, where("studentId", "==", currentUser.studentId), where("quizId", "==", QUIZ_ID));
+            const q = query(resultsRef, 
+                where("studentId", "==", studentId), 
+                where("quizId", "==", QUIZ_ID),
+                where("examCode", "==", EXAM_CODE) 
+            );
+            
             const snapshot = await getDocs(q);
             if (snapshot.size >= ATTEMPT_LIMIT) {
-                errorMessage.textContent = `Bạn đã làm bài kiểm tra này ${snapshot.size} lần. Số lần làm bài tối đa là ${ATTEMPT_LIMIT}.`;
+                alert(`Bạn đã làm bài kiểm tra này ${snapshot.size} lần cho kỳ thi ${EXAM_CODE}. Số lần làm bài tối đa là ${ATTEMPT_LIMIT}.`);
                 return;
             }
             
@@ -317,7 +295,6 @@
             userAnswers = new Array(totalQuestions).fill(null);
             currentQuestionIndex = 0;
             quizStartTime = Date.now();
-            totalQuestionsDisplay.textContent = totalQuestions;
             renderNavPanel();
             jumpToQuestion(0);
             startTimer();
@@ -418,6 +395,7 @@
             saveCurrentAnswer();
             if (currentQuestionIndex > 0) jumpToQuestion(currentQuestionIndex - 1);
         });
+
         nextBtn.addEventListener('click', () => {
             saveCurrentAnswer();
             if (currentQuestionIndex < totalQuestions - 1) jumpToQuestion(currentQuestionIndex + 1);
@@ -439,19 +417,16 @@
 
                 switch (q.type) {
                     case 'mcq':
-                        if (userAnswer === q.a) totalScore += 0.25;
+                        if (userAnswer === q.a) totalScore += 0.5;
                         break;
                     case 'true-false':
                         let correctCount = 0;
                         q.s.forEach((st, sIndex) => { if (userAnswer[sIndex] === st.a) correctCount++; });
                         const pointsMap = [0, 0.1, 0.25, 0.5, 1];
-                        totalScore += pointsMap[correctCount];
+                        totalScore += pointsMap[correctCount] || 0;
                         break;
                     case 'short-answer':
-                        const cleanedUserAnswer = userAnswer.trim().replace(',', '.');
-                        if (cleanedUserAnswer === q.a) {
-                            totalScore += 1;
-                        }
+                        if (userAnswer.toLowerCase() === q.a.toLowerCase()) totalScore += 0.5;
                         break;
                 }
             });
@@ -473,30 +448,24 @@
                 });
             } catch (error) {
                 console.error("Lỗi khi lưu kết quả: ", error);
+                alert("Đã có lỗi xảy ra khi lưu kết quả của bạn. Vui lòng thử lại.");
             }
         });
 
         function renderMCQ(question) {
             const savedAnswer = userAnswers[currentQuestionIndex];
-            let optionsHTML = '<div class="grid grid-cols-2 md:grid-cols-4 gap-3">';
-            question.o.forEach(option => {
+            const options = [...question.o];
+            shuffleArray(options); // Xáo trộn đáp án
+            options.forEach(option => {
                 const isChecked = savedAnswer === option;
-                optionsHTML += `
-                    <label class="flex items-center justify-center p-3 rounded-lg border-2 cursor-pointer hover:bg-gray-100 ${isChecked ? 'mcq-label-selected' : ''}">
-                        <input type="radio" name="q${currentQuestionIndex}" value="${option}" class="hidden"> 
-                        <span class="font-bold text-lg">${option}</span>
-                    </label>`;
-            });
-            optionsHTML += '</div>';
-            answerContainer.innerHTML = optionsHTML;
-
-            answerContainer.querySelectorAll('label').forEach(label => {
-                label.addEventListener('click', () => {
-                    answerContainer.querySelectorAll('label').forEach(l => l.classList.remove('mcq-label-selected'));
-                    label.classList.add('mcq-label-selected');
-                });
+                answerContainer.innerHTML += `
+                    <div><label class="flex items-center p-3 rounded-lg border cursor-pointer hover:bg-gray-50">
+                        <input type="radio" name="q${currentQuestionIndex}" value="${option}" class="mr-3" ${isChecked ? 'checked' : ''}> 
+                        <span>${option}</span>
+                    </label></div>`;
             });
         }
+
         function renderTrueFalse(question) {
             const savedAnswer = userAnswers[currentQuestionIndex] || [];
             question.s.forEach((statement, sIndex) => {
@@ -516,11 +485,12 @@
                     </div>`;
             });
         }
+        
         function renderShortAnswer(question) {
             const savedAnswer = userAnswers[currentQuestionIndex] || '';
             answerContainer.innerHTML = `
                 <input type="text" name="q${currentQuestionIndex}" class="w-full border rounded px-3 py-2 mt-2" 
-                placeholder="Nhập đáp án (VD: 45 hoặc 55,4)" value="${savedAnswer}">`;
+                placeholder="Nhập đáp án(45 hoặc 20,5)" value="${savedAnswer}">`;
         }
     </script>
 </body>
