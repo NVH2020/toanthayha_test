@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toán Thầy Hà</title>
-    <script>
-        window.MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$','$$'], ['\\[','\\]']]
-            }
-        };
-    </script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+	<script>
+	window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],  // cho phép $...$
+    displayMath: [['$$','$$'], ['\\[','\\]']] // cho phép $$...$$
+  }
+	};
+	</script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -23,6 +24,7 @@
             background-color: #e0e7ff; /* indigo-100 */
             border-color: #6366f1; /* indigo-500 */
         }
+        /* === MÃ MỚI CHO HIỆU ỨNG NHẤP NHÁY === */
         @keyframes blinkingColors {
             0%, 100% { color: #22c55e; } /* Xanh lá */
             33% { color: #ef4444; }      /* Đỏ */
@@ -31,33 +33,34 @@
         .blinking-text {
             animation: blinkingColors 3s infinite;
         }
+
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
     <div id="main-container" class="w-full max-w-4xl bg-white rounded-xl shadow-lg p-6">
-        <h1 class="text-2xl font-bold text-center mb-6 blinking-text">Lớp Toán Thầy Hà</h1>
+          <h1 class="text-2xl font-bold text-center mb-6 blinking-text">Lớp Toán Thầy Hà</h1>
 
         <div id="userInfoSection" class="max-w-md mx-auto">
             <h2 class="text-xl font-semibold text-center mb-4">Thông tin thí sinh</h2>
-            <div class="mb-4">
-                <label class="block font-bold text-center text-blue-600">Mã kỳ thi (Kiểm tra)</label>
-                <p id="examCodeDisplay" class="w-full text-center text-lg font-bold text-red-600 p-2 mt-1"></p>
+	    <div class="mb-4">
+   	     <label class="block font-bold text-center text-blue-600">Mã kỳ thi (Kiểm tra)</label>
+<p id="examCodeDisplay" class="w-full text-center text-lg font-bold text-red-600 p-2 mt-1"></p>
             </div>
             
-            <div class="mb-3">
+<div class="mb-3">
                 <label class="block font-medium">Số báo danh (VD: 520112)</label>
                 <input type="text" id="studentId" class="w-full border rounded px-3 py-2 mt-1" required>
             </div>
             <div class="mb-3">
-                <label class="block font-medium">Họ và tên</label>
+                <label class="block font-medium">Họ và tên(VD: Nguyễn Văn Hà)</label>
                 <input type="text" id="fullname" class="w-full border rounded px-3 py-2 mt-1" required>
             </div>
             <div class="mb-3">
-                <label class="block font-medium">Lớp</label>
+                <label class="block font-medium">Lớp(VD: 12A1, 12A11)</label>
                 <input type="text" id="className" class="w-full border rounded px-3 py-2 mt-1" required>
             </div>
             <div class="mb-3">
-                <label class="block font-medium">Trường</label>
+                <label class="block font-medium">Trường(VD: THPT Yên Dũng số 2)</label>
                 <input type="text" id="school" class="w-full border rounded px-3 py-2 mt-1" required>
             </div>
             <button id="startBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mt-2">Bắt đầu làm bài</button>
@@ -77,7 +80,7 @@
             <div id="questionNavPanel" class="flex flex-wrap gap-2 p-3 border-b mb-4 bg-gray-50 rounded-lg"></div>
 
             <form id="quizForm" class="space-y-6">
-                <div id="question-text" class="text-lg font-medium text-gray-800 min-h-[48px]"></div>
+                <p id="question-text" class="text-lg font-medium text-gray-800 min-h-[48px]"></p>
                 <div id="answer-container" class="space-y-3"></div>
                 
                 <div class="flex justify-between items-center pt-4 mt-4 border-t">
@@ -97,12 +100,16 @@
             <p class="mt-4 text-gray-600">Kết quả đã được lưu vào hệ thống.</p>
             
             <div class="mt-8 p-4 border-t bg-gray-50 rounded-lg">
-                <img src="https://placehold.co/300x300/3B82F6/FBBF24?text=TOÁN%0ATHẦY+HÀ&font=times-new-roman&css=%7B%22font-weight%22%3A%22bold%22%2C%22font-size%22%3A%2290px%22%7D" alt="Logo Toán Thầy Hà" class="mx-auto mb-4 rounded-full shadow-lg border-4 border-yellow-400 h-32 w-32 object-cover">
-                <h3 class="text-lg font-bold mb-2">Lớp toán thầy Hà tiếp tục tuyển sinh</h3>
+<img src="https://placehold.co/300x300/3B82F6/FBBF24?text=TOÁN%0ATHẦY+HÀ&font=times-new-roman&css=%7B%22font-weight%22%3A%22bold%22%2C%22font-size%22%3A%2290px%22%7D"
+     alt="Logo Toán Thầy Hà" 
+     class="mx-auto mb-4 rounded-full shadow-lg border-4 border-yellow-400 h-32 w-32 object-cover">                
+	<h3 class="text-lg font-bold mb-2">Lớp toán thầy Hà tiếp tục tuyển sinh</h3>
                 <p class="text-gray-600">
                     Nhóm nhỏ để đảm bảo sát sao và chất lượng!<br>
-                    Luyện thi cơ bản và luyện thi chất lượng cao theo yêu cầu!<br>
-                    Địa chỉ học: Đội 6 - Xuân Phú – Tân Tiến – Bắc Ninh!<br>
+                    Luyện thi cơ bản và luyện thi chất lượng cao theo yêu cầu!
+<br>
+                    Địa chỉ học: Đội 6 - Xuân Phú – Tân Tiến – Bắc Ninh!
+<br>
                     Liên hệ qua Zalo: <strong>0988.948.882</strong>
                 </p>
             </div>
@@ -111,8 +118,9 @@
 
     <div id="announcementModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-xl shadow-lg p-8 max-w-lg w-full text-center">
-            <img src="https://placehold.co/300x300/3B82F6/FBBF24?text=TOÁN%0ATHẦY+HÀ&font=times-new-roman&css=%7B%22font-weight%22%3A%22bold%22%2C%22font-size%22%3A%2290px%22%7D" alt="Logo Toán Thầy Hà" class="mx-auto mb-4 rounded-full shadow-lg border-4 border-yellow-400 h-32 w-32 object-cover">
-            <h2 class="text-xl font-bold mb-2">Lớp toán thầy Hà tiếp tục tuyển sinh</h2>
+            <img src="https://placehold.co/300x300/3B82F6/FBBF24?text=TOÁN%0ATHẦY+HÀ&font=times-new-roman&css=%7B%22font-weight%22%3A%22bold%22%2C%22font-size%22%3A%2290px%22%7D"
+     alt="Logo Toán Thầy Hà" 
+     class="mx-auto mb-4 rounded-full shadow-lg border-4 border-yellow-400 h-32 w-32 object-cover">            <h2 class="text-xl font-bold mb-2">Lớp toán thầy Hà tiếp tục tuyển sinh</h2>
             <p class="text-gray-600 mb-6">
                 Nhóm nhỏ để đảm bảo sát sao và chất lượng!<br>
                 Luyện thi cơ bản và luyện thi chất lượng cao theo yêu cầu!<br>
@@ -142,13 +150,18 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        const EXAM_CODE = "Toan12_001";
+        // ==========================================================
+        // == CHỈ CẦN THAY ĐỔI MÃ KỲ THI Ở ĐÂY CHO CÁC LẦN SAU    == times
+        // ==========================================================
+        const EXAM_CODE = "Toan12_001";  //Mã kỳ thi(kiểm tra)
+	// Gán mã kỳ thi vào phần hiển thị trong HTML
         document.getElementById("examCodeDisplay").textContent = EXAM_CODE;
         const QUIZ_ID = "toanthayha_12";
-        const TIME_LIMIT_SECONDS = 60 * 60;
+        const TIME_LIMIT_SECONDS = 60 * 60; 
         const ATTEMPT_LIMIT = 500;
 
-        const originalQuizData = [
+// ==== nhapcauhoi       
+ const originalQuizData = [
     {
         "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
         "type": "mcq",
@@ -327,8 +340,6 @@
         "a": "780"
     }
 ];
-
-        
         let quizData = [];
         const totalQuestions = originalQuizData.length;
 
@@ -340,6 +351,7 @@
         const enterQuizBtn = document.getElementById('enterQuizBtn');
         const exitBtn = document.getElementById('exitBtn');
         const mainContainer = document.getElementById('main-container');
+
         const quizForm = document.getElementById("quizForm");
         const studentNameResult = document.getElementById("studentNameResult");
         const finalScore = document.getElementById("finalScore");
@@ -360,7 +372,7 @@
         let userAnswers = [];
         let quizStartTime = null;
 
-        totalQuestionsDisplay.textContent = totalQuestions;
+        totalQuestionsDisplay.textContent = totalQuestions; 
 
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -490,9 +502,8 @@
                 case 'short-answer': renderShortAnswer(question); break;
             }
 			if (window.MathJax) {
-				MathJax.typesetPromise([questionText, answerContainer]);
-			}
-            
+        MathJax.typesetPromise();
+    }            
             prevBtn.classList.toggle('hidden', currentQuestionIndex === 0);
             nextBtn.classList.toggle('hidden', currentQuestionIndex === totalQuestions - 1);
         }
@@ -559,7 +570,8 @@
                 answersToSave[`q${index + 1}`] = userAnswer;
                 if (userAnswer === null) return;
 
-                switch (q.type) {
+// ==== tinhdiem                
+switch (q.type) {
                     case 'mcq':
                         if (userAnswer === q.a) totalScore += 0.5;
                         break;
@@ -596,92 +608,59 @@
             }
         });
 
-        function renderMCQ(question) {
-            const savedAnswer = userAnswers[currentQuestionIndex];
-            const options = [...question.o];
-            
-            options.forEach(option => {
-                const isChecked = savedAnswer === option;
-                const div = document.createElement('div');
-                const label = document.createElement('label');
-                label.className = "flex items-center p-3 rounded-lg border cursor-pointer hover:bg-gray-50";
-                const radio = document.createElement('input');
-                radio.type = 'radio';
-                radio.name = `q${currentQuestionIndex}`;
-                radio.value = option;
-                radio.className = 'mr-3';
-                if(isChecked) radio.checked = true;
-                radio.addEventListener('change', saveCurrentAnswer); // Kích hoạt lưu và tô màu
-                const span = document.createElement('span');
-                span.innerHTML = option;
-                label.appendChild(radio);
-                label.appendChild(span);
-                div.appendChild(label);
-                answerContainer.appendChild(div);
-            });
-        }
+        // Render câu hỏi trắc nghiệm nhiều lựa chọn
+function renderMCQ(question) {
+    question.options.forEach((option, index) => {
+        const div = document.createElement('div');
+        div.className = 'flex items-center mb-2';
+        div.innerHTML = `
+            <input type="radio" name="answer" value="${option}" id="option${index}"
+                class="mr-2">
+            <label for="option${index}">${option}</label>
+        `;
+        answerContainer.appendChild(div);
+    });
 
-        function renderTrueFalse(question) {
-            const savedAnswer = userAnswers[currentQuestionIndex] || [];
-            question.s.forEach((statement, sIndex) => {
-                const isTrueChecked = savedAnswer[sIndex] === true;
-                const isFalseChecked = savedAnswer[sIndex] === false;
-                
-                const div = document.createElement('div');
-                div.className = 'flex items-center justify-between p-3 border rounded-lg';
-                
-                const span = document.createElement('span');
-                span.innerHTML = statement.text;
-                
-                const buttonGroup = document.createElement('div');
-                buttonGroup.className = 'flex gap-4';
+    // 👉 Gọi MathJax để hiển thị công thức
+    if (window.MathJax) {
+        MathJax.typesetPromise();
+    }
+}
 
-                // True
-                const trueLabel = document.createElement('label');
-                trueLabel.className = 'cursor-pointer flex items-center';
-                const trueRadio = document.createElement('input');
-                trueRadio.type = 'radio';
-                trueRadio.name = `q${currentQuestionIndex}s${sIndex}`;
-                trueRadio.value = 'true';
-                trueRadio.className = 'mr-2';
-                if(isTrueChecked) trueRadio.checked = true;
-                trueRadio.addEventListener('change', saveCurrentAnswer); // Kích hoạt lưu và tô màu
-                trueLabel.appendChild(trueRadio);
-                trueLabel.append(' Đúng');
+// Render câu hỏi đúng / sai
+function renderTrueFalse(question) {
+    ['Đúng', 'Sai'].forEach((option, index) => {
+        const div = document.createElement('div');
+        div.className = 'flex items-center mb-2';
+        div.innerHTML = `
+            <input type="radio" name="answer" value="${option}" id="tf${index}"
+                class="mr-2">
+            <label for="tf${index}">${option}</label>
+        `;
+        answerContainer.appendChild(div);
+    });
 
-                // False
-                const falseLabel = document.createElement('label');
-                falseLabel.className = 'cursor-pointer flex items-center';
-                const falseRadio = document.createElement('input');
-                falseRadio.type = 'radio';
-                falseRadio.name = `q${currentQuestionIndex}s${sIndex}`;
-                falseRadio.value = 'false';
-                falseRadio.className = 'mr-2';
-                if(isFalseChecked) falseRadio.checked = true;
-                falseRadio.addEventListener('change', saveCurrentAnswer); // Kích hoạt lưu và tô màu
-                falseLabel.appendChild(falseRadio);
-                falseLabel.append(' Sai');
-                
-                buttonGroup.appendChild(trueLabel);
-                buttonGroup.appendChild(falseLabel);
-                div.appendChild(span);
-                div.appendChild(buttonGroup);
-                answerContainer.appendChild(div);
-            });
-        }
-        
-        function renderShortAnswer(question) {
-            const savedAnswer = userAnswers[currentQuestionIndex] || '';
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.name = `q${currentQuestionIndex}`;
-            input.className = 'w-full border rounded px-3 py-2 mt-2';
-            input.placeholder = "Nhập đáp án(45 hoặc 20,5)";
-            input.value = savedAnswer;
-            input.addEventListener('input', saveCurrentAnswer); // Kích hoạt lưu và tô màu
-            answerContainer.appendChild(input);
-        }
+    // 👉 Gọi MathJax để hiển thị công thức
+    if (window.MathJax) {
+        MathJax.typesetPromise();
+    }
+}
+
+// Render câu hỏi trả lời ngắn
+function renderShortAnswer(question) {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.name = 'answer';
+    input.placeholder = 'Nhập câu trả lời của bạn';
+    input.className = 'border p-2 w-full rounded';
+    answerContainer.appendChild(input);
+
+    // 👉 Gọi MathJax để hiển thị công thức (phòng khi có trong câu hỏi)
+    if (window.MathJax) {
+        MathJax.typesetPromise();
+    }
+}
+
     </script>
 </body>
 </html>
-
