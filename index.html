@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toán Thầy Hà</title>
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+	<script>
+	window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],  // cho phép $...$
+    displayMath: [['$$','$$'], ['\\[','\\]']] // cho phép $$...$$
+  }
+	};
+	</script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -39,20 +47,20 @@
 <p id="examCodeDisplay" class="w-full text-center text-lg font-bold text-red-600 p-2 mt-1"></p>
             </div>
             
-            <div class="mb-3">
-                <label class="block font-medium">Số báo danh (VD: 540112)</label>
+<div class="mb-3">
+                <label class="block font-medium">Số báo danh (VD: 520112)</label>
                 <input type="text" id="studentId" class="w-full border rounded px-3 py-2 mt-1" required>
             </div>
             <div class="mb-3">
-                <label class="block font-medium">Họ và tên</label>
+                <label class="block font-medium">Họ và tên (VD: Nguyễn Văn Hà)</label>
                 <input type="text" id="fullname" class="w-full border rounded px-3 py-2 mt-1" required>
             </div>
             <div class="mb-3">
-                <label class="block font-medium">Lớp</label>
+                <label class="block font-medium">Lớp (VD: 12A1, 12A11)</label>
                 <input type="text" id="className" class="w-full border rounded px-3 py-2 mt-1" required>
             </div>
             <div class="mb-3">
-                <label class="block font-medium">Trường</label>
+                <label class="block font-medium">Trường (VD: THPT Yên Dũng số 2)</label>
                 <input type="text" id="school" class="w-full border rounded px-3 py-2 mt-1" required>
             </div>
             <button id="startBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mt-2">Bắt đầu làm bài</button>
@@ -143,7 +151,7 @@
         const db = getFirestore(app);
 
         // ==========================================================
-        // == CHỈ CẦN THAY ĐỔI MÃ KỲ THI Ở ĐÂY CHO CÁC LẦN SAU    ==
+        // == CHỈ CẦN THAY ĐỔI MÃ KỲ THI Ở ĐÂY CHO CÁC LẦN SAU    == times
         // ==========================================================
         const EXAM_CODE = "Toan12_001";  //Mã kỳ thi(kiểm tra)
 	// Gán mã kỳ thi vào phần hiển thị trong HTML
@@ -152,41 +160,187 @@
         const TIME_LIMIT_SECONDS = 60 * 60; 
         const ATTEMPT_LIMIT = 500;
 
-        const originalQuizData = [
+// ==== nhapcauhoi       
+ const originalQuizData = [
     {
         "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
         "type": "mcq",
-        "question": "Câu hỏi Lũy thừa: Tìm tập nghiệm của bất phương trình $2^{x^2 - x} \\le 4$.",
+        "question": "Cho hàm số $y = \\frac{2x+1}{x+1}$. Mệnh đề nào dưới đây đúng?",
         "o": [
-            "$S = (0, 1)$",
-            "$S = [-2, 1]$",
-            "$S = [-1, 2]$"
+            "Hàm số đồng biến trên khoảng $(-\\infty; -1)$.",
+            "Hàm số nghịch biến trên khoảng $(-1; +\\infty)$.",
+            "Hàm số đồng biến trên khoảng $(-\\infty; -1)$ và $(-1; +\\infty)$.",
+            "Hàm số nghịch biến trên khoảng $(-\\infty; -1)$ và $(-1; +\\infty)$."
         ],
-        "a": "$S = [-1, 2]$"
+        "a": "Hàm số đồng biến trên khoảng $(-\\infty; -1)$."
     },
     {
         "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
         "type": "mcq",
-        "question": "Câu hỏi Phân số: Tìm tiệm cận đứng của đồ thị hàm số $y = \\frac{2x - 1}{x + 3}$.",
+        "question": "Cho hàm số $y=f(x)$ xác định, liên tục trên tập số thực $\\mathbb{R}$ và có đồ thị như hình bên. Hàm số $y=f(x)$ đạt cực tiểu tại điểm nào dưới đây? (có đồ thị như hình vẽ)",
         "o": [
-            "$y = 2$",
-            "$x = 3$",
-            "$x = -3$"
+            "$x=2$ và $x=-2$.",
+            "$x=0$.",
+            "$x=-2$.",
+            "$y=-2$."
         ],
-        "a": "$x = -3$"
+        "a": "$x=-2$."
     },
     {
         "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
         "type": "mcq",
-        "question": "Câu hỏi Căn thức: Tính đạo hàm của hàm số $y = \\sqrt{x^2 + 1}$.",
+        "question": "Tìm giá trị lớn nhất của hàm số $y = x^4 - 2x^2 + 3$ trên đoạn $[0; 2]$",
         "o": [
-            "$y' = \\frac{x}{\\sqrt{x^2 + 1}}$",
-            "$y' = \\frac{2x}{\\sqrt{x^2 + 1}}$",
-            "$y' = \\frac{1}{2\\sqrt{x^2 + 1}}$"
+            "$\\max_{[0;2]} y = 2$",
+            "$\\max_{[0;2]} y = 3$",
+            "$\\max_{[0;2]} y = 10$",
+            "$\\max_{[0;2]} y = 11$"
         ],
-        "a": "$y' = \\frac{x}{\\sqrt{x^2 + 1}}$"
+        "a": "$\\max_{[0;2]} y = 11$"
+    },
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Cho hàm số $y=f(x)$ liên tục trên đoạn $[-1; 2]$ và có đồ thị như hình vẽ. Gọi $M, m$ lần lượt là giá trị lớn nhất và giá trị nhỏ nhất của hàm số đã cho trên đoạn $[-1; 2]$. Ta có $M+m$ bằng:",
+        "o": [
+            "$M+m=0$.",
+            "$M+m=2$.",
+            "$M+m=1$.",
+            "$M+m=5$."
+        ],
+        "a": "$M+m=1$."
+    },
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Có bao nhiêu giá trị nguyên của tham số $m$ thuộc đoạn $[-2024; 2024]$ để hàm số $y = \\frac{x-1}{x-m}$ đồng biến trên từng khoảng xác định?",
+        "o": [
+            "2024.",
+            "2025.",
+            "4048.",
+            "2023."
+        ],
+        "a": "2025."
+    },
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Cho hàm số $y = f(x)$, bảng xét dấu của $y'$ như sau: (có bảng xét dấu). Hàm số đạt cực tiểu tại điểm nào?",
+        "o": [
+            "$x=1$.",
+            "$x=2$.",
+            "$x=-1$.",
+            "$x=0$."
+        ],
+        "a": "$x=-1$."
+    },
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Giá trị thực của tham số $m$ để hàm số $y = x^3 - 3mx^2 + 3(m^2-1)x - m^2$ đạt cực tiểu tại $x=2$ thuộc khoảng nào dưới đây?",
+        "o": [
+            "$(-2; 0)$.",
+            "$(0; 2)$.",
+            "$(3; 5)$.",
+            "$(5; 7)$."
+        ],
+        "a": "$(0; 2)$."
+    },
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Tính giá trị nhỏ nhất của hàm số $y = x + \\frac{4}{x}$ trên khoảng $(0; +\\infty)$.",
+        "o": [
+            "$\\min y = 2$",
+            "$\\min y = 4$",
+            "$\\min y = 0$",
+            "$\\min y = 1$"
+        ],
+        "a": "$\\min y = 4$"
+    },
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Một chất điểm chuyển động theo quy luật $s(t) = -\\frac{1}{3}t^3 + \\frac{9}{2}t^2 + 10t$ với t (giây) là khoảng thời gian tính từ lúc vật bắt đầu chuyển động và S (mét) là quãng đường vật chuyển động trong thời gian đó. Hỏi trong thời gian 10 giây, kể từ lúc bắt đầu chuyển động, vận tốc lớn nhất của chuyển động là bao nhiêu?",
+        "o": [
+            "25 (m/s).",
+            "11 (m/s).",
+            "100 (m/s).",
+            "88 (m/s)."
+        ],
+        "a": "88 (m/s)."
+    },
+    {
+        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
+        "type": "mcq",
+        "question": "Biết rằng giá trị nhỏ nhất của hàm số $y = |x^3 - 3x^2 + m|$ trên đoạn $[0; 3]$ bằng 7. Giá trị của tham số $m$ bằng",
+        "o": [
+            "$m=11$ hoặc $m=-7$.",
+            "$m=11$.",
+            "$m=7$.",
+            "$m=-7$."
+        ],
+        "a": "$m=11$ hoặc $m=-7$."
+    },
+    {
+        "part": "Phần II: Trắc nghiệm Đúng/Sai",
+        "type": "true-false",
+        "question": "Cho hàm số $y = x^3 - 3x^2 + 2$ có đồ thị $(C)$.",
+        "s": [
+            { "text": "Hàm số đồng biến trên khoảng $(0; 2)$.", "a": false },
+            { "text": "Gọi $A, B$ là hai điểm cực trị của đồ thị $(C)$ khi đó $AB = 2\\sqrt{5}$.", "a": true },
+            { "text": "Đường thẳng đi qua hai điểm cực trị của đồ thị hàm số chắn ra trên hai trục tọa độ một tam giác có diện tích là 4.", "a": false },
+            { "text": "Giá trị cực đại của hàm số là 4.", "a": false }
+        ]
+    },
+    {
+        "part": "Phần II: Trắc nghiệm Đúng/Sai",
+        "type": "true-false",
+        "question": "Cho hàm số $y=f(x)$ liên tục trên tập $\\mathbb{R}$ và có bảng biến thiên như sau: (có bảng biến thiên)",
+        "s": [
+            { "text": "Giá trị lớn nhất của hàm số trên $\\mathbb{R}$ bằng 5.", "a": true },
+            { "text": "Giá trị nhỏ nhất của hàm số bằng 2.", "a": false },
+            { "text": "Giá trị lớn nhất của hàm số trên $[-1; 0]$ bằng 4.", "a": true },
+            { "text": "Giá trị lớn nhất của hàm số trên $(0; +\\infty)$ bằng 5.", "a": true }
+        ]
+    },
+    {
+        "part": "Phần II: Trắc nghiệm Đúng/Sai",
+        "type": "true-false",
+        "question": "Cho hàm số $y = \\frac{x-m^2}{x+1}$ ($m$ là tham số). Các mệnh đề sau đúng hay sai?",
+        "s": [
+            { "text": "Tập xác định của hàm số là $D = \\mathbb{R} \\setminus \\{-1\\}$.", "a": true },
+            { "text": "Với $m=1$, hàm số đã cho có giá trị nhỏ nhất trên $[0; 1]$ là $-\\frac{1}{2}$.", "a": false },
+            { "text": "Với $m=\\sqrt{2}$, hàm số đã cho có giá trị lớn nhất trên $[0; 1]$ là $-\\frac{1}{2}$.", "a": true },
+            { "text": "Biết rằng khi $m \\ne \\pm\\sqrt{2}$ thì hàm số đã cho có giá trị nhỏ nhất trên $[2; 4]$ bằng 2. Khi đó $m=4$.", "a": false }
+        ]
+    },
+    {
+        "part": "Phần III: Trả lời ngắn",
+        "type": "short-answer",
+        "question": "Có tất cả bao nhiêu giá trị nguyên của tham số $m$ để hàm số $y = x^3 - 3(m+1)x^2 + 9x - m$ đồng biến trên khoảng $(2; +\\infty)$?",
+        "a": "3"
+    },
+    {
+        "part": "Phần III: Trả lời ngắn",
+        "type": "short-answer",
+        "question": "Cho hàm số $y = x^3 - 3x^2 + 1$ có đồ thị $(C)$. Tính độ dài đoạn thẳng nối hai điểm cực trị của đồ thị $(C)$. (Làm tròn đến hàng phần trăm)",
+        "a": "4.47"
+    },
+    {
+        "part": "Phần III: Trả lời ngắn",
+        "type": "short-answer",
+        "question": "Cho hàm số $y=f(x)$ có đạo hàm trên khoảng $(0; +\\infty)$ thỏa mãn $f'(x) = x^2(x-1)(x-2)^3(x-4)$. Biết $f(0)=0$ thì giá trị nhỏ nhất và giá trị lớn nhất của hàm số $g(x)=f(x^2)$ trên đoạn $[1; 2]$ lần lượt là $m, M$. Giá trị $M-m$ bằng ... (làm tròn kết quả đến hàng phần trăm)",
+        "a": ""
+    },
+    {
+        "part": "Phần III: Trả lời ngắn",
+        "type": "short-answer",
+        "question": "Cho hai vị trí A, B cách nhau 650m, cùng nằm về một phía bờ sông. Khoảng cách từ A và từ B đến bờ sông lần lượt là 150m và 290m. Một người đi từ A đến bờ sông để lấy nước mang về B. Đoạn đường ngắn nhất mà người đó có thể đi là bao nhiêu mét? (kết quả làm tròn đến hàng đơn vị)",
+        "a": "780"
     }
-];
+]
+;
         let quizData = [];
         const totalQuestions = originalQuizData.length;
 
@@ -348,7 +502,9 @@
                 case 'true-false': renderTrueFalse(question); break;
                 case 'short-answer': renderShortAnswer(question); break;
             }
-            
+			if (window.MathJax) {
+        MathJax.typesetPromise();
+    }            
             prevBtn.classList.toggle('hidden', currentQuestionIndex === 0);
             nextBtn.classList.toggle('hidden', currentQuestionIndex === totalQuestions - 1);
         }
@@ -415,7 +571,8 @@
                 answersToSave[`q${index + 1}`] = userAnswer;
                 if (userAnswer === null) return;
 
-                switch (q.type) {
+// ==== tinhdiem                
+switch (q.type) {
                     case 'mcq':
                         if (userAnswer === q.a) totalScore += 0.5;
                         break;
@@ -452,46 +609,59 @@
             }
         });
 
-        function renderMCQ(question) {
-            const savedAnswer = userAnswers[currentQuestionIndex];
-            const options = [...question.o];
-            shuffleArray(options); // Xáo trộn đáp án
-            options.forEach(option => {
-                const isChecked = savedAnswer === option;
-                answerContainer.innerHTML += `
-                    <div><label class="flex items-center p-3 rounded-lg border cursor-pointer hover:bg-gray-50">
-                        <input type="radio" name="q${currentQuestionIndex}" value="${option}" class="mr-3" ${isChecked ? 'checked' : ''}> 
-                        <span>${option}</span>
-                    </label></div>`;
-            });
-        }
+        // Render câu hỏi trắc nghiệm nhiều lựa chọn
+function renderMCQ(question) {
+    question.options.forEach((option, index) => {
+        const div = document.createElement('div');
+        div.className = 'flex items-center mb-2';
+        div.innerHTML = `
+            <input type="radio" name="answer" value="${option}" id="option${index}"
+                class="mr-2">
+            <label for="option${index}">${option}</label>
+        `;
+        answerContainer.appendChild(div);
+    });
 
-        function renderTrueFalse(question) {
-            const savedAnswer = userAnswers[currentQuestionIndex] || [];
-            question.s.forEach((statement, sIndex) => {
-                const isTrueChecked = savedAnswer[sIndex] === true;
-                const isFalseChecked = savedAnswer[sIndex] === false;
-                answerContainer.innerHTML += `
-                    <div class="flex items-center justify-between p-3 border rounded-lg">
-                        <span>${statement.text}</span>
-                        <div class="flex gap-4">
-                            <label class="cursor-pointer flex items-center">
-                                <input type="radio" name="q${currentQuestionIndex}s${sIndex}" value="true" class="mr-2" ${isTrueChecked ? 'checked' : ''}> Đúng
-                            </label>
-                            <label class="cursor-pointer flex items-center">
-                                <input type="radio" name="q${currentQuestionIndex}s${sIndex}" value="false" class="mr-2" ${isFalseChecked ? 'checked' : ''}> Sai
-                            </label>
-                        </div>
-                    </div>`;
-            });
-        }
-        
-        function renderShortAnswer(question) {
-            const savedAnswer = userAnswers[currentQuestionIndex] || '';
-            answerContainer.innerHTML = `
-                <input type="text" name="q${currentQuestionIndex}" class="w-full border rounded px-3 py-2 mt-2" 
-                placeholder="Nhập đáp án(45 hoặc 20,5)" value="${savedAnswer}">`;
-        }
+    // 👉 Gọi MathJax để hiển thị công thức
+    if (window.MathJax) {
+        MathJax.typesetPromise();
+    }
+}
+
+// Render câu hỏi đúng / sai
+function renderTrueFalse(question) {
+    ['Đúng', 'Sai'].forEach((option, index) => {
+        const div = document.createElement('div');
+        div.className = 'flex items-center mb-2';
+        div.innerHTML = `
+            <input type="radio" name="answer" value="${option}" id="tf${index}"
+                class="mr-2">
+            <label for="tf${index}">${option}</label>
+        `;
+        answerContainer.appendChild(div);
+    });
+
+    // 👉 Gọi MathJax để hiển thị công thức
+    if (window.MathJax) {
+        MathJax.typesetPromise();
+    }
+}
+
+// Render câu hỏi trả lời ngắn
+function renderShortAnswer(question) {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.name = 'answer';
+    input.placeholder = 'Nhập câu trả lời của bạn';
+    input.className = 'border p-2 w-full rounded';
+    answerContainer.appendChild(input);
+
+    // 👉 Gọi MathJax để hiển thị công thức (phòng khi có trong câu hỏi)
+    if (window.MathJax) {
+        MathJax.typesetPromise();
+    }
+}
+
     </script>
 </body>
 </html>
