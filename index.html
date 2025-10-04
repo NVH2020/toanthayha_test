@@ -34,11 +34,12 @@
         <h1 class="text-2xl font-bold text-center mb-6 blinking-text">Lớp Toán Thầy Hà</h1>
 
         <div id="userInfoSection" class="max-w-md mx-auto">
-            <h2 class="text-xl font-semibold text-center mb-4">Thông tin thí sinh</h2>
-            <div class="mb-4">
+	<div class="mb-4">
                 <label class="block font-bold text-center text-blue-600">Mã kỳ thi (Kiểm tra)</label>
                 <p id="examCodeDisplay" class="w-full text-center text-lg font-bold text-red-600 p-2 mt-1"></p>
             </div>
+            <h2 class="text-xl font-bold text-center mb-4">Thông tin thí sinh</h2>
+            
 
             <div class="mb-3">
                 <label class="block font-medium">Số báo danh (VD: 520112)</label>
@@ -56,10 +57,10 @@
     	<label class="block font-medium">Trường</label>
   	 <select id="schoolSelect" class="w-full border rounded px-3 py-2 mt-1">
         <option value="">-- Chọn trường --</option>
-        <option value="THPT Yên Dũng số 2">THPT Yên Dũng số 2</option>
-        <option value="THPT Yên Dũng số 1">THPT Yên Dũng số 1</option>
-        <option value="THPT Lục Nam">THPT Lục Nam</option>
-        <option value="THPT Tân Yên 1">THPT Tân Yên 1</option>
+        <option value="THPT Yên Dũng số 2">THPT Yên Dũng số 1</option>
+        <option value="THPT Yên Dũng số 1">THPT Yên Dũng số 2</option>
+        <option value="THPT Lục Nam">THPT Yên Dũng số 2</option>
+        <option value="THPT Tân Yên 1">CĐ nghề Việt – Hàn BN</option>
         <option value="Khác">Khác...</option>
     	</select>
     	<input type="text" id="schoolInput" class="w-full border rounded px-3 py-2 mt-2 hidden" placeholder="Nhập tên trường khác">
@@ -104,10 +105,12 @@
         <div id="resultSection" class="hidden text-center">
             <h2 id="studentNameResult" class="text-2xl font-bold mb-2"></h2>
             <p class="text-lg mb-4">Đã hoàn thành bài kiểm tra!</p>
-            <p class="text-xl">Tổng điểm của bạn là:
+            <p class="text-blue-600 font-bold text-lg my-2">Tổng điểm của bạn là: 
                 <span id="finalScore" class="font-bold text-blue-600 text-3xl"></span>
             </p>
             <p class="mt-4 text-gray-600">Kết quả đã được lưu vào hệ thống.</p>
+            <p class="text-red-600 font-bold text-lg my-2">Liên hệ 0988.948.882 để tham gia lớp học!</p>
+
         </div>
     </div>
 
@@ -134,7 +137,7 @@
             <p class="mb-4 text-gray-600">Sau khi nộp, bạn không thể sửa đáp án.</p>
             <div class="flex justify-center gap-4">
                 <button id="confirmYes" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded">Yes</button>
-                <button id="confirmNo" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded">No</button>
+                <button id="confirmNo" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded">No</button>	
             </div>
         </div>
     </div>
@@ -170,7 +173,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ====== Cấu hình kỳ thi ======
+// ====== Cấu hình kỳ thi ====== timeend
 const EXAM_CODE = "Toan12_002";
 const QUIZ_ID = "toanthayha_12";
 const TIME_LIMIT_SECONDS = 60 * 60; // thời gian làm bài (giây). chỉnh ở đây
@@ -248,7 +251,7 @@ function updateCountdown() {
     if (now < startDate) {
         msg = "⏳ Bài kiểm tra sẽ mở sau: " + formatDiff(startDate - now);
     } else if (now >= startDate && now <= endDate) {
-        msg = "📝 Bài kiểm tra đang mở. Còn thời gian tới khi đóng đề: " + formatDiff(endDate - now);
+        msg = "📝 Bài kiểm tra đang mở. Hãy làm thêm lần nữa nếu còn lượt. Còn thời gian tới khi đóng đề: " + formatDiff(endDate - now);
     } else {
         msg = "❌ Bài kiểm tra đã kết thúc.";
         startBtn.disabled = true;
