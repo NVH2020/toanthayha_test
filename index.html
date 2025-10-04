@@ -1,36 +1,32 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toán Thầy Hà</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Toán Thầy Hà - Thi</title>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script>
-        window.MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$','$$'], ['\\[','\\]']]
-            }
-        };
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$','$$'], ['\\[','\\]']]
+      }
+    };
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
         .nav-btn { transition: background-color 0.2s, color 0.2s, border-color 0.2s; }
         .nav-btn-answered { background-color: #16a34a; color: white; border-color: #15803d; }
-        .nav-btn-current { background-color: #4f46e5; color: white; border-color: #4338ca; transform: scale(1.1); }
-        input[type="radio"]:checked + span { font-weight: 600; color: #4f46e5; }
-        .mcq-label-selected {
-            background-color: #e0e7ff; /* indigo-100 */
-            border-color: #6366f1; /* indigo-500 */
-        }
+        .nav-btn-current { background-color: #4f46e5; color: white; border-color: #4338ca; transform: scale(1.05); }
+        .mcq-label-selected { background-color: #e0e7ff; border-color: #6366f1; }
         @keyframes blinkingColors {
-            0%, 100% { color: #22c55e; } /* Xanh lá */
-            33% { color: #ef4444; }      /* Đỏ */
-            66% { color: #eab308; }      /* Vàng */
+            0%,100% { color: #22c55e; } 33% { color: #ef4444; } 66% { color: #eab308; }
         }
-        .blinking-text {
-            animation: blinkingColors 3s infinite;
-        }
+        .blinking-text { animation: blinkingColors 3s infinite; }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
@@ -43,7 +39,7 @@
                 <label class="block font-bold text-center text-blue-600">Mã kỳ thi (Kiểm tra)</label>
                 <p id="examCodeDisplay" class="w-full text-center text-lg font-bold text-red-600 p-2 mt-1"></p>
             </div>
-            
+
             <div class="mb-3">
                 <label class="block font-medium">Số báo danh (VD: 520112)</label>
                 <input type="text" id="studentId" class="w-full border rounded px-3 py-2 mt-1" required>
@@ -53,14 +49,22 @@
                 <input type="text" id="fullname" class="w-full border rounded px-3 py-2 mt-1" required>
             </div>
             <div class="mb-3">
-                <label class="block font-medium">Lớp (VD: 12A1, 12A11)</label>
+                <label class="block font-medium">Lớp (VD: 12A1, 12A10)</label>
                 <input type="text" id="className" class="w-full border rounded px-3 py-2 mt-1" required>
             </div>
             <div class="mb-3">
-                <label class="block font-medium">Trường (VD: THPT Yên Dũng số 2)</label>
+    	<label class="block font-medium">Trường</label>
+  	 <select id="schoolSelect" class="w-full border rounded px-3 py-2 mt-1">
+        <option value="">-- Chọn trường --</option>
+        <option value="THPT Yên Dũng số 2">THPT Yên Dũng số 2</option>
+        <option value="THPT Yên Dũng số 1">THPT Yên Dũng số 1</option>
+        <option value="THPT Lục Nam">THPT Lục Nam</option>
+        <option value="THPT Tân Yên 1">THPT Tân Yên 1</option>
+        <option value="Khác">Khác...</option>
+    	</select>
+    	<input type="text" id="schoolInput" class="w-full border rounded px-3 py-2 mt-2 hidden" placeholder="Nhập tên trường khác">
+	</div>
 
-                <input type="text" id="school" class="w-full border rounded px-3 py-2 mt-1" required>
-            </div>
             <button id="startBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mt-2">Bắt đầu làm bài</button>
         </div>
 
@@ -72,51 +76,47 @@
                         Câu <span id="question-counter">1</span> / <span id="total-questions-display"></span>
                     </p>
                 </div>
-                <div id="timer" class="text-2xl font-bold text-red-500">60:00</div>
+                <div>
+                    <div id="timer" class="text-2xl font-bold text-red-500">00:00</div>
+                    <div id="timeHint" class="text-sm text-gray-500 text-right">Thời gian làm bài</div>
+                </div>
             </div>
-            
+
             <div id="questionNavPanel" class="flex flex-wrap gap-2 p-3 border-b mb-4 bg-gray-50 rounded-lg"></div>
 
             <form id="quizForm" class="space-y-6">
-                <div id="question-text" class="text-lg font-medium text-gray-800 min-h-[48px]"></div>
+                <p id="question-text" class="text-lg font-medium text-gray-800 min-h-[48px]"></p>
                 <div id="answer-container" class="space-y-3"></div>
-                
+
                 <div class="flex justify-between items-center pt-4 mt-4 border-t">
                     <button type="button" id="prevBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded">Câu trước</button>
-                    <button type="submit" id="submitBtn" class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded text-lg font-bold">Nộp bài</button>
+                    <div class="flex gap-3">
+                        <button type="button" id="reviewTimeBtn" class="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded">Xem bộ thời gian</button>
+                        <button type="submit" id="submitBtn" class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded text-lg font-bold">Nộp bài</button>
+                    </div>
                     <button type="button" id="nextBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">Câu sau</button>
                 </div>
             </form>
         </div>
-        
+
+        <div id="countdown" class="text-red-600 font-bold text-lg my-2"></div>
+
         <div id="resultSection" class="hidden text-center">
             <h2 id="studentNameResult" class="text-2xl font-bold mb-2"></h2>
             <p class="text-lg mb-4">Đã hoàn thành bài kiểm tra!</p>
-            <p class="text-xl">Tổng điểm của bạn là: 
+            <p class="text-xl">Tổng điểm của bạn là:
                 <span id="finalScore" class="font-bold text-blue-600 text-3xl"></span>
             </p>
             <p class="mt-4 text-gray-600">Kết quả đã được lưu vào hệ thống.</p>
-            
-            <div class="mt-8 p-4 border-t bg-gray-50 rounded-lg">
-                <img src="https://placehold.co/300x300/3B82F6/FBBF24?text=TOÁN%0ATHẦY+HÀ&font=times-new-roman&css=%7B%22font-weight%22%3A%22bold%22%2C%22font-size%22%3A%2290px%22%7D" alt="Logo Toán Thầy Hà" class="mx-auto mb-4 rounded-full shadow-lg border-4 border-yellow-400 h-32 w-32 object-cover">
-                <h3 class="text-lg font-bold mb-2">Lớp toán thầy Hà tiếp tục tuyển sinh</h3>
-                <p class="text-gray-600">
-                    Nhóm nhỏ để đảm bảo sát sao và chất lượng!<br>
-                    Luyện thi cơ bản và luyện thi chất lượng cao theo yêu cầu!<br>
-                    Địa chỉ học: Đội 6 - Xuân Phú – Tân Tiến – Bắc Ninh!<br>
-                    Liên hệ qua Zalo: <strong>0988.948.882</strong>
-                </p>
-            </div>
         </div>
     </div>
 
+    <!-- Modal quảng cáo / xác nhận vào thi -->
     <div id="announcementModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-xl shadow-lg p-8 max-w-lg w-full text-center">
-            <img src="https://placehold.co/300x300/3B82F6/FBBF24?text=TOÁN%0ATHẦY+HÀ&font=times-new-roman&css=%7B%22font-weight%22%3A%22bold%22%2C%22font-size%22%3A%2290px%22%7D" alt="Logo Toán Thầy Hà" class="mx-auto mb-4 rounded-full shadow-lg border-4 border-yellow-400 h-32 w-32 object-cover">
             <h2 class="text-xl font-bold mb-2">Lớp toán thầy Hà tiếp tục tuyển sinh</h2>
             <p class="text-gray-600 mb-6">
                 Nhóm nhỏ để đảm bảo sát sao và chất lượng!<br>
-                Luyện thi cơ bản và luyện thi chất lượng cao theo yêu cầu!<br>
                 Địa chỉ học: Đội 6 - Xuân Phú – Tân Tiến – Bắc Ninh!<br>
                 Liên hệ qua Zalo: <strong>0988.948.882</strong>
             </p>
@@ -127,564 +127,674 @@
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    <!-- Modal confirm nộp bài -->
+    <div id="confirmSubmitModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full text-center">
+            <h3 class="text-lg font-bold mb-3">Bạn có chắc chắn muốn nộp bài không?</h3>
+            <p class="mb-4 text-gray-600">Sau khi nộp, bạn không thể sửa đáp án.</p>
+            <div class="flex justify-center gap-4">
+                <button id="confirmYes" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded">Yes</button>
+                <button id="confirmNo" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded">No</button>
+            </div>
+        </div>
+    </div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAwM9_H8PTooz3Nh4MPt9wdtBScIvMC318",
-            authDomain: "toanthayha-cd96c.firebaseapp.com",
-            projectId: "toanthayha-cd96c",
-            storageBucket: "toanthayha-cd96c.firebasestorage.app",
-            messagingSenderId: "940207284081",
-            appId: "1:940207284081:web:9801158f72cc14053ae0d0",
-            measurementId: "G-9D5ZQ66BSB"
-        };
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+    <!-- Modal xem bộ thời gian -->
+    <div id="timeInfoModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+            <h3 class="text-lg font-bold mb-3">Bộ thời gian</h3>
+            <p class="mb-2"><strong>Mã kỳ thi:</strong> <span id="modalExamCode"></span></p>
+            <p class="mb-2"><strong>Giờ mở đề:</strong> <span id="modalStartTime"></span></p>
+            <p class="mb-2"><strong>Giờ đóng đề:</strong> <span id="modalDeadline"></span></p>
+            <p class="mb-4 text-sm text-gray-600">Thời gian làm bài tính từ lúc bạn nhấn "Vào thi".</p>
+            <div class="text-right">
+                <button id="closeTimeInfo" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Đóng</button>
+            </div>
+        </div>
+    </div>
 
-        const EXAM_CODE = "Toan12_001";
-        document.getElementById("examCodeDisplay").textContent = EXAM_CODE;
-        const QUIZ_ID = "toanthayha_12";
-        const TIME_LIMIT_SECONDS = 60 * 60;
-        const ATTEMPT_LIMIT = 500;
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        const originalQuizData = [
-    {
-        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
-        "type": "mcq",
-        "question": "Cho hàm số $y = \\frac{2x+1}{x+1}$. Mệnh đề nào dưới đây đúng?",
-        "o": [
-            "Hàm số đồng biến trên khoảng $(-\\infty; -1)$.",
-            "Hàm số nghịch biến trên khoảng $(-1; +\\infty)$.",
-            "Hàm số đồng biến trên khoảng $(-\\infty; -1)$ và $(-1; +\\infty)$.",
-            "Hàm số nghịch biến trên khoảng $(-\\infty; -1)$ và $(-1; +\\infty)$."
-        ],
-        "a": "Hàm số đồng biến trên khoảng $(-\\infty; -1)$."
-    },
-    {
-        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
-        "type": "mcq",
-        "question": "Cho hàm số $y=f(x)$ xác định, liên tục trên tập số thực $\\mathbb{R}$ và có đồ thị như hình bên. Hàm số $y=f(x)$ đạt cực tiểu tại điểm nào dưới đây? (có đồ thị như hình vẽ)",
-        "o": [
-            "$x=2$ và $x=-2$.",
-            "$x=0$.",
-            "$x=-2$.",
-            "$y=-2$."
-        ],
-        "a": "$x=-2$."
-    },
-    {
-        
-  "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
-  "type": "mcq",
-  "question": "Tìm giá trị lớn nhất của hàm số $y = x^4 - 2x^2 + 3$ trên đoạn $\\left[0; 2\\right]$",
-  "o": [
-    "$\\max\\limits_{\\left[0;2\\right]} y = 2$",
-    "$\\max\\limits_{\\left[0;2\\right]} y = 3$",
-    "$\\max\\limits_{\\left[0;2\\right]} y = 10$",
-    "$\\max\\limits_{\\left[0;2\\right]} y = 11$"
-  ],
-  "a": "$\\max\\limits_{\\left[0;2\\right]} y = 11$"
-},
+// ====== Cấu hình Firebase ======
+const firebaseConfig = {
+    apiKey: "AIzaSyAwM9_H8PTooz3Nh4MPt9wdtBScIvMC318",
+    authDomain: "toanthayha-cd96c.firebaseapp.com",
+    projectId: "toanthayha-cd96c",
+    storageBucket: "toanthayha-cd96c.firebasestorage.app",
+    messagingSenderId: "940207284081",
+    appId: "1:940207284081:web:9801158f72cc14053ae0d0",
+    measurementId: "G-9D5ZQ66BSB"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-    {
-        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
-        "type": "mcq",
-        "question": "Cho hàm số $y=f(x)$ liên tục trên đoạn $[-1; 2]$ và có đồ thị như hình vẽ. Gọi $M, m$ lần lượt là giá trị lớn nhất và giá trị nhỏ nhất của hàm số đã cho trên đoạn $[-1; 2]$. Ta có $M+m$ bằng:",
-        "o": [
-            "$M+m=0$.",
-            "$M+m=2$.",
-            "$M+m=1$.",
-            "$M+m=5$."
-        ],
-        "a": "$M+m=1$."
-    },
-    {
-        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
-        "type": "mcq",
-        "question": "Có bao nhiêu giá trị nguyên của tham số $m$ thuộc đoạn $[-2024; 2024]$ để hàm số $y = \\frac{x-1}{x-m}$ đồng biến trên từng khoảng xác định?",
-        "o": [
-            "2024.",
-            "2025.",
-            "4048.",
-            "2023."
-        ],
-        "a": "2025."
-    },
-    {
-        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
-        "type": "mcq",
-        "question": "Cho hàm số $y = f(x)$, bảng xét dấu của $y'$ như sau: (có bảng xét dấu). Hàm số đạt cực tiểu tại điểm nào?",
-        "o": [
-            "$x=1$.",
-            "$x=2$.",
-            "$x=-1$.",
-            "$x=0$."
-        ],
-        "a": "$x=-1$."
-    },
-    {
-        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
-        "type": "mcq",
-        "question": "Giá trị thực của tham số $m$ để hàm số $y = x^3 - 3mx^2 + 3(m^2-1)x - m^2$ đạt cực tiểu tại $x=2$ thuộc khoảng nào dưới đây?",
-        "o": [
-            "$(-2; 0)$.",
-            "$(0; 2)$.",
-            "$(3; 5)$.",
-            "$(5; 7)$."
-        ],
-        "a": "$(0; 2)$."
-    },
-    {
-        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
-        "type": "mcq",
-        "question": "Tính giá trị nhỏ nhất của hàm số $y = x + \\frac{4}{x}$ trên khoảng $(0; +\\infty)$.",
-        "o": [
-            "$\\min y = 2$",
-            "$\\min y = 4$",
-            "$\\min y = 0$",
-            "$\\min y = 1$"
-        ],
-        "a": "$\\min y = 4$"
-    },
-    {
-        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
-        "type": "mcq",
-        "question": "Một chất điểm chuyển động theo quy luật $s(t) = -\\frac{1}{3}t^3 + \\frac{9}{2}t^2 + 10t$ với t (giây) là khoảng thời gian tính từ lúc vật bắt đầu chuyển động và S (mét) là quãng đường vật chuyển động trong thời gian đó. Hỏi trong thời gian 10 giây, kể từ lúc bắt đầu chuyển động, vận tốc lớn nhất của chuyển động là bao nhiêu?",
-        "o": [
-            "25 (m/s).",
-            "11 (m/s).",
-            "100 (m/s).",
-            "88 (m/s)."
-        ],
-        "a": "88 (m/s)."
-    },
-    {
-        "part": "Phần I: Trắc nghiệm nhiều lựa chọn",
-        "type": "mcq",
-        "question": "Biết rằng giá trị nhỏ nhất của hàm số $y = |x^3 - 3x^2 + m|$ trên đoạn $[0; 3]$ bằng 7. Giá trị của tham số $m$ bằng",
-        "o": [
-            "$m=11$ hoặc $m=-7$.",
-            "$m=11$.",
-            "$m=7$.",
-            "$m=-7$."
-        ],
-        "a": "$m=11$ hoặc $m=-7$."
-    },
-    {
-        "part": "Phần II: Trắc nghiệm Đúng/Sai",
-        "type": "true-false",
-        "question": "Cho hàm số $y = x^3 - 3x^2 + 2$ có đồ thị $(C)$.",
-        "s": [
-            { "text": "Hàm số đồng biến trên khoảng $(0; 2)$.", "a": false },
-            { "text": "Gọi $A, B$ là hai điểm cực trị của đồ thị $(C)$ khi đó $AB = 2\\sqrt{5}$.", "a": true },
-            { "text": "Đường thẳng đi qua hai điểm cực trị của đồ thị hàm số chắn ra trên hai trục tọa độ một tam giác có diện tích là 4.", "a": false },
-            { "text": "Giá trị cực đại của hàm số là 4.", "a": false }
-        ]
-    },
-    {
-        "part": "Phần II: Trắc nghiệm Đúng/Sai",
-        "type": "true-false",
-        "question": "Cho hàm số $y=f(x)$ liên tục trên tập $\\mathbb{R}$ và có bảng biến thiên như sau: (có bảng biến thiên)",
-        "s": [
-            { "text": "Giá trị lớn nhất của hàm số trên $\\mathbb{R}$ bằng 5.", "a": true },
-            { "text": "Giá trị nhỏ nhất của hàm số bằng 2.", "a": false },
-            { "text": "Giá trị lớn nhất của hàm số trên $[-1; 0]$ bằng 4.", "a": true },
-            { "text": "Giá trị lớn nhất của hàm số trên $(0; +\\infty)$ bằng 5.", "a": true }
-        ]
-    },
-    {
-        "part": "Phần II: Trắc nghiệm Đúng/Sai",
-        "type": "true-false",
-        "question": "Cho hàm số $y = \\frac{x-m^2}{x+1}$ ($m$ là tham số). Các mệnh đề sau đúng hay sai?",
-        "s": [
-            { "text": "Tập xác định của hàm số là $D = \\mathbb{R} \\setminus \\{-1\\}$.", "a": true },
-            { "text": "Với $m=1$, hàm số đã cho có giá trị nhỏ nhất trên $[0; 1]$ là $-\\frac{1}{2}$.", "a": false },
-            { "text": "Với $m=\\sqrt{2}$, hàm số đã cho có giá trị lớn nhất trên $[0; 1]$ là $-\\frac{1}{2}$.", "a": true },
-            { "text": "Biết rằng khi $m \\ne \\pm\\sqrt{2}$ thì hàm số đã cho có giá trị nhỏ nhất trên $[2; 4]$ bằng 2. Khi đó $m=4$.", "a": false }
-        ]
-    },
-    {
-        "part": "Phần III: Trả lời ngắn",
-        "type": "short-answer",
-        "question": "Có tất cả bao nhiêu giá trị nguyên của tham số $m$ để hàm số $y = x^3 - 3(m+1)x^2 + 9x - m$ đồng biến trên khoảng $(2; +\\infty)$?",
-        "a": "3"
-    },
-    {
-        "part": "Phần III: Trả lời ngắn",
-        "type": "short-answer",
-        "question": "Cho hàm số $y = x^3 - 3x^2 + 1$ có đồ thị $(C)$. Tính độ dài đoạn thẳng nối hai điểm cực trị của đồ thị $(C)$. (Làm tròn đến hàng phần trăm)",
-        "a": "4.47"
-    },
-    {
-        "part": "Phần III: Trả lời ngắn",
-        "type": "short-answer",
-        "question": "Cho hàm số $y=f(x)$ có đạo hàm trên khoảng $(0; +\\infty)$ thỏa mãn $f'(x) = x^2(x-1)(x-2)^3(x-4)$. Biết $f(0)=0$ thì giá trị nhỏ nhất và giá trị lớn nhất của hàm số $g(x)=f(x^2)$ trên đoạn $[1; 2]$ lần lượt là $m, M$. Giá trị $M-m$ bằng ... (làm tròn kết quả đến hàng phần trăm)",
-        "a": ""
-    },
-    {
-        "part": "Phần III: Trả lời ngắn",
-        "type": "short-answer",
-        "question": "Cho hai vị trí A, B cách nhau 650m, cùng nằm về một phía bờ sông. Khoảng cách từ A và từ B đến bờ sông lần lượt là 150m và 290m. Một người đi từ A đến bờ sông để lấy nước mang về B. Đoạn đường ngắn nhất mà người đó có thể đi là bao nhiêu mét? (kết quả làm tròn đến hàng đơn vị)",
-        "a": "780"
+// ====== Cấu hình kỳ thi ======
+const EXAM_CODE = "Toan12_002";
+const QUIZ_ID = "toanthayha_12";
+const TIME_LIMIT_SECONDS = 60 * 60; // thời gian làm bài (giây). chỉnh ở đây
+const ATTEMPT_LIMIT = 2;            // giới hạn số lần làm bài mỗi SBD
+const START_TIME = "2025-10-03T20:00:00"; // thời gian mở
+const DEADLINE = "2025-10-10T23:00:00";   // thời gian đóng
+
+// ====== DOM ======
+const examCodeDisplay = document.getElementById("examCodeDisplay");
+const startBtn = document.getElementById("startBtn");
+const announcementModal = document.getElementById("announcementModal");
+const enterQuizBtn = document.getElementById("enterQuizBtn");
+const exitBtn = document.getElementById("exitBtn");
+const userInfoSection = document.getElementById("userInfoSection");
+const quizSection = document.getElementById("quizSection");
+const resultSection = document.getElementById("resultSection");
+const timerElement = document.getElementById("timer");
+const countdownEl = document.getElementById("countdown");
+const reviewTimeBtn = document.getElementById("reviewTimeBtn");
+
+const confirmSubmitModal = document.getElementById("confirmSubmitModal");
+const confirmYes = document.getElementById("confirmYes");
+const confirmNo = document.getElementById("confirmNo");
+
+const timeInfoModal = document.getElementById("timeInfoModal");
+const modalExamCode = document.getElementById("modalExamCode");
+const modalStartTime = document.getElementById("modalStartTime");
+const modalDeadline = document.getElementById("modalDeadline");
+const closeTimeInfo = document.getElementById("closeTimeInfo");
+
+const quizForm = document.getElementById("quizForm");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const submitBtn = document.getElementById("submitBtn");
+// Xử lý chọn trường
+const schoolSelect = document.getElementById("schoolSelect");
+const schoolInput = document.getElementById("schoolInput");
+
+schoolSelect.addEventListener("change", () => {
+    if (schoolSelect.value === "Khác") {
+        schoolInput.classList.remove("hidden");
+        schoolInput.value = "";
+    } else {
+        schoolInput.classList.add("hidden");
+        schoolInput.value = schoolSelect.value;
     }
+});
+
+
+// Hiển thị mã kỳ thi
+examCodeDisplay.textContent = EXAM_CODE;
+
+// Hiển thị modal thông tin thời gian
+modalExamCode.textContent = EXAM_CODE;
+modalStartTime.textContent = (new Date(START_TIME)).toLocaleString();
+modalDeadline.textContent = (new Date(DEADLINE)).toLocaleString();
+
+reviewTimeBtn.addEventListener("click", () => timeInfoModal.classList.remove("hidden"));
+closeTimeInfo.addEventListener("click", () => timeInfoModal.classList.add("hidden"));
+
+// === Countdown mở/đóng đề ===
+function formatDiff(ms) {
+    if (ms < 0) ms = 0;
+    const totalSeconds = Math.floor(ms / 1000);
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = totalSeconds % 60;
+    return `${h}h ${m}m ${s}s`;
+}
+function updateCountdown() {
+    const now = new Date();
+    const startDate = new Date(START_TIME);
+    const endDate = new Date(DEADLINE);
+    let msg = "";
+    if (now < startDate) {
+        msg = "⏳ Bài kiểm tra sẽ mở sau: " + formatDiff(startDate - now);
+    } else if (now >= startDate && now <= endDate) {
+        msg = "📝 Bài kiểm tra đang mở. Còn thời gian tới khi đóng đề: " + formatDiff(endDate - now);
+    } else {
+        msg = "❌ Bài kiểm tra đã kết thúc.";
+        startBtn.disabled = true;
+        startBtn.textContent = "Đã hết hạn làm bài";
+        startBtn.classList.add('bg-gray-400','cursor-not-allowed');
+    }
+    countdownEl.textContent = msg;
+}
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// ========== Dữ liệu câu hỏi (giữ nguyên như gốc) ==========
+const originalQuizData = [{
+"part": "Phan I: Cau trac nghiem nhieu phuong an lua chon",
+"type": "mcq",
+"question": "Cho hàm số$y=f\\left(x \\right)$ có đồ thị như hình vẽ bên dưới. <br> <img src=\"https://raw.githubusercontent.com/NVH2020/Anhbaithi/main/01.01.02.png\" alt=\"Đồ thị hàm số\" class=\"mx-auto my-3 rounded-lg shadow-md max-w-full\"> <br>  Hỏi đồ thị của hàm số $y=f\\left(x \\right)$có bao nhiêu điểm cực trị?",
+"o": ["$1$.", "$2$.", "$3$.", "$4$."],
+"a": "$2$."
+},
+{
+"part": "Phan I: Cau trac nghiem nhieu phuong an lua chon",
+"type": "mcq",
+"question": "Đồ thị của hàm số nào dưới đây có tiệm cận ngang?",
+"o": ["$y=\\frac{3x+1}{x-1}$.", "$y=-{{x}^{3}}+3{{x}^{2}}+3x+1$.", "$y=\\frac{{{x}^{2}}+x+1}{x-1}$.", "$y={{x}^{4}}+{{x}^{2}}$."],
+"a": "$y=\\frac{3x+1}{x-1}$."
+},
+{
+"part": "Phan I: Cau trac nghiem nhieu phuong an lua chon",
+"type": "mcq",
+"question": "Cho hàm số $y={{x}^{3}}+3x+2$. Mệnh đề nào dưới đây là đúng?",
+"o": ["Hàm số đồng biến trên khoảng $\\left(-\\infty ;+\\infty \\right)$.", "Hàm số nghịch biến trên khoảng $\\left(-\\infty ;+\\infty \\right)$.", "Hàm số nghịch biến trên khoảng $\\left(-\\infty ;0 \\right)$ và đồng biến trên khoảng $\\left(0;+\\infty \\right)$.", "Hàm số đồng biến trên khoảng $\\left(-\\infty ;0 \\right)$ và đồng biến trên khoảng $\\left(0;+\\infty \\right)$"],
+"a": "Hàm số đồng biến trên khoảng $\\left(-\\infty ;+\\infty \\right)$."
+},
+{
+"part": "Phan I: Cau trac nghiem nhieu phuong an lua chon",
+"type": "mcq",
+"question": "Cho hàm số $y=f\\left(x \\right)$có bảng biến thiên như hình bên dưới. <br>  <img src=\"https://raw.githubusercontent.com/NVH2020/Anhbaithi/main/01.04.02.png\" alt=\"Đồ thị hàm số\" class=\"mx-auto my-3 rounded-lg shadow-md max-w-full\">  <br>  Số điểm cực trị của hàm số $f(-2x)$là bao nhiêu?",
+"o": ["$5$.", "$3$.", "$6$.", "$4$."],
+"a": "$3$."
+},
+{
+"part": "Phan I: Cau trac nghiem nhieu phuong an lua chon",
+"type": "mcq",
+"question": "Tìm tất cả các giá trị thực của tham số $m$ để giá trị nhỏ nhất của hàm số $y=\\frac{x+2{{m}^{2}}-m}{x-3}$ trên đoạn $\\left[ 0;1 \\right]$ bằng $-2$.",
+"o": ["$m=1$  hoặc $m=-\\frac{1}{2}$.", "$m=3$  hoặc $m=-\\frac{5}{2}$.", "$m=-1$  hoặc $m=\\frac{3}{2}$.", "$m=2$  hoặc $m=-\\frac{3}{2}$."],
+"a": "$m=-1$  hoặc $m=\\frac{3}{2}$."
+},
+{
+"part": "Phan I: Cau trac nghiem nhieu phuong an lua chon",
+"type": "mcq",
+"question": "Các chuyên gia Y-tế ước tính số người nhiễm virus Zika kể từ ngày xuất hiện bệnh nhân đầu tiên đến ngày thứ $t$ là $f\\left(t \\right)=45{{t}^{2}}-{{t}^{3}},\\left(t=0,1,2,...,25 \\right)$. Nếu coi $f\\left(t \\right)$là một hàm xác định trên đoạn $\\left[ 0;25 \\right]$ thì $f'\\left(t \\right)$ được xem là tốc độ truyền bệnh (người/ngày) tại thời điểm $t$. Tốc độ truyền bệnh sẽ lớn nhất vào ngày thứ mấy?",
+"o": ["$5$ .", "$15$ .", "$20$ .", "$8$ ."],
+"a": "$15$ ."
+},
+{
+  "part": "Phan I: Cau trac nghiem nhieu phuong an lua chon",
+  "type": "mcq",
+  "question": "Giá trị nhỏ nhất của hàm số $f\\left(x \\right) = x^{4} - 6x^{2} - 1$ trên đoạn $[-1;3]$ bằng",
+  "o": ["$-1$", "$-10$", "$-11$", "$-26$"],
+  "a": "$-10$"
+},
+{
+"part": "Phan I: Cau trac nghiem nhieu phuong an lua chon",
+"type": "mcq",
+"question": "Cho đường cong $\\left(C \\right):y=\\frac{2x+3}{x-1}$ và $M$ là một điểm nằm trên $\\left(C \\right)$. Giả sử ${{d}_{1}}$, ${{d}_{2}}$ tương ứng là các khoảng cách từ $M$ đến hai tiệm cận (đứng và ngang) của $\\left(C \\right)$, khi đó ${{d}_{1}}.{{d}_{2}}$ bằng",
+"o": ["$3$.", "$4$.", "$5$.", "$6$."],
+"a": "$5$."
+},
+{
+"part": "Phan I: Cau trac nghiem nhieu phuong an lua chon",
+"type": "mcq",
+"question": "Có bao nhiêu giá trị nguyên của tham số $m$ để hàm số $y=\\frac{x+{{m}^{2}}}{x+4}$ đồng biến trên từng khoảng xác định của nó?",
+"o": ["$1$.", "$2$.", "$3$.", "$5$."],
+"a": "$3$."
+},
+{
+"part": "Phan I: Cau trac nghiem nhieu phuong an lua chon",
+"type": "mcq",
+"question": "Cho hàm số $y=f\\left(x \\right)$ có đạo hàm liên tục trên $\\left[ -3;\\,3 \\right]$ và hàm số $y={f}'\\left(x \\right)$ có đồ thị như hình vẽ bên dưới. <br> <img src=\"https://raw.githubusercontent.com/NVH2020/Anhbaithi/main/01.10.02.png\" alt=\"Đồ thị hàm số\" class=\"mx-auto my-3 rounded-lg shadow-md max-w-full\"> <br> Hàm số $y=f(x)$ nghịch biến trên khoảng nào?",
+"o": ["$\\left(0;\\,2 \\right)$.", "$\\left(2;\\,3 \\right)$.", "$\\left(-3;\\,-1 \\right)$.", "$\\left(-1;\\,0 \\right)$."],
+"a": "$\\left(-1;\\,0 \\right)$."
+},
+{
+"part": "Phan II: Cau trac nghiem dung sai",
+"type": "true-false",
+"question": "Cho hàm số $y=\\frac{{{x}^{2}}-2x}{x-1}$ có đồ thị là $(C)$.",
+"s": [
+{"text": "Đồ thị hàm số $(C)$ có một tiệm cận ngang.", "a": false},
+{"text": "Đồ thị hàm số $(C)$ có tiệm cận đứng là $x=1$.", "a": true},
+{"text": "Nếu đồ thị $(C)$ có tiệm cận xiên là $y=ax+b$ thì $b=-1$.", "a": true},
+{"text": "Giao điểm của các đường tiệm cận của đồ thị $(C)$ là $I(1;0)$.", "a": true}
+]
+},
+{
+"part": "Phan II: Cau trac nghiem dung sai",
+"type": "true-false",
+"question": "Cho hàm số : $$y=-3{{x}^{3}}+5{{x}^{2}}-x-2$$  có đồ thị là $\\left(\\text{C} \\right)$.",
+"s": [
+{"text": "Đồ thị hàm số có 2 điểm cực trị.", "a": true},
+{"text": "Điểm đối xứng của đồ thị có tọa độ là $\\left(0;\\,2 \\right)$.", "a": false},
+{"text": "Trên đoạn $\\left[ 1;3 \\right]$ thì giá trị lớn nhất của hàm số đạt được tại $x=1.$", "a": true},
+{"text": "Phương trình tiếp tuyến có hệ số góc lớn nhất của đồ thị $\\left(\\text{C} \\right)$ đi qua điểm $A\\left(2;3 \\right)$.", "a": false}
+]
+},
+{
+"part": "Phan II: Cau trac nghiem dung sai",
+"type": "true-false",
+"question": "Cho hàm số $y=f\\left(x \\right)=a{{x}^{3}}+b{{x}^{2}}+cx+d$ có đồ thị như hình vẽ dưới đây. <br> <img src=\"https://raw.githubusercontent.com/NVH2020/Anhbaithi/main/02.03.02.png\" alt=\"Đồ thị hàm số\" class=\"mx-auto my-3 rounded-lg shadow-md max-w-full\">  <br> Mỗi mệnh đề sau đây đúng hay sai?",
+"s": [
+{"text": "$2a+3b+c=9$.", "a": false},
+{"text": "Đồ thị hàm số cắt trục $Oy$ tại điểm có toạ độ $\\left(0\\,;\\,1 \\right)$.", "a": true},
+{"text": "Hàm số đạt cực tiểu tại $x=1$.", "a": false},
+{"text": "Hàm số đồng biến trên khoảng $\\left(-\\infty \\,;\\,-1 \\right)$.", "a": false}
+]
+},
+{
+"part": "Phan III: Cau tra loi ngan",
+"type": "short-answer",
+"question": "Gọi $M$ và $m$ lần lượt là giá trị lớn nhất và giá trị nhỏ nhất của hàm số  $y={{x}^{3}}-3{{x}^{2}}-9x+35$  trên đoạn  $\\left[ -4;4 \\right]$ .Tính $2M+3m$.",
+"a": "-43"
+},
+{
+"part": "Phan III: Cau tra loi ngan",
+"type": "short-answer",
+"question": "Để thiết kế một chiếc bể cá hình hộp chữ nhật không nắp có chiều cao là $70cm$, thể tích là $112000c{{m}^{3}}$, người thợ dùng loại kính để sử dụng làm mặt bên có giá thành mỗi mét vuông là $70000$ đồng và loại kính để làm mặt đáy có giá thành mỗi mét vuông là $100000$ đồng. Chi phí thấp nhất để hoàn thành bể cá là bao nhiêu nghìn đồng?",
+"a": "94,4"
+},
+{
+"part": "Phan III: Cau tra loi ngan",
+"type": "short-answer",
+"question": "Người ta giăng lưới để nuôi riêng một loại cá trên một góc hồ. Biết rằng lưới được giăng theo một đường thẳng từ một vị trí trên bờ ngang đến một vị trí trên bờ dọc và phải đi qua một cái cọc đã cắm sẵn ở vị trí $A$. Diện tích nhỏ nhất có thể giăng lưới là bao nhiêu mét vuông, biết rằng khoảng cách từ cọc đến bờ ngang là $5m$ và khoảng cách từ cọc đến bờ dọc là $10m$? <br> <img src=\"https://raw.githubusercontent.com/NVH2020/Anhbaithi/main/03.03.02.png\" alt=\"Đồ thị hàm số\" class=\"mx-auto my-3 rounded-lg shadow-md max-w-full\">  ",
+"a": "100"
+},
+{
+"part": "Phan III: Cau tra loi ngan",
+"type": "short-answer",
+"question": "Cho hàm số $y=\\frac{2{{x}^{2}}-3x-3}{x-2}$. Tiệm cận xiên của đồ thị hàm số là đường thẳng $y=ax+b$. Tính giá trị của biểu thức $P={{a}^{2}}+{{b}^{2}}$.",
+"a": "5"
+}
 ];
 
-        
-        let quizData = [];
-        const totalQuestions = originalQuizData.length;
 
-        const startBtn = document.getElementById("startBtn");
-        const userInfoSection = document.getElementById("userInfoSection");
-        const quizSection = document.getElementById("quizSection");
-        const resultSection = document.getElementById("resultSection");
-        const announcementModal = document.getElementById('announcementModal');
-        const enterQuizBtn = document.getElementById('enterQuizBtn');
-        const exitBtn = document.getElementById('exitBtn');
-        const mainContainer = document.getElementById('main-container');
-        const quizForm = document.getElementById("quizForm");
-        const studentNameResult = document.getElementById("studentNameResult");
-        const finalScore = document.getElementById("finalScore");
-        const timerElement = document.getElementById("timer");
-        const quizPartTitle = document.getElementById('quiz-part-title');
-        const questionCounter = document.getElementById('question-counter');
-        const totalQuestionsDisplay = document.getElementById('total-questions-display');
-        const questionNavPanel = document.getElementById('questionNavPanel');
-        const questionText = document.getElementById('question-text');
-        const answerContainer = document.getElementById('answer-container');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const submitBtn = document.getElementById('submitBtn');
+let quizData = [];
+const totalQuestions = originalQuizData.length;
+document.getElementById("total-questions-display").textContent = totalQuestions;
 
-        let currentUser = null;
-        let timerInterval = null;
-        let currentQuestionIndex = 0;
-        let userAnswers = [];
-        let quizStartTime = null;
+// ========== Trạng thái thi ==========
+let currentUser = null;
+let quizStartTime = null;
+let timerInterval = null;
+let timeLeftSeconds = TIME_LIMIT_SECONDS;
+let currentQuestionIndex = 0;
+let userAnswers = new Array(totalQuestions).fill(null);
 
-        totalQuestionsDisplay.textContent = totalQuestions;
+// === Utility ===
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+function prepareShuffledQuiz() {
+    // Giữ phân loại theo 'part' giống gốc, nhưng shuffle trong mỗi part
+    const grouped = originalQuizData.reduce((acc, q) => {
+        acc[q.part] = acc[q.part] || [];
+        acc[q.part].push(q);
+        return acc;
+    }, {});
+    let res = [];
+    for (const part in grouped) {
+        shuffleArray(grouped[part]);
+        res = res.concat(grouped[part]);
+    }
+    return res;
+}
 
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
+// ========== Kiểm tra số lần thi trước khi vào ==========
+startBtn.addEventListener("click", async () => {
+    const now = new Date();
+    const startDate = new Date(START_TIME);
+    const endDate = new Date(DEADLINE);
+
+    if (now < startDate) {
+        alert(`Bài kiểm tra chỉ mở từ ${startDate.toLocaleString('vi-VN')}. Vui lòng quay lại sau.`);
+        return;
+    }
+    if (now > endDate) {
+        alert(`Bài kiểm tra đã kết thúc vào lúc ${endDate.toLocaleString('vi-VN')}. Không thể nhận thêm bài làm.`);
+        return;
+    }
+
+    const studentId = document.getElementById("studentId").value.trim();
+    const fullname = document.getElementById("fullname").value.trim();
+    const className = document.getElementById("className").value.trim();
+    const school = document.getElementById("schoolInput").value.trim();
+
+
+    if (!studentId || !fullname || !className || !school) {
+        alert("Vui lòng nhập đầy đủ thông tin!");
+        return;
+    }
+
+    // Kiểm tra số lần làm bài với Firestore
+    try {
+        const resultsRef = collection(db, "quizResults");
+        const q = query(resultsRef,
+            where("studentId", "==", studentId),
+            where("examCode", "==", EXAM_CODE),
+            where("quizId", "==", QUIZ_ID)
+        );
+        const snapshot = await getDocs(q);
+        if (snapshot.size >= ATTEMPT_LIMIT) {
+            alert(`Số báo danh ${studentId} đã hết số lượt làm bài (${ATTEMPT_LIMIT} lần).`);
+            return;
         }
+    } catch (err) {
+        console.error("Lỗi kiểm tra lượt thi:", err);
+        alert("Lỗi kiểm tra số lượt thi. Vui lòng thử lại hoặc kiểm tra kết nối.");
+        return;
+    }
 
-        function prepareShuffledQuiz() {
-            const groupedByPart = originalQuizData.reduce((acc, question) => {
-                acc[question.part] = acc[question.part] || [];
-                acc[question.part].push(question);
-                return acc;
-            }, {});
-            let shuffledQuiz = [];
-            for (const part in groupedByPart) {
-                const questionsInPart = groupedByPart[part];
-                shuffleArray(questionsInPart);
-                shuffledQuiz = shuffledQuiz.concat(questionsInPart);
-            }
-            return shuffledQuiz;
-        }
+    // lưu thông tin tạm và hiện modal quảng cáo
+    currentUser = { examCode: EXAM_CODE, studentId, fullname, className, school };
+    announcementModal.classList.remove("hidden");
+});
 
-        startBtn.addEventListener("click", async () => {
-            const studentId = document.getElementById("studentId").value.trim();
-            const fullname = document.getElementById("fullname").value.trim();
-            const className = document.getElementById("className").value.trim();
-            const school = document.getElementById("school").value.trim();
+// ========== Vào thi sau modal ==========
+enterQuizBtn.addEventListener("click", () => {
+    announcementModal.classList.add("hidden");
+    userInfoSection.classList.add("hidden");
+    quizSection.classList.remove("hidden");
 
-            if (!studentId || !fullname || !className || !school) {
-                alert("Vui lòng nhập đầy đủ thông tin!"); return;
-            }
-            
-            currentUser = { 
-                examCode: EXAM_CODE, 
-                studentId, 
-                fullname, 
-                className, 
-                school 
-            };
-            
-            const resultsRef = collection(db, "quizResults");
-            const q = query(resultsRef, 
-                where("studentId", "==", studentId), 
-                where("quizId", "==", QUIZ_ID),
-                where("examCode", "==", EXAM_CODE) 
-            );
-            
-            const snapshot = await getDocs(q);
-            if (snapshot.size >= ATTEMPT_LIMIT) {
-                alert(`Bạn đã làm bài kiểm tra này ${snapshot.size} lần cho kỳ thi ${EXAM_CODE}. Số lần làm bài tối đa là ${ATTEMPT_LIMIT}.`);
-                return;
-            }
-            
-            mainContainer.classList.add('hidden');
-            announcementModal.classList.remove('hidden');
-        });
+    // chuẩn bị đề, biến trạng thái
+    quizData = prepareShuffledQuiz();
+    userAnswers = new Array(totalQuestions).fill(null);
+    currentQuestionIndex = 0;
+    quizStartTime = Date.now();
+    timeLeftSeconds = TIME_LIMIT_SECONDS;
 
-        enterQuizBtn.addEventListener('click', () => {
-            announcementModal.classList.add('hidden');
-            mainContainer.classList.remove('hidden');
-            userInfoSection.classList.add("hidden");
-            quizSection.classList.remove("hidden");
-            startQuiz();
-        });
+    renderNavPanel();
+    jumpToQuestion(0);
+    startTimer();
+});
 
-        exitBtn.addEventListener('click', () => {
-            location.reload();
-        });
+exitBtn.addEventListener("click", () => {
+    announcementModal.classList.add("hidden");
+});
 
-        function startQuiz() {
-            quizData = prepareShuffledQuiz();
-            userAnswers = new Array(totalQuestions).fill(null);
-            currentQuestionIndex = 0;
-            quizStartTime = Date.now();
-            renderNavPanel();
-            jumpToQuestion(0);
-            startTimer();
-        }
-        
-        function startTimer() {
-            let timeLeft = TIME_LIMIT_SECONDS;
-            timerInterval = setInterval(() => {
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    submitBtn.click();
-                } else {
-                    timeLeft--;
-                    const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-                    const seconds = (timeLeft % 60).toString().padStart(2, '0');
-                    timerElement.textContent = `${minutes}:${seconds}`;
-                }
-            }, 1000);
-        }
+// ========== Timer làm bài ==========
+function startTimer() {
+    // hiển thị lần đầu
+    updateTimerDisplay(timeLeftSeconds);
 
-        function renderNavPanel() {
-            questionNavPanel.innerHTML = '';
-            for (let i = 0; i < totalQuestions; i++) {
-                const btn = document.createElement('button');
-                btn.textContent = i + 1;
-                btn.className = 'nav-btn w-10 h-10 border rounded font-medium';
-                btn.type = 'button';
-                btn.onclick = () => {
-                    saveCurrentAnswer();
-                    jumpToQuestion(i);
-                };
-                questionNavPanel.appendChild(btn);
-            }
-        }
+    // clear nếu còn
+    if (timerInterval) clearInterval(timerInterval);
 
-        function jumpToQuestion(index) {
-            currentQuestionIndex = index;
-            showQuestion();
-            updateNavPanel();
-        }
-
-        function showQuestion() {
-            const question = quizData[currentQuestionIndex];
-            quizPartTitle.textContent = question.part;
-            questionCounter.textContent = currentQuestionIndex + 1;
-            questionText.innerHTML = question.question;
-            answerContainer.innerHTML = '';
-
-            switch (question.type) {
-                case 'mcq': renderMCQ(question); break;
-                case 'true-false': renderTrueFalse(question); break;
-                case 'short-answer': renderShortAnswer(question); break;
-            }
-			if (window.MathJax) {
-				MathJax.typesetPromise([questionText, answerContainer]);
-			}
-            
-            prevBtn.classList.toggle('hidden', currentQuestionIndex === 0);
-            nextBtn.classList.toggle('hidden', currentQuestionIndex === totalQuestions - 1);
-        }
-        
-        function updateNavPanel() {
-            const navButtons = questionNavPanel.children;
-            for (let i = 0; i < navButtons.length; i++) {
-                navButtons[i].classList.remove('nav-btn-current', 'nav-btn-answered');
-                if (userAnswers[i] !== null) {
-                    navButtons[i].classList.add('nav-btn-answered');
-                }
-                if (i === currentQuestionIndex) {
-                    navButtons[i].classList.add('nav-btn-current');
-                }
-            }
-        }
-
-        function saveCurrentAnswer() {
-            const question = quizData[currentQuestionIndex];
-            let answerData = null;
-            switch (question.type) {
-                case 'mcq':
-                    const selectedRadio = quizForm.querySelector(`input[name="q${currentQuestionIndex}"]:checked`);
-                    if (selectedRadio) answerData = selectedRadio.value;
-                    break;
-                case 'true-false':
-                    answerData = [];
-                    for (let i = 0; i < question.s.length; i++) {
-                        const selectedTF = quizForm.querySelector(`input[name="q${currentQuestionIndex}s${i}"]:checked`);
-                        answerData.push(selectedTF ? selectedTF.value === 'true' : null);
-                    }
-                    if (answerData.every(a => a === null)) answerData = null;
-                    break;
-                case 'short-answer':
-                    const input = quizForm.querySelector(`input[name="q${currentQuestionIndex}"]`);
-                    if (input && input.value.trim() !== '') answerData = input.value.trim();
-                    break;
-            }
-            userAnswers[currentQuestionIndex] = answerData;
-            updateNavPanel();
-        }
-
-        prevBtn.addEventListener('click', () => {
-            saveCurrentAnswer();
-            if (currentQuestionIndex > 0) jumpToQuestion(currentQuestionIndex - 1);
-        });
-
-        nextBtn.addEventListener('click', () => {
-            saveCurrentAnswer();
-            if (currentQuestionIndex < totalQuestions - 1) jumpToQuestion(currentQuestionIndex + 1);
-        });
-        
-        quizForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            saveCurrentAnswer(); 
+    timerInterval = setInterval(() => {
+        timeLeftSeconds--;
+        if (timeLeftSeconds <= 0) {
             clearInterval(timerInterval);
-            
-            const timeTakenInSeconds = Math.round((Date.now() - quizStartTime) / 1000);
-            let totalScore = 0;
-            const answersToSave = {};
+            // tự động nộp mà KHÔNG hiển thị confirm
+            alert("⏰ Hết giờ! Bài thi sẽ được nộp tự động.");
+            submitQuiz(true); // auto = true
+        } else {
+            updateTimerDisplay(timeLeftSeconds);
+        }
+    }, 1000);
+}
+function updateTimerDisplay(seconds) {
+    const min = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const sec = (seconds % 60).toString().padStart(2, '0');
+    timerElement.textContent = `${min}:${sec}`;
+}
 
-            quizData.forEach((q, index) => {
-                const userAnswer = userAnswers[index];
-                answersToSave[`q${index + 1}`] = userAnswer;
-                if (userAnswer === null) return;
+// ========== Điều hướng câu hỏi ==========
+function renderNavPanel() {
+    questionNavPanel.innerHTML = '';
+    for (let i = 0; i < totalQuestions; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i + 1;
+        btn.className = 'nav-btn w-10 h-10 border rounded font-medium';
+        btn.type = 'button';
+        btn.onclick = () => {
+            saveCurrentAnswer();
+            jumpToQuestion(i);
+        };
+        questionNavPanel.appendChild(btn);
+    }
+}
+function jumpToQuestion(index) {
+    currentQuestionIndex = index;
+    showQuestion();
+    updateNavPanel();
+}
+function showQuestion() {
+    const q = quizData[currentQuestionIndex];
+    document.getElementById("quiz-part-title").textContent = q.part || "";
+    document.getElementById("question-counter").textContent = currentQuestionIndex + 1;
+    document.getElementById("question-text").innerHTML = q.question || "";
+    answerContainer.innerHTML = "";
 
-                switch (q.type) {
-                    case 'mcq':
-                        if (userAnswer === q.a) totalScore += 0.5;
-                        break;
-                    case 'true-false':
-                        let correctCount = 0;
-                        q.s.forEach((st, sIndex) => { if (userAnswer[sIndex] === st.a) correctCount++; });
-                        const pointsMap = [0, 0.1, 0.25, 0.5, 1];
-                        totalScore += pointsMap[correctCount] || 0;
-                        break;
-                    case 'short-answer':
-                        if (userAnswer.toLowerCase() === q.a.toLowerCase()) totalScore += 0.5;
-                        break;
-                }
-            });
+    switch (q.type) {
+        case 'mcq': renderMCQ(q); break;
+        case 'true-false': renderTrueFalse(q); break;
+        case 'short-answer': renderShortAnswer(q); break;
+        default: renderMCQ(q);
+    }
 
-            quizSection.classList.add("hidden");
-            resultSection.classList.remove("hidden");
-            studentNameResult.textContent = currentUser.fullname;
-            finalScore.textContent = totalScore.toFixed(2);
+    if (window.MathJax && MathJax.typesetPromise) {
+        MathJax.typesetPromise();
+    }
 
-            try {
-                await addDoc(collection(db, "quizResults"), {
-                    ...currentUser,
-                    quizId: QUIZ_ID,
-                    score: parseFloat(totalScore.toFixed(2)),
-                    totalPossibleScore: 10,
-                    timeTaken: timeTakenInSeconds,
-                    answers: answersToSave,
-                    submittedAt: serverTimestamp()
-                });
-            } catch (error) {
-                console.error("Lỗi khi lưu kết quả: ", error);
-                alert("Đã có lỗi xảy ra khi lưu kết quả của bạn. Vui lòng thử lại.");
+    prevBtn.classList.toggle('hidden', currentQuestionIndex === 0);
+    nextBtn.classList.toggle('hidden', currentQuestionIndex === totalQuestions - 1);
+}
+function updateNavPanel() {
+    const navs = questionNavPanel.children;
+    for (let i = 0; i < navs.length; i++) {
+        navs[i].classList.remove('nav-btn-current', 'nav-btn-answered');
+        if (userAnswers[i] !== null) navs[i].classList.add('nav-btn-answered');
+        if (i === currentQuestionIndex) navs[i].classList.add('nav-btn-current');
+    }
+}
+
+// ========== Lưu đáp án khi chuyển câu ==========
+function saveCurrentAnswer() {
+    const q = quizData[currentQuestionIndex];
+    if (!q) return;
+    let ans = null;
+    switch (q.type) {
+        case 'mcq':
+            const sr = quizForm.querySelector(`input[name="q${currentQuestionIndex}"]:checked`);
+            if (sr) ans = sr.value;
+            break;
+        case 'true-false':
+            ans = [];
+            for (let i = 0; i < q.s.length; i++) {
+                const sr2 = quizForm.querySelector(`input[name="q${currentQuestionIndex}s${i}"]:checked`);
+                ans.push(sr2 ? (sr2.value === 'true') : null);
             }
+            if (ans.every(x => x === null)) ans = null;
+            break;
+        case 'short-answer':
+            const inp = quizForm.querySelector(`input[name="q${currentQuestionIndex}"]`);
+            if (inp && inp.value.trim() !== "") ans = inp.value.trim();
+            break;
+    }
+    userAnswers[currentQuestionIndex] = ans;
+    updateNavPanel();
+}
+
+// ========== Render các loại câu hỏi ==========
+function renderMCQ(question) {
+    const saved = userAnswers[currentQuestionIndex];
+    const options = [...question.o];
+    options.forEach(option => {
+        const div = document.createElement('div');
+        const label = document.createElement('label');
+        label.className = "flex items-center p-3 rounded-lg border cursor-pointer hover:bg-gray-50";
+
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = `q${currentQuestionIndex}`;
+        radio.value = option;
+        radio.className = 'mr-3';
+        if (saved === option) {
+            radio.checked = true;
+            label.classList.add('mcq-label-selected');
+        }
+        radio.addEventListener('change', () => {
+            answerContainer.querySelectorAll('label').forEach(l => l.classList.remove('mcq-label-selected'));
+            label.classList.add('mcq-label-selected');
+            saveCurrentAnswer();
         });
 
-        function renderMCQ(question) {
-            const savedAnswer = userAnswers[currentQuestionIndex];
-            const options = [...question.o];
-            
-            options.forEach(option => {
-                const isChecked = savedAnswer === option;
-                const div = document.createElement('div');
-                const label = document.createElement('label');
-                label.className = "flex items-center p-3 rounded-lg border cursor-pointer hover:bg-gray-50";
-                const radio = document.createElement('input');
-                radio.type = 'radio';
-                radio.name = `q${currentQuestionIndex}`;
-                radio.value = option;
-                radio.className = 'mr-3';
-                if(isChecked) radio.checked = true;
-                radio.addEventListener('change', saveCurrentAnswer); // Kích hoạt lưu và tô màu
-                const span = document.createElement('span');
-                span.innerHTML = option;
-                label.appendChild(radio);
-                label.appendChild(span);
-                div.appendChild(label);
-                answerContainer.appendChild(div);
-            });
-        }
+        const span = document.createElement('span');
+        span.innerHTML = option;
 
-        function renderTrueFalse(question) {
-            const savedAnswer = userAnswers[currentQuestionIndex] || [];
-            question.s.forEach((statement, sIndex) => {
-                const isTrueChecked = savedAnswer[sIndex] === true;
-                const isFalseChecked = savedAnswer[sIndex] === false;
-                
-                const div = document.createElement('div');
-                div.className = 'flex items-center justify-between p-3 border rounded-lg';
-                
-                const span = document.createElement('span');
-                span.innerHTML = statement.text;
-                
-                const buttonGroup = document.createElement('div');
-                buttonGroup.className = 'flex gap-4';
+        label.appendChild(radio);
+        label.appendChild(span);
+        div.appendChild(label);
+        answerContainer.appendChild(div);
+    });
+}
 
-                // True
-                const trueLabel = document.createElement('label');
-                trueLabel.className = 'cursor-pointer flex items-center';
-                const trueRadio = document.createElement('input');
-                trueRadio.type = 'radio';
-                trueRadio.name = `q${currentQuestionIndex}s${sIndex}`;
-                trueRadio.value = 'true';
-                trueRadio.className = 'mr-2';
-                if(isTrueChecked) trueRadio.checked = true;
-                trueRadio.addEventListener('change', saveCurrentAnswer); // Kích hoạt lưu và tô màu
-                trueLabel.appendChild(trueRadio);
-                trueLabel.append(' Đúng');
+function renderTrueFalse(question) {
+    const saved = userAnswers[currentQuestionIndex] || [];
+    question.s.forEach((st, sIndex) => {
+        const div = document.createElement('div');
+        div.className = 'flex items-center justify-between p-3 border rounded-lg';
 
-                // False
-                const falseLabel = document.createElement('label');
-                falseLabel.className = 'cursor-pointer flex items-center';
-                const falseRadio = document.createElement('input');
-                falseRadio.type = 'radio';
-                falseRadio.name = `q${currentQuestionIndex}s${sIndex}`;
-                falseRadio.value = 'false';
-                falseRadio.className = 'mr-2';
-                if(isFalseChecked) falseRadio.checked = true;
-                falseRadio.addEventListener('change', saveCurrentAnswer); // Kích hoạt lưu và tô màu
-                falseLabel.appendChild(falseRadio);
-                falseLabel.append(' Sai');
-                
-                buttonGroup.appendChild(trueLabel);
-                buttonGroup.appendChild(falseLabel);
-                div.appendChild(span);
-                div.appendChild(buttonGroup);
-                answerContainer.appendChild(div);
-            });
+        const span = document.createElement('span');
+        span.innerHTML = st.text;
+
+        const group = document.createElement('div');
+        group.className = 'flex gap-4';
+
+        const trueLabel = document.createElement('label');
+        trueLabel.className = 'cursor-pointer flex items-center';
+        const tRadio = document.createElement('input');
+        tRadio.type = 'radio';
+        tRadio.name = `q${currentQuestionIndex}s${sIndex}`;
+        tRadio.value = 'true';
+        tRadio.className = 'mr-2';
+        if (saved[sIndex] === true) tRadio.checked = true;
+        tRadio.addEventListener('change', saveCurrentAnswer);
+        trueLabel.appendChild(tRadio);
+        trueLabel.append(' Đúng');
+
+        const falseLabel = document.createElement('label');
+        falseLabel.className = 'cursor-pointer flex items-center';
+        const fRadio = document.createElement('input');
+        fRadio.type = 'radio';
+        fRadio.name = `q${currentQuestionIndex}s${sIndex}`;
+        fRadio.value = 'false';
+        fRadio.className = 'mr-2';
+        if (saved[sIndex] === false) fRadio.checked = true;
+        fRadio.addEventListener('change', saveCurrentAnswer);
+        falseLabel.appendChild(fRadio);
+        falseLabel.append(' Sai');
+
+        group.appendChild(trueLabel);
+        group.appendChild(falseLabel);
+        div.appendChild(span);
+        div.appendChild(group);
+        answerContainer.appendChild(div);
+    });
+}
+
+function renderShortAnswer(question) {
+    const saved = userAnswers[currentQuestionIndex] || '';
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.name = `q${currentQuestionIndex}`;
+    input.className = 'w-full border rounded px-3 py-2 mt-2';
+    input.placeholder = "Nhập đáp án";
+    input.value = saved;
+    input.addEventListener('input', saveCurrentAnswer);
+    answerContainer.appendChild(input);
+}
+
+// ========== Điều khiển prev/next ==========
+prevBtn.addEventListener('click', () => {
+    saveCurrentAnswer();
+    if (currentQuestionIndex > 0) jumpToQuestion(currentQuestionIndex - 1);
+});
+nextBtn.addEventListener('click', () => {
+    saveCurrentAnswer();
+    if (currentQuestionIndex < totalQuestions - 1) jumpToQuestion(currentQuestionIndex + 1);
+});
+
+// ========== Xử lý nộp bài (có modal confirm) ==========
+let isAutoSubmit = false; // nếu gọi bởi timeout thì true
+
+quizForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    // Nếu đang auto-submit do hết giờ thì submit ngay
+    if (isAutoSubmit) {
+        isAutoSubmit = false;
+        submitQuiz(true);
+        return;
+    }
+    // else show confirm modal
+    confirmSubmitModal.classList.remove('hidden');
+});
+
+// khi user xác nhận Yes
+confirmYes.addEventListener('click', () => {
+    confirmSubmitModal.classList.add('hidden');
+    submitQuiz(false);
+});
+confirmNo.addEventListener('click', () => {
+    confirmSubmitModal.classList.add('hidden');
+    // không nộp
+});
+
+// submitQuiz thực tế (auto=true khi do hết giờ)
+async function submitQuiz(auto = false) {
+    // lưu answer hiện tại
+    saveCurrentAnswer();
+    if (timerInterval) clearInterval(timerInterval);
+
+    // tính thời gian làm bài
+    const timeTakenSeconds = Math.round((Date.now() - quizStartTime) / 1000);
+    // tính điểm (theo logic cũ)
+    let totalScore = 0;
+    const answersToSave = {};
+    quizData.forEach((q, idx) => {
+        const ua = userAnswers[idx];
+        answersToSave[`q${idx+1}`] = ua;
+        if (ua === null) return;
+        switch (q.type) {
+            case 'mcq':
+                if (ua === q.a) totalScore += 0.5;
+                break;
+            case 'true-false':
+                let correctCount = 0;
+                q.s.forEach((st, sIndex) => { if (ua[sIndex] === st.a) correctCount++; });
+                const pointsMap = [0, 0.1, 0.25, 0.5, 1];
+                totalScore += pointsMap[correctCount] || 0;
+                break;
+            case 'short-answer':
+                if (typeof ua === 'string' && ua.toLowerCase() === String(q.a).toLowerCase()) totalScore += 0.5;
+                break;
         }
-        
-        function renderShortAnswer(question) {
-            const savedAnswer = userAnswers[currentQuestionIndex] || '';
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.name = `q${currentQuestionIndex}`;
-            input.className = 'w-full border rounded px-3 py-2 mt-2';
-            input.placeholder = "Nhập đáp án(45 hoặc 20,5)";
-            input.value = savedAnswer;
-            input.addEventListener('input', saveCurrentAnswer); // Kích hoạt lưu và tô màu
-            answerContainer.appendChild(input);
-        }
-    </script>
+    });
+
+    // ẩn quiz, hiện kết quả
+    quizSection.classList.add('hidden');
+    resultSection.classList.remove('hidden');
+    document.getElementById("studentNameResult").textContent = currentUser.fullname || "";
+
+    document.getElementById("finalScore").textContent = totalScore.toFixed(2);
+
+    // lưu lên Firestore
+    try {
+        await addDoc(collection(db, "quizResults"), {
+            ...currentUser,
+            quizId: QUIZ_ID,
+            examCode: EXAM_CODE,
+            score: parseFloat(totalScore.toFixed(2)),
+            totalPossibleScore: totalQuestions * 0.5, // giả sử mỗi câu 0.5 max
+            timeTaken: timeTakenSeconds,
+            answers: answersToSave,
+            submittedAt: serverTimestamp()
+        });
+    } catch (err) {
+        console.error("Lỗi khi lưu kết quả:", err);
+        alert("Đã có lỗi khi lưu kết quả. Vui lòng thử lại hoặc liên hệ quản trị.");
+    }
+}
+
+// Nếu timer hết giờ gọi submitQuiz(true)
+function autoSubmitNow() {
+    isAutoSubmit = true;
+    quizForm.requestSubmit(); // sẽ trigger submit listener và auto xử lý
+}
+
+// ========== Khởi tạo vùng answerContainer tham chiếu ==========
+const answerContainer = document.getElementById("answer-container");
+const questionNavPanel = document.getElementById("questionNavPanel");
+
+// === khi đóng trang dọn dẹp ===
+window.addEventListener('beforeunload', () => {
+    if (timerInterval) clearInterval(timerInterval);
+});
+</script>
 </body>
 </html>
-
