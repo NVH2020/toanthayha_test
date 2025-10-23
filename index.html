@@ -181,6 +181,40 @@ const schoolSelect = document.getElementById("schoolSelect");
 const schoolInput = document.getElementById("schoolInput");
 const answerContainer = document.getElementById("answer-container");
 const questionNavPanel = document.getElementById("questionNavPanel");
+document.addEventListener("keydown", function (e) {
+  if (e.key === "PrintScreen") {
+    alert("Chụp màn hình không được phép!");
+    // Làm mờ tạm thời nội dung để chụp ảnh không thấy rõ
+    document.body.style.filter = "blur(8px)";
+    setTimeout(() => {
+      document.body.style.filter = "none";
+    }, 2000);
+    e.preventDefault();
+  }
+});
+document.addEventListener("visibilitychange", function () {
+  if (document.hidden) {
+    document.body.style.filter = "blur(15px)";
+  } else {
+    document.body.style.filter = "none";
+  }
+});
+document.addEventListener("contextmenu", function(e) {
+  e.preventDefault();
+  alert("Chuột phải đã bị vô hiệu hóa!");
+});
+
+document.addEventListener("keydown", function(e) {
+  if (e.ctrlKey && (e.key === "s" || e.key === "p")) {
+    alert("Không được lưu hoặc in bài thi!");
+    e.preventDefault();
+  }
+});
+
+document.addEventListener("contextmenu", function(e) {
+    e.preventDefault();
+    alert("Chuột phải đã bị vô hiệu hóa!");
+});
 
 examCodeDisplay.textContent = EXAM_CODE;
 modalExamCode.textContent = EXAM_CODE;
@@ -469,40 +503,7 @@ async function submitQuiz(auto=false){
       if (typeof ua === 'string' && ua.trim().toLowerCase() === String(q.a).trim().toLowerCase()) totalScore += SCORE_SHORT;
     }
   });
-   document.addEventListener("keydown", function (e) {
-  if (e.key === "PrintScreen") {
-    alert("Chụp màn hình không được phép!");
-    // Làm mờ tạm thời nội dung để chụp ảnh không thấy rõ
-    document.body.style.filter = "blur(8px)";
-    setTimeout(() => {
-      document.body.style.filter = "none";
-    }, 2000);
-    e.preventDefault();
-  }
-});
-document.addEventListener("visibilitychange", function () {
-  if (document.hidden) {
-    document.body.style.filter = "blur(15px)";
-  } else {
-    document.body.style.filter = "none";
-  }
-});
-document.addEventListener("contextmenu", function(e) {
-  e.preventDefault();
-  alert("Chuột phải đã bị vô hiệu hóa!");
-});
-
-document.addEventListener("keydown", function(e) {
-  if (e.ctrlKey && (e.key === "s" || e.key === "p")) {
-    alert("Không được lưu hoặc in bài thi!");
-    e.preventDefault();
-  }
-});
-
-document.addEventListener("contextmenu", function(e) {
-    e.preventDefault();
-    alert("Chuột phải đã bị vô hiệu hóa!");
-});
+   
 if (document.getElementById("quizSection")) {
   document.getElementById("quizSection").style.opacity = 0;
   setTimeout(()=>document.getElementById("quizSection").style.opacity=1,2000);
