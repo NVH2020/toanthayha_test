@@ -21,7 +21,7 @@ window.MathJax = { tex:{ inlineMath:[['$','$'],['\\(','\\)']], displayMath:[['$$
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
   <div id="main-container" class="w-full max-w-4xl bg-white rounded-xl shadow-lg p-6">
-    <h1 class="text-2xl font-bold text-center mb-6 blinking-text">Lớp Toán -  Thầy Hà</h1>
+    <h1 class="text-2xl font-bold text-center mb-6 blinking-text">Lớp Toán Thầy Hà</h1>
     <div id="userInfoSection" class="max-w-md mx-auto">
       <div class="mb-4">
         <label class="block font-bold text-center text-blue-600">Mã kỳ thi (Kiểm tra)</label>
@@ -147,6 +147,8 @@ const DEADLINE = "2025-10-25T20:43";
 const SCORE_MCQ = 0.5;
 const SCORE_SHORT = 0.5;
 const POINTS_MAP_TF = [0,0.25,0.5,0.75,1];
+document.getElementById("examHeader").textContent = "Lớp Toán Thầy Hà _ " + EXAM_CODE;
+
 const originalQuizData = [{"part":"Phần I","type":"mcq","question":"Giá trị của $2^3$ là bao nhiêu?","o":["6","8","9","12"],"a":"8"},{"part":"Phần II","type":"true-false","question":"Đánh giá các phát biểu sau:","s":[{"text":"1+1=2","a":true},{"text":"5 là số chẵn","a":false},{"text":"7 là số chẵn","a":false},{"text":"6 là chia hết cho 5","a":false}]},{"part":"Phần III","type":"short-answer","question":"Việt Nam còn bao nhiêu tỉnh, thành phố","a":"34"}];
 
 // ===== DOM & trạng thái =====
