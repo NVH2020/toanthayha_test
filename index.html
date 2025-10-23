@@ -137,13 +137,13 @@ const db = getFirestore(app);
 
 // ===== Cấu hình kỳ thi =====
 const EXAM_CODE = "Toan10_002";
-const QUIZ_ID = "toanthayha_11";
+const QUIZ_ID = "toanthayha_10";
 const API_URL = "https://script.google.com/macros/s/AKfycbzGkua7MT81r0F6A3RhCleOGR6gMGUtUkWcHwRWQYD8YBCINmzawoBW-d1SLN6weguQHg/exec";
 const TIME_LIMIT_SECONDS = 60 * 60;
 const ATTEMPT_LIMIT = 3;
-const WARNING = 5;
-const START_TIME = "2025-10-21T14:26";
-const DEADLINE = "2025-10-24T15:26";
+const WARNING = 3;
+const START_TIME = "2025-10-23T19:43";
+const DEADLINE = "2025-10-25T20:43";
 const SCORE_MCQ = 0.5;
 const SCORE_SHORT = 0.5;
 const POINTS_MAP_TF = [0,0.25,0.5,0.75,1];
@@ -469,20 +469,42 @@ async function submitQuiz(auto=false){
       if (typeof ua === 'string' && ua.trim().toLowerCase() === String(q.a).trim().toLowerCase()) totalScore += SCORE_SHORT;
     }
   });
-   document.addEventListener("keydown", function(e) {
-    if (e.key === "PrintScreen") {
-        alert("Chụp màn hình không được phép!");
-        e.preventDefault();
-    }
-    if (e.ctrlKey && (e.key === "s" || e.key === "p")) {
-        alert("Không được lưu hoặc in bài thi!");
-        e.preventDefault();
-    }
+   document.addEventListener("keydown", function (e) {
+  if (e.key === "PrintScreen") {
+    alert("Chụp màn hình không được phép!");
+    // Làm mờ tạm thời nội dung để chụp ảnh không thấy rõ
+    document.body.style.filter = "blur(8px)";
+    setTimeout(() => {
+      document.body.style.filter = "none";
+    }, 2000);
+    e.preventDefault();
+  }
 });
+document.addEventListener("visibilitychange", function () {
+  if (document.hidden) {
+    document.body.style.filter = "blur(15px)";
+  } else {
+    document.body.style.filter = "none";
+  }
+});
+document.addEventListener("contextmenu", function(e) {
+  e.preventDefault();
+  alert("Chuột phải đã bị vô hiệu hóa!");
+});
+
+document.addEventListener("keydown", function(e) {
+  if (e.ctrlKey && (e.key === "s" || e.key === "p")) {
+    alert("Không được lưu hoặc in bài thi!");
+    e.preventDefault();
+  }
+});
+
 document.addEventListener("contextmenu", function(e) {
     e.preventDefault();
     alert("Chuột phải đã bị vô hiệu hóa!");
 });
+document.getElementById("quizWrapper").style.opacity = 0;
+setTimeout(()=>document.getElementById("quizWrapper").style.opacity=1,2000);
 
   quizSection.classList.add('hidden');
   resultSection.classList.remove('hidden');
